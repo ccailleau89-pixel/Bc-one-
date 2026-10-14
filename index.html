@@ -1,0 +1,169 @@
+<!DOCTYPE html><html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B0B0C">
+<title>BC ONE — The Burger Currency</title>
+<style>
+:root {
+  --black: #0B0B0C;
+  --gold: #D6A64A;
+  --cream: #F5F1E8;
+  --orange: #FF682E;
+  --muted: #AAA6A0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--black);
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 6%;
+  border-bottom: 1px solid #292723;
+}
+.brand { font-size: 23px; font-weight: 800; letter-spacing: 2px; }
+.brand span { color: var(--gold); }
+.status {
+  color: var(--gold);
+  border: 1px solid #735A2C;
+  border-radius: 30px;
+  padding: 8px 11px;
+  font-size: 11px;
+}
+main { max-width: 1050px; margin: auto; padding: 65px 6% 45px; }
+.eyebrow {
+  color: var(--gold);
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+h1 {
+  font-size: clamp(42px, 10vw, 82px);
+  line-height: .98;
+  letter-spacing: -3px;
+  margin: 25px 0;
+}
+h1 span { color: var(--gold); }
+.intro {
+  color: var(--muted);
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 580px;
+}
+.hero {
+  border: 1px solid #393126;
+  border-radius: 20px;
+  padding: 28px 20px;
+  margin: 40px 0;
+  background: radial-gradient(ellipse at 50% 0%, #292014 0%, #11100E 48%, #0B0B0C 100%);
+  text-align: center;
+}
+.burger { font-size: 76px; line-height: 1.3; }
+.hero h2 { color: var(--gold); font-size: 24px; margin: 10px 0; }
+.hero p { color: var(--muted); line-height: 1.6; }
+.button {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 14px 22px;
+  border-radius: 7px;
+  background: var(--gold);
+  color: #0B0B0C;
+  text-decoration: none;
+  font-weight: 700;
+}
+section { margin: 55px 0; }
+h2 { font-size: 27px; }
+.cards { display: grid; grid-template-columns: 1fr; gap: 14px; }
+.card {
+  padding: 23px;
+  border: 1px solid #34312B;
+  border-radius: 13px;
+  background: #111110;
+}
+.card .number { color: var(--gold); font-size: 13px; letter-spacing: 2px; }
+.card h3 { font-size: 19px; }
+.card p { color: var(--muted); line-height: 1.7; }
+.notice {
+  border-left: 3px solid var(--orange);
+  padding: 16px 18px;
+  background: #19120F;
+  color: var(--cream);
+  line-height: 1.6;
+}
+footer {
+  padding: 28px 6%;
+  border-top: 1px solid #292723;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+@media (min-width: 700px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+  main { padding-top: 95px; }
+  .hero { padding: 45px; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">BC <span>ONE</span></div>
+  <div class="status">PROJET EN PRÉPARATION</div>
+</header>
+<main>
+  <div class="eyebrow">Food culture · Digital innovation</div>
+  <h1>Le goût du futur.<br><span>Une nouvelle</span><br>monnaie.</h1>
+  <p class="intro">
+    BC ONE explore une nouvelle façon de rapprocher
+    la culture du burger, les commerçants et les technologies
+    numériques. Un projet en construction, avec une ambition claire.
+  </p>
+  <div class="hero">
+    <div class="burger" aria-hidden="true">🍔</div>
+    <h2>THE BURGER CURRENCY</h2>
+    <p>Une idée audacieuse. Un projet à construire.<br>
+    Une communauté à imaginer.</p>
+    <a class="button" href="#vision">Découvrir le projet</a>
+  </div>
+  <section id="vision">
+    <div class="eyebrow">Notre vision</div>
+    <h2>Plus qu'un token, un écosystème.</h2>
+    <div class="cards">
+      <article class="card">
+        <div class="number">01 / COMMUNAUTÉ</div>
+        <h3>Créer du lien</h3>
+        <p>Imaginer des usages numériques autour des amateurs de burgers et des commerçants.</p>
+      </article>
+      <article class="card">
+        <div class="number">02 / TECHNOLOGIE</div>
+        <h3>Construire avec rigueur</h3>
+        <p>Étudier une infrastructure blockchain et des règles d'émission transparentes.</p>
+      </article>
+      <article class="card">
+        <div class="number">03 / UTILITÉ</div>
+        <h3>Penser aux usages</h3>
+        <p>Explorer des services utiles avant toute mise en circulation du token.</p>
+      </article>
+    </div>
+  </section>
+  <section>
+    <div class="eyebrow">Transparence</div>
+    <h2>Un projet en développement.</h2>
+    <div class="notice">
+      BC ONE est actuellement en préparation. Aucun token n'est annoncé
+      comme émis, aucun prix de marché ni aucune liquidité ne sont revendiqués.
+      Les choix techniques, économiques et réglementaires restent à valider.
+    </div>
+  </section>
+</main>
+<footer>
+  <strong>BC ONE — The Burger Currency</strong><br>
+  Projet en préparation · Informations susceptibles d'évoluer.<br>
+  © BC ONE
+</footer>
+</body>
+</html>
