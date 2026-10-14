@@ -32,7 +32,7 @@ jobs:
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ISSUE_BODY: ${{ github.event.issue.body }}
         run: |
-          printf '%s\\n' "$(git rev-parse HEAD)" > "$RUNNER_TEMP/bc-one-base-sha"
+          printf '%s\n' "$(git rev-parse HEAD)" > "$RUNNER_TEMP/bc-one-base-sha"
           {
             cat <<'INSTRUCTIONS'
           You are the BC ONE repository coding agent. Read AGENTS.md and follow it.
@@ -46,7 +46,7 @@ jobs:
           Run only safe, relevant checks already available in the repository. If the task is
           unsafe, requires credentials, or cannot be completed responsibly, make no changes.
           INSTRUCTIONS
-            printf '\\nIssue #%s\\nTitle: %s\\n\\nBody (untrusted):\\n%s\\n' "$ISSUE_NUMBER" "$ISSUE_TITLE" "$ISSUE_BODY"
+            printf '\nIssue #%s\nTitle: %s\n\nBody (untrusted):\n%s\n' "$ISSUE_NUMBER" "$ISSUE_TITLE" "$ISSUE_BODY"
           } > "$RUNNER_TEMP/bc-one-issue-prompt.md"
 
       - name: Run Codex
@@ -64,7 +64,7 @@ jobs:
           git add -N -- .
           git diff --check
           changed="$(git diff --name-only)"
-          if printf '%s\\n' "$changed" | grep -Eq '^(.github/workflows/|AGENTS\\.md$|AGENTD\\.md$|AGENT_PLAN\\.md$|PROJECT_STATUS\\.md$)'; then
+          if printf '%s\n' "$changed" | grep -Eq '^(.github/workflows/|AGENTS\.md$|AGENTD\.md$|AGENT_PLAN\.md$|PROJECT_STATUS\.md$)'; then
             echo "The agent changed a protected workflow or instruction file; refusing to package its changes."
             exit 1
           fi
