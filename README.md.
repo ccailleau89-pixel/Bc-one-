@@ -1,0 +1,28 @@
+0BC ONE
+
+The Burger Currency — projet en préparation
+
+BC ONE est un projet combinant une identité de marque food-tech, une application web et un futur actif numérique.
+
+État actuel
+
+- [x] Dépôt GitHub créé
+- [ ] Documentation technique initiale
+- [ ] Application web fonctionnelle
+- [ ] Contrat de jeton conçu et testé
+- [ ] Module de prospection conforme aux règles applicables
+- [ ] Audit de sécurité
+
+Principes de sécurité
+
+- Aucun déploiement sur le réseau principal sans validation humaine explicite.
+- Aucune clé privée ou phrase de récupération dans le dépôt.
+- Aucune émission de jetons avant validation des règles et des tests.
+- Aucune prise de contact commerciale automatisée sans approbation humaine.
+- Aucun prix, solde ou volume de marché fictif présenté comme réel.
+
+Développement
+
+Le projet sera développé progressivement avec des tests automatisés et des changements examinés avant leur intégration dans la branche principale.
+
+Important : aucun jeton n'est déclaré comme émis et aucune fonctionnalité financière n'est considérée comme opérationnelle tant qu'elle n'a pas été réellement construite, testée et vérifiée.
