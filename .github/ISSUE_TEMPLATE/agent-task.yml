@@ -1,0 +1,33 @@
+name: Tâche pour l’agent BC ONE
+description: Décrire une modification à préparer sous forme de pull request
+title: "[Agent] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        L’agent prépare une proposition en brouillon. Une personne doit revoir et fusionner la PR.
+        Ne partagez aucun mot de passe, clé API, clé privée ou phrase de récupération.
+  - type: textarea
+    id: goal
+    attributes:
+      label: Objectif
+      description: Que doit permettre ou changer cette tâche ?
+      placeholder: Décrivez le résultat attendu.
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte
+      description: Informations utiles et fichiers ou écrans concernés.
+    validations:
+      required: false
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critères d’acceptation
+      description: Comment reconnaître que la proposition est terminée ?
+      placeholder: |
+        - …
+    validations:
+      required: false
