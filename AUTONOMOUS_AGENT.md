@@ -2,7 +2,7 @@
 
 ## Fonctionnement
 
-Le workflow `.github/workflows/issue-agent.yml` démarre lorsqu’un mainteneur applique le label exact `agent-run` à une issue. Codex lit les consignes du dépôt, travaille sur une copie du défaut de branche et prépare un patch. Un second job, avec des droits GitHub distincts, applique le patch et ouvre ou met à jour une pull request en brouillon dédiée à l’issue.
+Le workflow `.github/workflows/issue-agent.yml` peut démarrer de deux façons : le propriétaire du dépôt ouvre une issue avec le formulaire « Tâche pour l’agent BC ONE » (titre commençant par `[Agent]`), ou un mainteneur applique le label exact `agent-run` à une issue existante. Codex lit les consignes du dépôt, travaille sur une copie de la branche par défaut et prépare un patch. Un second job, avec des droits GitHub distincts, applique le patch et ouvre ou met à jour une pull request en brouillon dédiée à l’issue.
 
 L’agent ne fusionne pas les pull requests et ne déploie rien. Il ne dispose d’aucune permission pour écrire dans GitHub pendant son travail; seul le job séparé de proposition reçoit les permissions minimales nécessaires pour créer une branche et une PR. Les workflows et les fichiers de consignes sont protégés contre les modifications de l’agent. Le patch passe entre les deux jobs comme donnée et n’est pas exécuté par le job de proposition.
 
@@ -12,8 +12,7 @@ Après fusion manuelle du PR qui ajoute ce workflow :
 
 1. Dans les paramètres Actions du dépôt, autoriser GitHub Actions à créer des pull requests.
 2. Ajouter un secret Actions nommé `OPENAI_API_KEY` contenant une clé de l’API OpenAI. Ne jamais la mettre dans un fichier du dépôt, une issue ou un commentaire.
-3. Créer le label d’issue `agent-run`.
-4. Créer une issue décrivant une tâche, puis appliquer ce label pour démarrer l’agent.
+3. Pour lancer une tâche, le propriétaire du dépôt ouvre une nouvelle issue avec le formulaire « Tâche pour l’agent BC ONE ». Cela démarre automatiquement le workflow; aucun label n’est nécessaire. Pour lancer l’agent sur une issue déjà ouverte, appliquer le label `agent-run`.
 
 L’exécution utilise l’API OpenAI et peut entraîner des coûts selon l’usage et la configuration du compte. Le workflow ne sera pas opérationnel avant ces réglages. L’auteur qui déclenche Codex doit avoir les droits d’écriture du dépôt; la Codex Action conserve sa restriction par défaut et n’autorise pas les utilisateurs arbitraires.
 
