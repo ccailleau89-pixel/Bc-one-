@@ -10,8 +10,9 @@ Ouvrir `prototype.html` depuis la branche `feature/app-prototype-2026-10`, ou t�
 - Vue d'ensemble responsive avec identité visuelle BC ONE.
 - Navigation vers Vue d'ensemble, Portefeuille, Avantages et Projet.
 - Portefeuille explicitement non connecté, sans solde inventé ni historique fictif.
-- Avantages présentés comme pistes à valider, et non comme une offre active.
-- Démonstration locale de fidélité avec boutons de simulation et remise à zéro ; points fictifs, non persistants et sans valeur.
+- Parcours de carte prépayée saisonnière avec trois exemples de formules (20 € → 24 €, 50 € → 60 €, 100 € → 115 €), issus des hypothèses de travail antérieures.
+- Sélection locale d'une formule et calcul du bonus indicatif ; aucun paiement, engagement, stockage ou achat n'est possible.
+- Les montants sont des exemples de prévente à valider, pas des conditions commerciales actives.
 - Feuille de route et avis explicite sur l'état du projet.
 - Navigation active, repères de focus clavier et prise en compte de la préférence de réduction des animations.
 - Aucun formulaire, paiement, connexion wallet, appel réseau ou stockage persistant de données.
@@ -31,9 +32,10 @@ Ouvrir `prototype.html` depuis la branche `feature/app-prototype-2026-10`, ou t�
 
 ## Prochaines étapes
 1. Tester manuellement les ancres et le parcours au clavier dans un navigateur réel.
-2. Décider du périmètre produit : programme de fidélité classique, actif numérique, ou les deux avec des règles séparées.
-3. Avant toute fonction financière : finaliser les règles, examiner le cadre juridique et les obligations de protection des données, sélectionner le réseau et faire auditer les contrats.
-4. Fusionner uniquement après revue du diff, des contrôles et validation humaine explicite.
+2. Valider le modèle de carte prépayée saisonnière : durée de validité, usages autorisés, remboursements, plafonds, conditions des bonus et traitement comptable.
+3. Évaluer le cadre juridique et les obligations de protection des données avant toute prévente réelle ; distinguer cette carte d'un éventuel actif numérique futur.
+4. Préparer le parcours de paiement uniquement après validation des conditions, du fournisseur de paiement et de la sécurité.
+5. Fusionner uniquement après revue du diff, des contrôles et validation humaine explicite.
 
 ## Sécurité
 Aucun secret, aucune clé privée, aucune phrase de récupération et aucune donnée client ne sont nécessaires. Aucun contrat blockchain n'est ajouté ici. Aucun jeton n'est déclaré émis ou déployé.
