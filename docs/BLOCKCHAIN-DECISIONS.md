@@ -1,5 +1,16 @@
 # Décisions requises avant le contrat BC ONE
 
+## Objectif confirmé
+
+BC ONE doit devenir une monnaie numérique dont la valeur est définie ou stabilisée par un algorithme. La simulation de trading SMA du prototype n’est pas ce mécanisme monétaire : elle ne fixe pas de prix et ne pilote aucune émission.
+
+Avant de coder ce mécanisme, il faut choisir l’indice de référence (par exemple une parité avec l’euro, un panier d’actifs, un indice de prix lié aux burgers, ou une valeur flottante calculée selon une formule). Il faut ensuite préciser les données de référence, leur source fiable, les règles de stabilisation et d’émission, les limites en cas de panne ou de forte variation, les garanties et les droits de remboursement. Un algorithme seul ne garantit ni une parité ni une valeur minimale.
+
+Si le jeton est offert dans l’Union européenne, sa classification et les obligations applicables dépendront du mécanisme et de l’offre; une revue juridique spécialisée est indispensable avant toute offre au public ou admission à la négociation. Voir le règlement MiCA et les catégories décrites par l’AMF.
+
+## Paramètres techniques et économiques encore à décider
+
+
 Aucun jeton BC ONE ni contrat n’est déclaré créé ou déployé. Avant d’écrire le contrat et ses tests, définir :
 
 1. Réseau (Base, Polygon PoS, Arbitrum One ou autre EVM).
