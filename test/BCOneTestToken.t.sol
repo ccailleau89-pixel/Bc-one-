@@ -35,16 +35,16 @@ contract BCOneTestTokenTest {
 
     function testZeroCapIsRejected() public {
         bool deployed;
-        try new BCOneTestToken(0, address(this)) returns (BCOneTestToken) {
-            deployed = true;
+        try new BCOneTestToken(0, address(this)) returns (BCOneTestToken created) {
+            deployed = address(created) != address(0);
         } catch {}
         require(!deployed, "zero cap must be rejected");
     }
 
     function testZeroOwnerIsRejected() public {
         bool deployed;
-        try new BCOneTestToken(1 ether, address(0)) returns (BCOneTestToken) {
-            deployed = true;
+        try new BCOneTestToken(1 ether, address(0)) returns (BCOneTestToken created) {
+            deployed = address(created) != address(0);
         } catch {}
         require(!deployed, "zero owner must be rejected");
     }
