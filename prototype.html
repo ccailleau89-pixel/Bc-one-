@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0B0B0C">
+  <meta name="description" content="Prototype de l'application BC ONE — The Burger Currency. Projet en préparation, aucune fonctionnalité financière active.">
+  <title>BC ONE — Prototype de l'application</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --black: #0B0B0C;
+      --panel: #141414;
+      --panel-2: #1B1915;
+      --gold: #D6A64A;
+      --gold-soft: #8B6D34;
+      --cream: #F5F1E8;
+      --muted: #A9A49B;
+      --orange: #FF682E;
+      --line: #302C25;
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--black);
+      color: var(--cream);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button:focus-visible, a:focus-visible { outline: 3px solid var(--orange); outline-offset: 4px; }
+    .shell { width: min(1120px, 100% - 40px); margin-inline: auto; }
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between; gap: 18px;
+      min-height: 76px; border-bottom: 1px solid var(--line);
+    }
+    .brand { text-decoration: none; font-size: 1.15rem; font-weight: 900; letter-spacing: .13em; }
+    .brand span { color: var(--gold); }
+    .status {
+      display: inline-flex; align-items: center; gap: 8px; padding: 7px 11px;
+      border: 1px solid #6D552A; border-radius: 999px; color: var(--gold);
+      font-size: .72rem; font-weight: 750; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--orange); }
+    .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 30px; padding-block: 30px 60px; }
+    .sidebar { min-width: 0; align-self: start; position: sticky; top: 20px; }
+    .sidebar-label { margin: 0 0 12px; color: var(--muted); font-size: .68rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
+    .nav { display: grid; gap: 6px; min-width: 0; max-width: 100%; }
+    .nav a {
+      display: flex; align-items: center; gap: 12px; padding: 12px 14px;
+      border: 1px solid transparent; border-radius: 12px; text-decoration: none;
+      color: var(--muted); font-size: .9rem; transition: background .2s, color .2s, border-color .2s;
+    }
+    .nav a:hover, .nav a[aria-current="page"] { background: var(--panel-2); color: var(--cream); border-color: var(--line); }
+    .nav-icon { width: 22px; color: var(--gold); text-align: center; font-size: 1rem; }
+    .sidebar-note { margin-top: 28px; padding: 16px; background: #11100E; border: 1px solid var(--line); border-radius: 16px; }
+    .sidebar-note strong { display: block; margin-bottom: 6px; font-size: .82rem; }
+    .sidebar-note p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.6; }
+    main { min-width: 0; }
+    .eyebrow { color: var(--gold); font-size: .72rem; font-weight: 850; letter-spacing: .18em; text-transform: uppercase; }
+    h1 { margin: 12px 0 10px; font-size: clamp(2.2rem, 5vw, 4.25rem); line-height: .98; letter-spacing: -.055em; }
+    h1 span { color: var(--gold); }
+    .lead { max-width: 650px; margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.8; }
+    .hero {
+      position: relative; overflow: hidden; margin-top: 28px; padding: clamp(22px, 4vw, 38px);
+      border: 1px solid #4C3B21; border-radius: var(--radius);
+      background: radial-gradient(ellipse at 88% 12%, #3A2A13 0%, #211A10 28%, #15130F 58%, #121212 100%);
+    }
+    .hero::after { content: "BC"; position: absolute; right: -8px; bottom: -78px; color: #D6A64A0D; font-size: 18rem; line-height: 1; font-weight: 1000; pointer-events: none; }
+    .hero-content { position: relative; z-index: 1; max-width: 610px; }
+    .hero h2 { margin: 12px 0; font-size: clamp(1.5rem, 3vw, 2.3rem); line-height: 1.1; letter-spacing: -.035em; }
+    .hero p { max-width: 530px; color: #C1B9AA; margin: 0; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px;
+      padding: 11px 16px; border: 1px solid var(--gold); border-radius: 12px;
+      background: var(--gold); color: #17130D; font-size: .86rem; font-weight: 850;
+      text-decoration: none; cursor: pointer;
+    }
+    .btn:hover { filter: brightness(1.08); }
+    .btn.secondary { background: transparent; color: var(--cream); border-color: #5B5140; }
+    .section { margin-top: 34px; scroll-margin-top: 20px; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; gap: 15px; margin-bottom: 14px; }
+    h2.section-title { margin: 0; font-size: 1.22rem; letter-spacing: -.025em; }
+    .section-caption { margin: 4px 0 0; color: var(--muted); font-size: .82rem; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+    .card { min-width: 0; padding: 20px; background: var(--panel); border: 1px solid var(--line); border-radius: 18px; }
+    .card-kicker { color: var(--muted); font-size: .76rem; }
+    .card-icon { display: grid; place-items: center; width: 38px; height: 38px; margin-bottom: 18px; border: 1px solid #574425; border-radius: 12px; background: #211B11; color: var(--gold); font-size: 1.1rem; }
+    .metric { display: block; margin-top: 5px; font-size: 1.45rem; font-weight: 850; letter-spacing: -.04em; }
+    .metric small { color: var(--muted); font-size: .76rem; font-weight: 600; letter-spacing: 0; }
+    .card-note { margin: 8px 0 0; color: var(--muted); font-size: .78rem; }
+    .status-inline { display: inline-block; margin-top: 12px; padding: 4px 8px; border-radius: 999px; background: #2A2113; color: var(--gold); font-size: .68rem; font-weight: 800; }
+    .two-col { display: grid; grid-template-columns: 1.15fr .85fr; gap: 12px; }
+    .wallet-card { background: linear-gradient(135deg, #211A10, #121212 68%); border-color: #5A4526; }
+    .wallet-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .wallet-mark { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 14px; background: var(--gold); color: #15110A; font-weight: 1000; }
+    .wallet-value { margin: 26px 0 4px; font-size: 2rem; font-weight: 900; letter-spacing: -.05em; }
+    .wallet-sub { color: var(--muted); font-size: .8rem; }
+    .rule { height: 1px; margin: 18px 0; background: var(--line); }
+    .feature-list { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+    .feature-list li { display: flex; align-items: flex-start; gap: 11px; color: #D6D0C5; font-size: .86rem; }
+    .feature-list li span { color: var(--gold); font-weight: 900; }
+    .campaign { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px; }
+    .campaign h3 { margin: 0 0 7px; font-size: 1.02rem; }
+    .campaign p { margin: 0; color: var(--muted); font-size: .83rem; }
+    .demo-loyalty { margin-top: 14px; padding: 18px; border: 1px dashed #6D552A; border-radius: 16px; background: #11100E; }
+    .demo-score { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+    .demo-score strong { color: var(--gold); font-size: 2rem; letter-spacing: -.04em; }
+    .demo-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .demo-actions .btn { font: inherit; font-size: .8rem; }
+    .demo-message { min-height: 1.5em; margin: 12px 0 0; color: var(--muted); font-size: .78rem; }
+    .offer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .offer-card { min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    .offer-card h3 { margin: 0; font-size: .9rem; }
+    .offer-price { display: block; margin-top: 12px; font-size: 1.65rem; font-weight: 900; letter-spacing: -.04em; }
+    .offer-credit { margin: 3px 0 12px; color: var(--gold); font-size: .82rem; font-weight: 750; }
+    .offer-card .btn { width: 100%; font-size: .78rem; }
+    .offer-card.selected { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold-soft); }
+    .offer-summary { margin-top: 14px; padding: 16px; border: 1px dashed #6D552A; border-radius: 14px; background: #11100E; }
+    .offer-summary strong { color: var(--gold); }
+    .concept-label { color: var(--orange); font-size: .68rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+    .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: step; }
+    .step { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #101010; counter-increment: step; }
+    .step::before { content: "0" counter(step); display: block; margin-bottom: 14px; color: var(--gold); font-size: .75rem; font-weight: 900; letter-spacing: .1em; }
+    .step strong { display: block; margin-bottom: 6px; font-size: .9rem; }
+    .step p { margin: 0; color: var(--muted); font-size: .78rem; line-height: 1.65; }
+    .notice { display: flex; gap: 12px; margin-top: 30px; padding: 16px; border: 1px solid #574425; border-radius: 16px; background: #17130D; }
+    .notice-icon { color: var(--gold); font-size: 1.15rem; }
+    .notice strong { display: block; margin-bottom: 4px; font-size: .84rem; }
+    .notice p { margin: 0; color: #BDB4A4; font-size: .78rem; line-height: 1.65; }
+    footer { padding: 22px 0 34px; border-top: 1px solid var(--line); color: var(--muted); font-size: .75rem; }
+    .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    @media (max-width: 850px) {
+      .layout { grid-template-columns: 1fr; gap: 20px; padding-top: 20px; }
+      .sidebar { position: static; }
+      .sidebar-label, .sidebar-note { display: none; }
+      .nav { display: flex; gap: 7px; overflow-x: auto; padding-bottom: 4px; }
+      .nav a { flex: 0 0 auto; padding: 10px 12px; font-size: .8rem; }
+      .nav-icon { display: none; }
+    }
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 28px, 1120px); }
+      .nav { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); overflow: visible; }
+      .nav a { min-width: 0; white-space: nowrap; }
+      .topbar { min-height: 66px; }
+      .brand { font-size: 1rem; }
+      .status { font-size: .62rem; padding: 6px 8px; }
+      .grid-3, .two-col, .steps { grid-template-columns: 1fr; }
+      .offer-grid { grid-template-columns: 1fr; }
+      .grid-3 .card { display: grid; grid-template-columns: 38px 1fr; column-gap: 13px; align-items: center; }
+      .grid-3 .card-icon { grid-row: span 3; margin: 0; }
+      .grid-3 .metric { font-size: 1.2rem; }
+      .grid-3 .card-note { margin-top: 2px; }
+      .hero { margin-top: 20px; }
+      .campaign { grid-template-columns: 1fr; }
+      .campaign .btn { width: 100%; }
+      .section-head { align-items: start; flex-direction: column; }
+      .wallet-value { font-size: 1.8rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <header class="topbar shell">
+    <a class="brand" href="#accueil" aria-label="BC ONE, accueil">BC <span>ONE</span></a>
+    <span class="status">Prototype · non connecté</span>
+  </header>
+
+  <div class="layout shell">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <p class="sidebar-label">Espace BC ONE</p>
+      <nav class="nav">
+        <a href="#accueil" aria-current="page"><span class="nav-icon" aria-hidden="true">⌂</span> Vue d'ensemble</a>
+        <a href="#portefeuille"><span class="nav-icon" aria-hidden="true">◈</span> Portefeuille</a>
+        <a href="#avantages"><span class="nav-icon" aria-hidden="true">✦</span> Avantages</a>
+        <a href="#projet"><span class="nav-icon" aria-hidden="true">↗</span> Le projet</a>
+      </nav>
+      <div class="sidebar-note">
+        <strong>Une base claire, sans faux chiffres.</strong>
+        <p>Ce prototype montre une direction d'interface. Il n'est relié à aucun compte, portefeuille ou service de paiement.</p>
+      </div>
+    </aside>
+
+    <main id="accueil">
+      <div class="eyebrow">The Burger Currency</div>
+      <h1>Le goût du futur.<br><span>Une nouvelle expérience.</span></h1>
+      <p class="lead">BC ONE explore un lien plus direct entre la street-food, une communauté et des avantages à construire ensemble. Voici la première maquette de l'espace membre.</p>
+
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-content">
+          <div class="eyebrow">Bienvenue dans la maquette</div>
+          <h2 id="hero-title">Une idée ambitieuse.<br>Des étapes concrètes.</h2>
+          <p>L'application se construit progressivement. Les comptes, les paiements et tout actif numérique restent désactivés tant que les règles et la sécurité ne sont pas validées.</p>
+          <div class="actions">
+            <a class="btn" href="#projet">Découvrir le projet <span aria-hidden="true">↗</span></a>
+            <a class="btn secondary" href="#portefeuille">Voir le portefeuille</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="overview-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="overview-title">L'espace BC ONE</h2>
+            <p class="section-caption">État actuel des briques du projet — pas des données de production.</p>
+          </div>
+        </div>
+        <div class="grid-3">
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">◈</div>
+            <span class="card-kicker">Portefeuille</span>
+            <strong class="metric">À connecter</strong>
+            <p class="card-note">Aucun solde réel affiché.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">✦</div>
+            <span class="card-kicker">Avantages</span>
+            <strong class="metric">En conception</strong>
+            <p class="card-note">Conditions à définir et valider.</p>
+          </article>
+          <article class="card">
+            <div class="card-icon" aria-hidden="true">✓</div>
+            <span class="card-kicker">Transparence</span>
+            <strong class="metric">Prioritaire</strong>
+            <p class="card-note">Pas de promesse de rendement.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="portefeuille" aria-labelledby="wallet-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="wallet-title">Portefeuille</h2>
+            <p class="section-caption">Interface visuelle uniquement. Aucune connexion wallet n'est disponible.</p>
+          </div>
+          <span class="status">Mode démo</span>
+        </div>
+        <div class="two-col">
+          <article class="card wallet-card">
+            <div class="wallet-top">
+              <div>
+                <span class="card-kicker">Mon espace BC ONE</span>
+                <div style="font-weight:850;margin-top:4px">Portefeuille non activé</div>
+              </div>
+              <div class="wallet-mark" aria-hidden="true">BC</div>
+            </div>
+            <div class="wallet-value">— <small style="font-size:.85rem;color:var(--muted);letter-spacing:0">BC ONE</small></div>
+            <div class="wallet-sub">Solde indisponible · aucune donnée connectée</div>
+            <div class="rule"></div>
+            <p class="card-note">L'adresse du portefeuille, l'historique et les transferts seront ajoutés uniquement après choix technique, tests et validation de sécurité.</p>
+          </article>
+          <article class="card">
+            <h3 style="margin:0 0 15px;font-size:1rem">Avant toute activation</h3>
+            <ul class="feature-list">
+              <li><span aria-hidden="true">✓</span><div><strong>Définir les règles</strong><br><span style="color:var(--muted);font-weight:400">Réseau, émission et gouvernance.</span></div></li>
+              <li><span aria-hidden="true">✓</span><div><strong>Vérifier la sécurité</strong><br><span style="color:var(--muted);font-weight:400">Tests, contrôle des accès et audit.</span></div></li>
+              <li><span aria-hidden="true">✓</span><div><strong>Expliquer les risques</strong><br><span style="color:var(--muted);font-weight:400">Conditions compréhensibles avant usage.</span></div></li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="avantages" aria-labelledby="benefits-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="benefits-title">Carte BC ONE saisonnière</h2>
+            <p class="section-caption">Une piste de préfinancement à étudier pour la réouverture de mars–avril 2027.</p>
+          </div>
+        </div>
+        <article class="card campaign">
+          <div>
+            <span class="concept-label">Concept de prévente à valider</span>
+            <h3 style="margin-top:8px">Payer maintenant, profiter pendant la saison.</h3>
+            <p>Le concept étudié est une carte prépayée utilisable à La Cabane de la Pointe Rouge, avec un crédit bonus selon la formule. Les exemples ci-dessous servent uniquement à tester le parcours : aucune vente, réservation, collecte d'argent ou activation n'est possible ici.</p>
+          </div>
+          <a class="btn secondary" href="#projet">Voir les étapes</a>
+        </article>
+
+        <div class="offer-grid" aria-label="Exemples de formules prépayées">
+          <article class="offer-card">
+            <h3>Découverte</h3>
+            <span class="offer-price">20 €</span>
+            <p class="offer-credit">24 € de crédit théorique · +4 €</p>
+            <button class="btn secondary" type="button" data-offer-price="20" data-offer-credit="24">Simuler cette formule</button>
+          </article>
+          <article class="offer-card">
+            <h3>Habitué</h3>
+            <span class="offer-price">50 €</span>
+            <p class="offer-credit">60 € de crédit théorique · +10 €</p>
+            <button class="btn secondary" type="button" data-offer-price="50" data-offer-credit="60">Simuler cette formule</button>
+          </article>
+          <article class="offer-card">
+            <h3>Fondateur</h3>
+            <span class="offer-price">100 €</span>
+            <p class="offer-credit">115 € de crédit théorique · +15 €</p>
+            <button class="btn secondary" type="button" data-offer-price="100" data-offer-credit="115">Simuler cette formule</button>
+          </article>
+        </div>
+        <div class="offer-summary" id="offer-summary" role="status" aria-live="polite">
+          <strong>Simulation uniquement.</strong> Choisis une formule pour afficher le récapitulatif. Aucun paiement ni engagement ne sera effectué.
+        </div>
+        <p class="card-note">Les montants sont des hypothèses de travail déjà évoquées pour le projet, pas une offre commerciale active. Avant lancement, il faudra valider les conditions d'utilisation, la durée de validité, les remboursements, le traitement comptable et le cadre juridique.</p>
+      </section>
+
+      <section class="section" id="projet" aria-labelledby="project-title">
+        <div class="section-head">
+          <div>
+            <h2 class="section-title" id="project-title">La feuille de route</h2>
+            <p class="section-caption">L'ordre de travail retenu pour éviter les promesses prématurées.</p>
+          </div>
+        </div>
+        <div class="steps">
+          <article class="step"><strong>Prototype web</strong><p>Stabiliser l'interface mobile et tester navigation, accessibilité et affichage.</p></article>
+          <article class="step"><strong>Règles & conformité</strong><p>Clarifier l'utilité, les conditions, la protection des données et le cadre juridique.</p></article>
+          <article class="step"><strong>Technique & tests</strong><p>Comparer les solutions, tester en environnement isolé et faire vérifier la sécurité avant toute mise en service.</p></article>
+        </div>
+      </section>
+
+      <aside class="notice" role="note" aria-label="Information importante">
+        <div class="notice-icon" aria-hidden="true">ⓘ</div>
+        <div>
+          <strong>Projet en préparation — aucune fonctionnalité financière active</strong>
+          <p>Aucun jeton n'est déclaré comme émis ou déployé. Cette page n'accepte ni paiement, ni inscription, ni connexion de portefeuille. Les éléments présentés sont une maquette et ne constituent ni une offre financière ni une promesse de valeur.</p>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <footer>
+    <div class="footer-inner shell">
+      <span>© BC ONE — The Burger Currency</span>
+      <span>Prototype interne · Version 0.1 · Non connecté</span>
+    </div>
+  </footer>
+  <script>
+    // Navigation active : aucun accès réseau, stockage ou donnée utilisateur.
+    (() => {
+      const links = Array.from(document.querySelectorAll('.nav a'));
+      const sections = links.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+      function updateActive() {
+        const current = sections.filter(section => section.getBoundingClientRect().top <= 140).pop() || sections[0];
+        links.forEach(link => {
+          if (current && link.getAttribute('href') === '#' + current.id) {
+            link.setAttribute('aria-current', 'page');
+          } else {
+            link.removeAttribute('aria-current');
+          }
+        });
+      }
+      window.addEventListener('scroll', updateActive, { passive: true });
+      window.addEventListener('hashchange', updateActive);
+      updateActive();
+    })();
+
+    // Simulateur local de carte prépayée : aucun paiement, stockage ou engagement.
+    (() => {
+      const buttons = Array.from(document.querySelectorAll('[data-offer-price]'));
+      const summary = document.getElementById('offer-summary');
+      buttons.forEach(button => {
+        button.addEventListener('click', () => {
+          const price = Number(button.dataset.offerPrice);
+          const credit = Number(button.dataset.offerCredit);
+          const bonus = credit - price;
+          buttons.forEach(item => {
+            const selected = item === button;
+            item.closest('.offer-card').classList.toggle('selected', selected);
+            item.setAttribute('aria-pressed', String(selected));
+          });
+          summary.innerHTML = '<strong>Formule simulée :</strong> ' + price +
+            ' € payés en théorie, ' + credit + ' € de crédit indicatif, dont ' + bonus +
+            ' € de bonus. Aucun paiement ni engagement ne sera effectué.';
+        });
+      });
+    })();
+  </script>
+</body>
+</html>
