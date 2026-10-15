@@ -1,0 +1,26 @@
+name: Prototype checks
+
+on:
+  push:
+    branches:
+      - main
+      - "feature/app-prototype-2026-10"
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  check-prototype:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run static prototype checks
+        run: node scripts/check-prototype.mjs
