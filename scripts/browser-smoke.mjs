@@ -53,6 +53,14 @@ try {
         assert.equal(await page.locator(anchor).count(), 1, `target ${anchor} should exist`);
       }
 
+      const demoScore = page.locator("#demo-points");
+      assert.equal(await demoScore.textContent(), "0", "loyalty demo should start at zero");
+      await page.getByRole("button", { name: "Simuler une visite (+10)" }).click();
+      await page.getByRole("button", { name: "Simuler un menu (+25)" }).click();
+      assert.equal(await demoScore.textContent(), "35", "demo buttons should update the local counter");
+      await page.getByRole("button", { name: "Remettre à zéro" }).click();
+      assert.equal(await demoScore.textContent(), "0", "demo reset should clear the local counter");
+
       console.log(
         `PASS ${viewport.name} ${viewport.width}x${viewport.height}: no horizontal overflow; navigation targets present.`,
       );
