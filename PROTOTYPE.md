@@ -23,8 +23,8 @@ Le contrôle vérifie les éléments structurels et les libellés de transparenc
 
 ## Limites et sécurité
 
-Cette maquette ne fournit pas de service financier. Aucun jeton, contrat, portefeuille, solde ou marché réel n’est affirmé. Ne pas y saisir de clé privée ou de phrase de récupération. Toute intégration future devra être spécifiée, testée et validée séparément.
+Cette maquette ne fournit pas de service financier. Aucun jeton, contrat, portefeuille, solde ou marché réel n’est affirmé. Ne pas y saisir de clé privée ou de phrase de récupération. Une page de simulation crypto hors ligne permet d’évaluer un croisement de moyennes mobiles sur un CSV fourni par l’utilisateur; aucun ordre ni service externe n’est connecté. Aucun contrat Solidity n’est inclus car les paramètres du jeton restent à valider.
 
 ## Démarrage
 
-Ouvrir `index.html` dans un navigateur. Aucun outil de construction ou dépendance n’est requis.
+Ouvrir `index.html` dans un navigateur. La section « Le projet » donne accès à la simulation crypto. Aucun outil de construction ou dépendance n’est requis.

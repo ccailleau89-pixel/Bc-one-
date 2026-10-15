@@ -10,6 +10,7 @@ const checks = [
   ["wallet signing unavailable", /ne permet pas de signer de transaction/.test(html)],
   ["market data not fabricated", /Aucune cotation revendiquée/.test(html)],
   ["project section", /id="project"/.test(html)],
+  ["algorithm simulation link", /href="crypto-algo\.html"/.test(html)],
   ["mobile layout breakpoint", /@media\s*\(max-width:\s*620px\)/.test(html)],
   ["keyboard-operable navigation buttons", /<button type="button" data-page=/.test(html)],
 ];
