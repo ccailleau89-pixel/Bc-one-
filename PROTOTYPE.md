@@ -11,15 +11,16 @@ Ouvrir `prototype.html` depuis la branche `feature/app-prototype-2026-10`, ou t�
 - Navigation vers Vue d'ensemble, Portefeuille, Avantages et Projet.
 - Portefeuille explicitement non connecté, sans solde inventé ni historique fictif.
 - Avantages présentés comme pistes à valider, et non comme une offre active.
+- Démonstration locale de fidélité avec boutons de simulation et remise à zéro ; points fictifs, non persistants et sans valeur.
 - Feuille de route et avis explicite sur l'état du projet.
 - Navigation active, repères de focus clavier et prise en compte de la préférence de réduction des animations.
-- Aucun formulaire, paiement, connexion wallet, appel réseau ou stockage de données.
+- Aucun formulaire, paiement, connexion wallet, appel réseau ou stockage persistant de données.
 
 ## Vérifications réalisées
 - Branche de travail créée séparément de `main`, depuis le commit `57ff819404656dbd40f260573139297903cc72a3`.
 - Contrôles statiques exécutés avec `node scripts/check-prototype.mjs` : structure HTML, langue, viewport, titre, sections attendues, avis de statut, absence de formulaire et d'URL externe, unicité des identifiants et validité des ancres.
 - GitHub Actions **Prototype checks : succès** sur le commit `018139109f016da741923cba91d0701a06945b81`, le 15 octobre 2026 : [exécution n° 38819960304](https://github.com/ccailleau89-pixel/Bc-one-/actions/runs/38819960304).
-- Tests Playwright réussis sur mobile (360 × 800), tablette (768 × 1024) et ordinateur (1440 × 900). Le test vérifie le titre, les quatre liens de navigation et leurs limites dans la fenêtre, les ancres attendues, les erreurs JavaScript et l'absence de débordement horizontal.
+- Tests Playwright réussis sur mobile (360 × 800), tablette (768 × 1024) et ordinateur (1440 × 900). Le test vérifie le titre, les quatre liens de navigation et leurs limites dans la fenêtre, les ancres attendues, les erreurs JavaScript, l'absence de débordement horizontal et le fonctionnement des boutons de fidélité de démonstration (addition puis remise à zéro).
 - Captures d'écran des trois formats disponibles dans l'artefact GitHub Actions `bc-one-prototype-screenshots` de cette exécution.
 - Revue visuelle des captures automatisées effectuée : le contenu et la navigation restent dans la fenêtre aux trois formats. Cela ne remplace pas un essai manuel complet au clavier, sur différents navigateurs ou appareils.
 
