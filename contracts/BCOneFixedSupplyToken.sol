@@ -13,9 +13,7 @@ contract BCOneFixedSupplyToken is ERC20 {
     error ZeroInitialSupply();
     error ZeroInitialRecipient();
 
-    constructor(uint256 initialSupplyWholeTokens, address initialRecipient)
-        ERC20("BC ONE", "BCONE")
-    {
+    constructor(uint256 initialSupplyWholeTokens, address initialRecipient) ERC20("BC ONE", "BCONE") {
         if (initialSupplyWholeTokens == 0) revert ZeroInitialSupply();
         if (initialRecipient == address(0)) revert ZeroInitialRecipient();
 
