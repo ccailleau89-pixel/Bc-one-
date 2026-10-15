@@ -12,12 +12,13 @@ Ce prototype est une maquette HTML autonome. Il ne se connecte à aucun portefeu
 
 ## Vérifications manuelles
 
-- [ ] Les quatre liens de navigation amènent à la bonne section.
+- [ ] Les liens Accueil, Portefeuille démo, Avantages, Profil, Activité et FAQ amènent à la bonne section.
 - [ ] Le dialogue de transfert s'ouvre et se ferme.
 - [ ] Un montant positif, entier et inférieur ou égal au solde est accepté.
 - [ ] Un montant supérieur au solde ou invalide est refusé par le formulaire.
 - [ ] Une simulation diminue le solde et ajoute une ligne à l'activité.
 - [ ] La réinitialisation remet le solde à 250 et l'activité initiale.
+- [ ] Les questions de la FAQ peuvent être ouvertes et refermées.
 - [ ] La navigation et les boutons sont utilisables au clavier.
 - [ ] La mise en page reste lisible sur mobile.
 
