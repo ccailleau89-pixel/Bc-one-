@@ -21,35 +21,39 @@ try {
     const pageErrors = [];
     page.on("pageerror", error => pageErrors.push(error.message));
 
-    await page.goto(fileUrl, { waitUntil: "load" });
-    await page.locator("main h1").waitFor();
-    assert.equal(await page.title(), "BC ONE — Prototype de l'application", "page title should be present");
-    assert.equal(await page.locator(".nav a").count(), 4, "all four navigation links should render");
+    try {
+      await page.goto(fileUrl, { waitUntil: "load" });
+      await page.locator("main h1").waitFor();
+      await page.screenshot({ path: `artifacts/bc-one-${viewport.name}.png`, fullPage: true });
 
-    const dimensions = await page.evaluate(() => ({
-      viewportWidth: window.innerWidth,
-      documentWidth: document.documentElement.scrollWidth,
-      bodyWidth: document.body.scrollWidth,
-    }));
-    assert.ok(
-      dimensions.documentWidth <= dimensions.viewportWidth + 1,
-      `horizontal overflow at ${viewport.name}: ${JSON.stringify(dimensions)}`,
-    );
-    assert.deepEqual(pageErrors, [], `browser errors at ${viewport.name}`);
+      assert.equal(await page.title(), "BC ONE — Prototype de l'application", "page title should be present");
+      assert.equal(await page.locator(".nav a").count(), 4, "all four navigation links should render");
 
-    await page.screenshot({ path: `artifacts/bc-one-${viewport.name}.png`, fullPage: true });
+      const dimensions = await page.evaluate(() => ({
+        viewportWidth: window.innerWidth,
+        documentWidth: document.documentElement.scrollWidth,
+        bodyWidth: document.body.scrollWidth,
+      }));
+      assert.ok(
+        dimensions.documentWidth <= dimensions.viewportWidth + 1,
+        `horizontal overflow at ${viewport.name}: ${JSON.stringify(dimensions)}`,
+      );
+      assert.deepEqual(pageErrors, [], `browser errors at ${viewport.name}`);
 
-    for (const anchor of ["#accueil", "#portefeuille", "#avantages", "#projet"]) {
-      assert.equal(await page.locator(anchor).count(), 1, `target ${anchor} should exist`);
+      for (const anchor of ["#accueil", "#portefeuille", "#avantages", "#projet"]) {
+        assert.equal(await page.locator(anchor).count(), 1, `target ${anchor} should exist`);
+      }
+
+      console.log(
+        `PASS ${viewport.name} ${viewport.width}x${viewport.height}: no horizontal overflow; navigation targets present.`,
+      );
+    } catch (error) {
+      failures.push(error);
+      console.error(`FAIL ${viewport.name} ${viewport.width}x${viewport.height}: ${error.message}`);
+    } finally {
+      await page.close();
     }
-
-    console.log(
-      `PASS ${viewport.name} ${viewport.width}x${viewport.height}: no horizontal overflow; navigation targets present.`,
-    );
-    await page.close();
   }
-} catch (error) {
-  failures.push(error);
 } finally {
   await browser.close();
 }
