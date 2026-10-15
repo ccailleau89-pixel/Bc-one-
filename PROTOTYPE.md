@@ -26,11 +26,11 @@ Depuis GitHub, ouvrir `prototype.html` sur la branche `feature/app-prototype-202
 ## Revue GitHub
 - Pull request brouillon : [#5 — Ajouter le prototype responsive BC ONE](https://github.com/ccailleau89-pixel/Bc-one-/pull/5).
 - Elle reste non fusionnée pour revue humaine.
-- La branche `main` a avancé après la création de la branche de travail. La PR est déclarée fusionnable par GitHub, mais la compatibilité avec les derniers changements doit être vérifiée avant toute fusion.
+- La branche `main` a avancé après la création de la branche de travail. GitHub indique actuellement la PR comme fusionnable, mais la compatibilité avec les derniers changements doit encore être vérifiée avant toute fusion.
 
 ## Prochaines étapes
-1. Prévisualiser le fichier sur mobile et ordinateur, tester les ancres, le clavier et les tailles d'écran.
-2. Confirmer le résultat du nouveau test navigateur, examiner les captures d'écran et corriger tout défaut visuel repéré.
+1. Examiner les captures d'écran produites sur mobile, tablette et ordinateur ; le test automatisé ne remplace pas une revue visuelle.
+2. Vérifier les ancres et le parcours au clavier sur un navigateur réel.
 3. Décider du périmètre réel du produit : programme de fidélité classique, actif numérique, ou les deux avec des règles séparées.
 4. Avant toute fonction financière : finaliser les règles, examiner le cadre juridique et les obligations de protection des données, sélectionner le réseau et faire auditer les contrats.
 5. Fusionner uniquement après revue visuelle, revue du diff et validation humaine.
