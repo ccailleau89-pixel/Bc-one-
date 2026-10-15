@@ -1,0 +1,45 @@
+name: BC ONE token contract tests
+
+on:
+  pull_request:
+    paths:
+      - "contracts/**"
+      - "test/**"
+      - "foundry.toml"
+      - ".github/workflows/token-contract-tests.yml"
+  push:
+    branches:
+      - "feature/bc-one-erc20-contract-2026-10"
+    paths:
+      - "contracts/**"
+      - "test/**"
+      - "foundry.toml"
+      - ".github/workflows/token-contract-tests.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  foundry:
+    name: Compile and test (no deployment)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: stable
+
+      - name: Install pinned OpenZeppelin Contracts
+        run: forge install OpenZeppelin/openzeppelin-contracts@v5.0.2 --no-commit
+
+      - name: Install pinned forge-std
+        run: forge install foundry-rs/forge-std@v1.9.6 --no-commit
+
+      - name: Check formatting
+        run: forge fmt --check
+
+      - name: Run tests
+        run: forge test -vvv
