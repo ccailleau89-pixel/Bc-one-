@@ -6,10 +6,9 @@ BC ONE doit devenir une monnaie numérique dont la valeur est définie ou stabil
 
 Avant de coder ce mécanisme, il faut choisir l’indice de référence (par exemple une parité avec l’euro, un panier d’actifs, un indice de prix lié aux burgers, ou une valeur flottante calculée selon une formule). Il faut ensuite préciser les données de référence, leur source fiable, les règles de stabilisation et d’émission, les limites en cas de panne ou de forte variation, les garanties et les droits de remboursement. Un algorithme seul ne garantit ni une parité ni une valeur minimale.
 
-Si le jeton est offert dans l’Union européenne, sa classification et les obligations applicables dépendront du mécanisme et de l’offre; une revue juridique spécialisée est indispensable avant toute offre au public ou admission à la négociation. Voir le règlement MiCA et les catégories décrites par l’AMF.
+Si le jeton est offert dans l’Union européenne, sa classification et les obligations applicables dépendront du mécanisme et de l’offre; une revue juridique spécialisée est indispensable avant toute offre au public ou admission à la négociation. Voir le [règlement MiCA](https://eur-lex.europa.eu/eli/reg/2023/1114/oj) et les [catégories de crypto-actifs expliquées par l’AMF](https://www.amf-france.org/fr/espace-epargnants/lexique-simulateurs-et-outils-pratiques/faq-epargnants/crypto-actifs).
 
 ## Paramètres techniques et économiques encore à décider
-
 
 Aucun jeton BC ONE ni contrat n’est déclaré créé ou déployé. Avant d’écrire le contrat et ses tests, définir :
 
