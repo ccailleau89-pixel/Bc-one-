@@ -27,7 +27,16 @@ try {
       await page.screenshot({ path: `artifacts/bc-one-${viewport.name}.png`, fullPage: true });
 
       assert.equal(await page.title(), "BC ONE — Prototype de l'application", "page title should be present");
-      assert.equal(await page.locator(".nav a").count(), 4, "all four navigation links should render");
+      const navLinks = page.locator(".nav a");
+      assert.equal(await navLinks.count(), 4, "all four navigation links should render");
+      for (let index = 0; index < await navLinks.count(); index += 1) {
+        const bounds = await navLinks.nth(index).boundingBox();
+        assert.ok(bounds, `navigation link ${index + 1} should have a visible box`);
+        assert.ok(
+          bounds.x >= 0 && bounds.x + bounds.width <= viewport.width + 1,
+          `navigation link ${index + 1} should fit within the viewport at ${viewport.name}: ${JSON.stringify(bounds)}`,
+        );
+      }
 
       const dimensions = await page.evaluate(() => ({
         viewportWidth: window.innerWidth,
