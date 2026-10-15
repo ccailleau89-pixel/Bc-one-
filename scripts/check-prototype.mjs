@@ -9,6 +9,8 @@ assert.match(html, /<meta name="viewport" content="width=device-width, initial-s
 assert.match(html, /<title>BC ONE — Prototype de l'application<\/title>/, "prototype title must be present");
 assert.match(html, /id="portefeuille"/, "wallet section must exist");
 assert.match(html, /id="avantages"/, "benefits section must exist");
+assert.match(html, /data-demo-add="10"/, "local loyalty demo action must exist");
+assert.match(html, /aucun point réel n’a été crédité/i, "demo must clearly distinguish simulated points from real points");
 assert.match(html, /id="projet"/, "project section must exist");
 assert.match(html, /aucune fonctionnalité financière active/i, "financial status notice must be present");
 assert.match(html, /Aucun jeton n'est déclaré comme émis ou déployé/i, "token status must be transparent");
