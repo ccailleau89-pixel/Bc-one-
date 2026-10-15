@@ -53,13 +53,16 @@ try {
         assert.equal(await page.locator(anchor).count(), 1, `target ${anchor} should exist`);
       }
 
-      const demoScore = page.locator("#demo-points");
-      assert.equal(await demoScore.textContent(), "0", "loyalty demo should start at zero");
-      await page.getByRole("button", { name: "Simuler une visite (+10)" }).click();
-      await page.getByRole("button", { name: "Simuler un menu (+25)" }).click();
-      assert.equal(await demoScore.textContent(), "35", "demo buttons should update the local counter");
-      await page.getByRole("button", { name: "Remettre à zéro" }).click();
-      assert.equal(await demoScore.textContent(), "0", "demo reset should clear the local counter");
+      const offerSummary = page.locator("#offer-summary");
+      const offerButtons = page.locator("[data-offer-price]");
+      assert.equal(await offerButtons.count(), 3, "three illustrative prepaid offers should render");
+      await page.getByRole("button", { name: "Simuler cette formule" }).nth(1).click();
+      assert.match(await offerSummary.textContent(), /50 € payés en théorie, 60 € de crédit indicatif, dont 10 € de bonus/);
+      assert.equal(await offerButtons.nth(1).getAttribute("aria-pressed"), "true", "selected offer should be announced");
+      await page.getByRole("button", { name: "Simuler cette formule" }).nth(2).click();
+      assert.match(await offerSummary.textContent(), /100 € payés en théorie, 115 € de crédit indicatif, dont 15 € de bonus/);
+      assert.equal(await offerButtons.nth(2).getAttribute("aria-pressed"), "true", "selection should update to the third offer");
+      assert.match(await offerSummary.textContent(), /Aucun paiement ni engagement ne sera effectué/);
 
       console.log(
         `PASS ${viewport.name} ${viewport.width}x${viewport.height}: no horizontal overflow; navigation targets present.`,
