@@ -91,4 +91,57 @@ contract BCOneTokenTest is Test {
         (bool success,) = address(token).call(abi.encodeWithSignature("burn(uint256)", 1));
         assertFalse(success);
     }
+
+    function testTwoStepOwnershipTransfer() public {
+        vm.prank(owner);
+        token.transferOwnership(bob);
+
+        assertEq(token.owner(), owner);
+        assertEq(token.pendingOwner(), bob);
+
+        vm.prank(bob);
+        token.acceptOwnership();
+
+        assertEq(token.owner(), bob);
+        assertEq(token.pendingOwner(), address(0));
+
+        vm.prank(bob);
+        token.mint(alice, 1);
+        assertEq(token.balanceOf(alice), UNIT);
+    }
+
+    function testFuzzMintNeverExceedsCap(uint256 amountWholeTokens) public {
+        amountWholeTokens = bound(amountWholeTokens, 0, 9_000);
+
+        vm.prank(owner);
+        token.mint(alice, amountWholeTokens);
+
+        assertLe(token.totalSupply(), token.cap());
+        assertEq(token.totalSupply(), (1_000 + amountWholeTokens) * UNIT);
+    }
+
+    function testFuzzTransfersConserveSupply(uint256 amount) public {
+        amount = bound(amount, 0, 1_000 * UNIT);
+
+        vm.prank(owner);
+        token.transfer(alice, amount);
+
+        vm.prank(alice);
+        token.transfer(bob, amount / 3);
+
+        assertEq(token.balanceOf(owner) + token.balanceOf(alice) + token.balanceOf(bob), token.totalSupply());
+        assertEq(token.totalSupply(), 1_000 * UNIT);
+        assertLe(token.totalSupply(), token.cap());
+    }
+
+    function testFuzzUnauthorizedAccountsCannotMint(address caller, uint256 amount) public {
+        vm.assume(caller != owner);
+        amount = bound(amount, 0, 10_000);
+
+        vm.prank(caller);
+        (bool success,) = address(token).call(abi.encodeWithSelector(token.mint.selector, alice, amount));
+
+        assertFalse(success);
+        assertEq(token.totalSupply(), 1_000 * UNIT);
+    }
 }
