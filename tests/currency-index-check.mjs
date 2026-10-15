@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import { createRequire } from "node:module";
+const require=createRequire(import.meta.url);
+const {parseCsv,calculateBurgerIndex}=require("../currency-index.js");
+const base=parseCsv("product,merchant,price,currency\nclassic,A,10,EUR\nclassic,B,12,EUR\nclassic,C,11,EUR\ncheese,A,20,EUR\ncheese,B,21,EUR\ncheese,C,19,EUR");
+const current=parseCsv("product,merchant,price,currency\nclassic,A,12,EUR\nclassic,B,13,EUR\nclassic,C,11,EUR\ncheese,A,22,EUR\ncheese,B,19,EUR\ncheese,C,21,EUR");
+const result=calculateBurgerIndex(base,current,{baseValueEur:1,minMerchants:3});
+assert.equal(result.indexPoints,((12/11+21/20)/2)*100);
+assert.equal(result.referenceValueEur,result.indexPoints/100);
+assert.throws(()=>parseCsv("item,price\na,10"),/Colonnes requises/);
+assert.throws(()=>parseCsv("product,merchant,price,currency\na,A,10,USD"),/en EUR/);
+assert.throws(()=>calculateBurgerIndex(base.slice(0,2),current,{minMerchants:3}),/au moins 3 commerçants/);
+assert.throws(()=>calculateBurgerIndex(base,current.slice(0,3),{minMerchants:3}),/mêmes produits/);
+assert.throws(()=>calculateBurgerIndex(base,current,{baseValueEur:0,minMerchants:3}),/supérieur à zéro/);
+assert.equal(calculateBurgerIndex(base,current,{baseValueEur:2,minMerchants:3}).referenceValueEur,result.referenceValueEur*2);
+console.log("PASS currency index checks");

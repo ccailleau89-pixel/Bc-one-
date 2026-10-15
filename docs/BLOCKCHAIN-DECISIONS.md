@@ -1,5 +1,9 @@
 # Décisions requises avant le contrat BC ONE
 
+## Proposition de formule
+
+Une proposition d’indice de prix burger et ses limites sont décrites dans [ALGORITHMIC-VALUE-PROPOSAL.md](ALGORITHMIC-VALUE-PROPOSAL.md). Elle reste une hypothèse non adoptée; le repère n’est pas un cours garanti.
+
 ## Objectif confirmé
 
 BC ONE doit devenir une monnaie numérique dont la valeur est définie ou stabilisée par un algorithme. La simulation de trading SMA du prototype n’est pas ce mécanisme monétaire : elle ne fixe pas de prix et ne pilote aucune émission.
