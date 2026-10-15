@@ -48,9 +48,7 @@ contract BCOneTokenTest is Test {
 
     function testNonOwnerCannotMint() public {
         vm.prank(alice);
-        vm.expectRevert(
-            abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, alice)
-        );
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableUnauthorizedAccount.selector, alice));
         token.mint(bob, 1);
     }
 
