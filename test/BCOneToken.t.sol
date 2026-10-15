@@ -4,7 +4,6 @@ pragma solidity ^0.8.24;
 import {Test} from "forge-std/Test.sol";
 import {BCOneToken} from "../contracts/BCOneToken.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
-import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract BCOneTokenTest is Test {
     uint256 private constant UNIT = 1 ether;
@@ -89,14 +88,9 @@ contract BCOneTokenTest is Test {
         assertFalse(success);
     }
 
-    function testBurningIsNotExposedByTokenInterface() public view {
-        // BCOneToken intentionally does not inherit ERC20Burnable.
-        assertFalse(_hasBurnableInterface());
-    }
-
-    function _hasBurnableInterface() private view returns (bool) {
-        // ERC-20 has no standard burn function; this draft exposes only the standard ERC-20 API
-        // plus the privileged mint function. A burn extension would require a separate decision.
-        return address(token).code.length == 0;
+    function testBurnIsNotExposed() public {
+        vm.prank(owner);
+        (bool success,) = address(token).call(abi.encodeWithSignature("burn(uint256)", 1));
+        assertFalse(success);
     }
 }
