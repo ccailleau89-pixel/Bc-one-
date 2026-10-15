@@ -1,0 +1,34 @@
+# BC ONE — prototype communautaire
+
+Ce prototype est une maquette HTML autonome. Il ne se connecte à aucun portefeuille et ne manipule aucun crypto-actif.
+
+## Ouvrir sur Windows
+
+1. Ouvrir le fichier `index.html` dans un navigateur récent (Chrome, Edge ou Firefox).
+2. Tester les liens de navigation en haut de page.
+3. Cliquer sur **Simuler un transfert**, saisir un destinataire fictif et un montant entier disponible.
+4. Vérifier que le solde et l'activité se mettent à jour, puis cliquer sur **Réinitialiser la démo**.
+5. Refaire le test sur une fenêtre étroite ou sur un téléphone.
+
+## Vérifications manuelles
+
+- [ ] Les quatre liens de navigation amènent à la bonne section.
+- [ ] Le dialogue de transfert s'ouvre et se ferme.
+- [ ] Un montant positif, entier et inférieur ou égal au solde est accepté.
+- [ ] Un montant supérieur au solde ou invalide est refusé par le formulaire.
+- [ ] Une simulation diminue le solde et ajoute une ligne à l'activité.
+- [ ] La réinitialisation remet le solde à 250 et l'activité initiale.
+- [ ] La navigation et les boutons sont utilisables au clavier.
+- [ ] La mise en page reste lisible sur mobile.
+
+## Limites explicites
+
+- Solde et profils entièrement fictifs ; état non sauvegardé après rechargement.
+- Aucun portefeuille, aucune clé privée, aucun réseau blockchain, aucun paiement.
+- Aucun droit, avantage commercial, conversion ou valeur monétaire n'est promis.
+- Ne pas utiliser ce prototype pour vendre des tokens ou collecter des fonds.
+- Toute version pilote doit d'abord définir les règles du programme, la protection des données, les conditions commerciales et l'analyse juridique applicable.
+
+## Étape suivante
+
+Valider cette maquette avec quelques utilisateurs, consigner leurs retours, puis décider du modèle fonctionnel avant d'ajouter un backend ou une connexion blockchain.
