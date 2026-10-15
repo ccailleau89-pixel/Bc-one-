@@ -20,8 +20,8 @@ Depuis GitHub, ouvrir `prototype.html` sur la branche `feature/app-prototype-202
 - Création de la branche `feature/app-prototype-2026-10` depuis le commit `57ff819404656dbd40f260573139297903cc72a3`.
 - Ajout de `prototype.html`, du script de contrôle et du workflow CI sur cette branche.
 - GitHub Actions **Prototype checks : succès** le 15 octobre 2026. Le job a exécuté `node scripts/check-prototype.mjs`, qui vérifie le type de document, la langue, la balise viewport, le titre, les sections attendues, l'avis de statut, l'absence de formulaire et d'URL externe, l'unicité des identifiants et la validité des ancres internes.
-- La validation CI est un contrôle statique ciblé, pas une validation complète du HTML ou de l'accessibilité.
-- Aucun test navigateur ni contrôle visuel mobile/ordinateur n'a encore été exécuté. Ne pas considérer l'interface comme validée pour la production.
+- La validation CI comprend un contrôle statique ciblé et un test navigateur Playwright sur des fenêtres mobile (360 px), tablette (768 px) et ordinateur (1440 px). Le test vérifie le titre, les liens de navigation, les cibles d'ancre, les erreurs JavaScript et le débordement horizontal.
+- Le workflow produit des captures d'écran de chaque format comme artefact GitHub Actions. Ces contrôles restent des tests de fumée, pas une validation complète du HTML, de l'accessibilité ou de tous les appareils.
 
 ## Revue GitHub
 - Pull request brouillon : [#5 — Ajouter le prototype responsive BC ONE](https://github.com/ccailleau89-pixel/Bc-one-/pull/5).
@@ -30,7 +30,7 @@ Depuis GitHub, ouvrir `prototype.html` sur la branche `feature/app-prototype-202
 
 ## Prochaines étapes
 1. Prévisualiser le fichier sur mobile et ordinateur, tester les ancres, le clavier et les tailles d'écran.
-2. Ajouter, si nécessaire, un validateur HTML et un test de rendu navigateur.
+2. Examiner les captures d'écran produites par le test navigateur et corriger tout défaut visuel repéré.
 3. Décider du périmètre réel du produit : programme de fidélité classique, actif numérique, ou les deux avec des règles séparées.
 4. Avant toute fonction financière : finaliser les règles, examiner le cadre juridique et les obligations de protection des données, sélectionner le réseau et faire auditer les contrats.
 5. Fusionner uniquement après revue visuelle, revue du diff et validation humaine.
