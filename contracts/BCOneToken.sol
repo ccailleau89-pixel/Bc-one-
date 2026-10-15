@@ -19,11 +19,7 @@ contract BCOneToken is ERC20, ERC20Capped, Ownable2Step {
     /// @param initialSupplyWholeTokens Initial amount minted to initialOwner, in whole tokens.
     /// @param maxSupplyWholeTokens Immutable maximum supply, in whole tokens.
     /// @param initialOwner Initial owner allowed to mint up to the cap and transfer ownership.
-    constructor(
-        uint256 initialSupplyWholeTokens,
-        uint256 maxSupplyWholeTokens,
-        address initialOwner
-    )
+    constructor(uint256 initialSupplyWholeTokens, uint256 maxSupplyWholeTokens, address initialOwner)
         ERC20("BC ONE", "BCONE")
         ERC20Capped(maxSupplyWholeTokens * TOKEN_UNIT)
         Ownable(initialOwner)
@@ -45,10 +41,7 @@ contract BCOneToken is ERC20, ERC20Capped, Ownable2Step {
         _mint(to, amountWholeTokens * TOKEN_UNIT);
     }
 
-    function _update(address from, address to, uint256 value)
-        internal
-        override(ERC20, ERC20Capped)
-    {
+    function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Capped) {
         super._update(from, to, value);
     }
 }
