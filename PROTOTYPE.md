@@ -1,10 +1,10 @@
 # BC ONE — Prototype de l'application
 
 ## Statut
-Prototype HTML autonome, version 0.1. Il s'agit d'une maquette de navigation responsive, pas d'une application connectée.
+Prototype HTML autonome, version 0.1. Il s'agit d'une maquette responsive, pas d'une application connectée.
 
 ## Ouvrir
-Depuis GitHub, ouvrir `prototype.html` sur la branche `feature/app-prototype-2026-10`. Pour voir le rendu, télécharger ce fichier et l'ouvrir dans un navigateur récent. Aucun serveur ni aucune dépendance ne sont requis.
+Ouvrir `prototype.html` depuis la branche `feature/app-prototype-2026-10`, ou télécharger le fichier et l'ouvrir dans un navigateur récent. Aucun serveur ni aucune dépendance ne sont requis.
 
 ## Ce que contient le prototype
 - Vue d'ensemble responsive avec identité visuelle BC ONE.
@@ -16,24 +16,23 @@ Depuis GitHub, ouvrir `prototype.html` sur la branche `feature/app-prototype-202
 - Aucun formulaire, paiement, connexion wallet, appel réseau ou stockage de données.
 
 ## Vérifications réalisées
-- Vérification de l'arborescence GitHub, de la branche par défaut `main`, et du commit de départ avant création de branche.
-- Création de la branche `feature/app-prototype-2026-10` depuis le commit `57ff819404656dbd40f260573139297903cc72a3`.
-- Ajout de `prototype.html`, du script de contrôle et du workflow CI sur cette branche.
-- GitHub Actions **Prototype checks : succès** le 15 octobre 2026. Le job a exécuté `node scripts/check-prototype.mjs`, qui vérifie le type de document, la langue, la balise viewport, le titre, les sections attendues, l'avis de statut, l'absence de formulaire et d'URL externe, l'unicité des identifiants et la validité des ancres internes.
-- Le workflow CI a été étendu avec un test navigateur Playwright sur des fenêtres mobile (360 px), tablette (768 px) et ordinateur (1440 px). Le test vérifie le titre, les liens de navigation, les cibles d'ancre, les erreurs JavaScript et le débordement horizontal ; il doit encore réussir dans GitHub Actions pour être considéré comme exécuté.
-- Le workflow prévoit de joindre les captures d'écran de chaque format comme artefact GitHub Actions. Ces contrôles restent des tests de fumée, pas une validation complète du HTML, de l'accessibilité ou de tous les appareils.
+- Branche de travail créée séparément de `main`, depuis le commit `57ff819404656dbd40f260573139297903cc72a3`.
+- Contrôles statiques exécutés avec `node scripts/check-prototype.mjs` : structure HTML, langue, viewport, titre, sections attendues, avis de statut, absence de formulaire et d'URL externe, unicité des identifiants et validité des ancres.
+- GitHub Actions **Prototype checks : succès** sur le commit `018139109f016da741923cba91d0701a06945b81`, le 15 octobre 2026 : [exécution n° 38819960304](https://github.com/ccailleau89-pixel/Bc-one-/actions/runs/38819960304).
+- Tests Playwright réussis sur mobile (360 × 800), tablette (768 × 1024) et ordinateur (1440 × 900). Le test vérifie le titre, les quatre liens de navigation et leurs limites dans la fenêtre, les ancres attendues, les erreurs JavaScript et l'absence de débordement horizontal.
+- Captures d'écran des trois formats disponibles dans l'artefact GitHub Actions `bc-one-prototype-screenshots` de cette exécution.
+- Revue visuelle des captures automatisées effectuée : le contenu et la navigation restent dans la fenêtre aux trois formats. Cela ne remplace pas un essai manuel complet au clavier, sur différents navigateurs ou appareils.
 
 ## Revue GitHub
 - Pull request brouillon : [#5 — Ajouter le prototype responsive BC ONE](https://github.com/ccailleau89-pixel/Bc-one-/pull/5).
-- Elle reste non fusionnée pour revue humaine.
-- La branche `main` a avancé après la création de la branche de travail. GitHub indique actuellement la PR comme fusionnable, mais la compatibilité avec les derniers changements doit encore être vérifiée avant toute fusion.
+- Elle reste ouverte, en brouillon et non fusionnée.
+- Au dernier contrôle, GitHub indiquait la PR comme fusionnable. La branche de travail avait néanmoins un commit de retard sur `main`. Les fichiers ajoutés dans la PR n'ont pas de chemin en commun avec les fichiers du dernier commit `main` observé ; aucun conflit direct de fichiers n'a été relevé. Recontrôler l'état GitHub avant toute fusion.
 
 ## Prochaines étapes
-1. Examiner les captures d'écran produites sur mobile, tablette et ordinateur ; le test automatisé ne remplace pas une revue visuelle.
-2. Vérifier les ancres et le parcours au clavier sur un navigateur réel.
-3. Décider du périmètre réel du produit : programme de fidélité classique, actif numérique, ou les deux avec des règles séparées.
-4. Avant toute fonction financière : finaliser les règles, examiner le cadre juridique et les obligations de protection des données, sélectionner le réseau et faire auditer les contrats.
-5. Fusionner uniquement après revue visuelle, revue du diff et validation humaine.
+1. Tester manuellement les ancres et le parcours au clavier dans un navigateur réel.
+2. Décider du périmètre produit : programme de fidélité classique, actif numérique, ou les deux avec des règles séparées.
+3. Avant toute fonction financière : finaliser les règles, examiner le cadre juridique et les obligations de protection des données, sélectionner le réseau et faire auditer les contrats.
+4. Fusionner uniquement après revue du diff, des contrôles et validation humaine explicite.
 
 ## Sécurité
 Aucun secret, aucune clé privée, aucune phrase de récupération et aucune donnée client ne sont nécessaires. Aucun contrat blockchain n'est ajouté ici. Aucun jeton n'est déclaré émis ou déployé.
