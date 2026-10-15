@@ -10,7 +10,7 @@ assert.ok(Math.abs(uniform.indexPoints-110)<1e-10);
 assert.ok(Math.abs(uniform.referenceValueEur-1.1)<1e-10);
 assert.equal(uniform.confidence,1);
 const weakCoverage=calculateBurgerIndex(base,plusTen,{targetMerchants:6,maxChangePercent:20});
-assert.ok(Math.abs(weakCoverage.indexPoints-105)<1e-10);
+assert.ok(Math.abs(weakCoverage.indexPoints-100*Math.sqrt(1.1))<1e-10);
 assert.equal(weakCoverage.coverage,.5);
 const cap=calculateBurgerIndex(base,plusTen,{targetMerchants:3,maxChangePercent:2});
 assert.ok(Math.abs(cap.indexPoints-102)<1e-10);
