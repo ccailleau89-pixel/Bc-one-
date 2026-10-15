@@ -75,7 +75,7 @@ contract BCOneTokenTest is Test {
     }
 
     function testZeroOwnerReverts() public {
-        vm.expectRevert(Ownable.OwnableInvalidOwner.selector);
+        vm.expectRevert(abi.encodeWithSelector(Ownable.OwnableInvalidOwner.selector, address(0)));
         new BCOneToken(0, 10, address(0));
     }
 
