@@ -1,23 +1,35 @@
 # Proposition de calcul indicatif de valeur BC ONE
 
-## Proposition — à examiner, non adoptée
+## Formule expérimentale : indice robuste à confiance graduée
 
-Pour relier l’unité BC ONE à son identité « Burger Currency », proposer un indice d’évolution d’un panier à poids égal de produits burger. Pour chaque produit, calculer la médiane des prix observés en EUR auprès d’au moins trois commerçants distincts. Comparer chaque médiane actuelle à sa médiane de période de base :
+Cette proposition combine un indice de panier burger, un filtre robuste aux valeurs atypiques, un score de couverture et une limite de variation par période. C’est une piste de conception, ni une formule validée, ni une invention dont la nouveauté aurait été vérifiée par une recherche scientifique exhaustive.
 
-`indice = 100 × moyenne_j(médiane_prix_actuelle_j / médiane_prix_base_j)`
+Pour chaque produit j, calculer la médiane des prix en EUR auprès de commerçants distincts dans chaque période, puis le rendement logarithmique :
 
-`valeur_de_référence = valeur_conventionnelle_de_base × indice / 100`
+`r_j = ln(médiane actuelle_j / médiane base_j)`
 
-La démo propose uniquement comme convention de calcul `1 BC ONE = 1,00 EUR` à la période de base. Ce n’est ni une valeur de marché ni une promesse de conversion; cette convention et les produits, poids, commerçants et dates doivent être validés. Le calculateur n’a aucune donnée préchargée et n’invente pas de prix.
+Calculer le centre m = médiane(r) et la dispersion MAD = médiane(|r_j − m|). Borner chaque rendement à l’intervalle [m − w, m + w], avec `w = max(2 %, 3 × 1,4826 × MAD)`. Cette borne empêche qu’un produit aberrant domine à lui seul un petit panier; le plancher de 2 % est provisoire.
 
-## Limites du mécanisme
+Définir ensuite la couverture C = min(1, plus petit nombre de commerçants par produit / cible) et l’accord A = exp(−8 × MAD). La confiance indicative vaut q = C × A. Le facteur 8 est un paramètre provisoire et modifiable. La variation robuste est la moyenne non pondérée des rendements bornés. Multiplier cette variation par q, puis la limiter à ±5 % par période (paramètre provisoire). Enfin :
 
-Cet indice mesure l’évolution des prix du panier; il ne stabilise pas la valeur par rapport à l’euro. La médiane et le minimum de trois commerçants sont des protections provisoires, pas une preuve de qualité des sources ou de résistance à la manipulation. Les prix doivent être vérifiables, comparables, recueillis légalement et mis à jour selon une fréquence définie.
+`indice suivant = indice précédent × exp(variation appliquée)`
 
-Le repère calculé ne crée pas de réserve, de droit de remboursement, de liquidité ou de prix d’échange. Il ne déclenche aucune émission ou destruction de jetons. Le prix de marché peut s’en écarter fortement. L’ECB décrit la régulation algorithmique par ajustement d’offre/demande et ses risques; MiCA prévoit des obligations selon la catégorie et le mécanisme. Toute classification ou offre publique nécessite un avis juridique spécialisé.
+`repère EUR = convention EUR de base × indice suivant / 100`
 
-Références : [ECB sur les stablecoins et mécanismes de stabilisation](https://www.ecb.europa.eu/press/financial-stability-publications/macroprudential-bulletin/html/ecb.mpbu202207_2~836f682ed7.da.html), [règlement MiCA](https://eur-lex.europa.eu/eli/reg/2023/1114/oj), [AMF sur les catégories de crypto-actifs](https://www.amf-france.org/fr/espace-epargnants/lexique-simulateurs-et-outils-pratiques/faq-epargnants/crypto-actifs).
+La démo commence à l’indice 100; 1,00 EUR à la période initiale n’est qu’une convention illustrative. Minimum de trois commerçants par produit; cible par défaut de cinq.
+
+## Intuition et limites
+
+La médiane et la borne limitent le poids d’une observation de prix extrême; la couverture et l’accord réduisent le mouvement quand les données sont rares ou que les produits divergent; le plafond réduit les changements brusques. En contrepartie, le filtre peut ignorer une vraie flambée, la confiance n’évalue ni l’identité ni l’honnêteté des sources, les observations peuvent être corrélées, et le plafonnement crée du retard. Un panier burger n’est pas un panier général de coût de la vie. Ces règles n’empêchent ni manipulation coordonnée, ni panne de données, ni divergence entre ce repère et un éventuel prix de marché.
+
+Avant d’utiliser la formule au-delà d’une démonstration, définir un panier et des produits comparables, une collecte reproductible, l’authentification et la licence des sources, les règles de données manquantes, les fenêtres de calcul, la gouvernance des paramètres, des tests rétrospectifs sur plusieurs années et des scénarios de crise. Les paramètres par défaut ne résultent pas d’un calibrage historique.
+
+## Ce que la formule ne fait pas
+
+L’indice ne stabilise pas BC ONE par rapport à l’euro et ne garantit aucune valeur échangeable. Il ne crée pas de réserves, de liquidité, de droit au remboursement, ni de mécanisme d’émission ou de destruction. Aucun contrat, oracle, portefeuille, ordre ou déploiement n’est connecté. Le simulateur de trading SMA reste séparé. Toute émission, commercialisation ou offre publique requiert une analyse juridique et financière adaptée, notamment au regard du règlement MiCA et des règles applicables.
+
+Références de contexte : [ECB sur les mécanismes et risques des stablecoins](https://www.ecb.europa.eu/press/financial-stability-publications/macroprudential-bulletin/html/ecb.mpbu202207_2~836f682ed7.da.html), [règlement MiCA](https://eur-lex.europa.eu/eli/reg/2023/1114/oj), [AMF sur les crypto-actifs](https://www.amf-france.org/fr/espace-epargnants/lexique-simulateurs-et-outils-pratiques/faq-epargnants/crypto-actifs).
 
 ## État
 
-Prototype de formule hors ligne seulement. Pas de flux d’oracle, de contrat, d’émission, de réserve, de portefeuille ou de déploiement.
+Calculateur local de démonstration seulement. Aucune donnée initiale fictive, aucun flux en direct, aucun jeton émis.
