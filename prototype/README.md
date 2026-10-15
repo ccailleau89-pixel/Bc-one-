@@ -37,7 +37,7 @@ Valider cette maquette avec quelques utilisateurs, consigner leurs retours, puis
 
 ## Contrôle statique automatisé
 
-Le script `check_prototype.py` vérifie la présence des sections principales, l'unicité des identifiants HTML, les liens de navigation internes, les messages de sécurité, l'absence de scripts JavaScript externes et quelques marqueurs de validation/accessibilité.
+Le script `check_prototype.py` vérifie la présence des sections principales, l'unicité des identifiants HTML, les liens de navigation internes, les messages de sécurité, l'absence de scripts JavaScript externes et quelques marqueurs de validation/accessibilité. Si Node.js est installé, il vérifie aussi la syntaxe du JavaScript intégré.
 
 Pour le lancer localement avec Python 3 :
 
