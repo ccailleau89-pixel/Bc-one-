@@ -107,6 +107,12 @@
     .campaign { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 20px; }
     .campaign h3 { margin: 0 0 7px; font-size: 1.02rem; }
     .campaign p { margin: 0; color: var(--muted); font-size: .83rem; }
+    .demo-loyalty { margin-top: 14px; padding: 18px; border: 1px dashed #6D552A; border-radius: 16px; background: #11100E; }
+    .demo-score { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin: 10px 0 4px; }
+    .demo-score strong { color: var(--gold); font-size: 2rem; letter-spacing: -.04em; }
+    .demo-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .demo-actions .btn { font: inherit; font-size: .8rem; }
+    .demo-message { min-height: 1.5em; margin: 12px 0 0; color: var(--muted); font-size: .78rem; }
     .concept-label { color: var(--orange); font-size: .68rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
     .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: step; }
     .step { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #101010; counter-increment: step; }
@@ -263,6 +269,18 @@
           </div>
           <a class="btn secondary" href="#projet">Voir les étapes</a>
         </article>
+        <article class="demo-loyalty" aria-labelledby="demo-title">
+          <span class="concept-label">Interaction de démonstration</span>
+          <h3 id="demo-title" style="margin:8px 0 0;font-size:1rem">Tester la mécanique de fidélité</h3>
+          <p class="card-note">Les points ci-dessous sont fictifs, temporaires et sans valeur. Le barème définitif n'est pas établi.</p>
+          <div class="demo-score"><strong id="demo-points" aria-live="polite">0</strong><span>points de démonstration</span></div>
+          <div class="demo-actions">
+            <button class="btn" type="button" data-demo-add="10">Simuler une visite (+10)</button>
+            <button class="btn secondary" type="button" data-demo-add="25">Simuler un menu (+25)</button>
+            <button class="btn secondary" type="button" id="demo-reset">Remettre à zéro</button>
+          </div>
+          <p class="demo-message" id="demo-message" role="status">Rien n'est enregistré : recharge la page pour réinitialiser.</p>
+        </article>
       </section>
 
       <section class="section" id="projet" aria-labelledby="project-title">
@@ -313,6 +331,25 @@
       window.addEventListener('scroll', updateActive, { passive: true });
       window.addEventListener('hashchange', updateActive);
       updateActive();
+    })();
+
+    // Démo de fidélité purement locale : aucune persistance ni donnée personnelle.
+    (() => {
+      let points = 0;
+      const score = document.getElementById('demo-points');
+      const message = document.getElementById('demo-message');
+      document.querySelectorAll('[data-demo-add]').forEach(button => {
+        button.addEventListener('click', () => {
+          points += Number(button.dataset.demoAdd);
+          score.textContent = String(points);
+          message.textContent = 'Simulation uniquement : aucun point réel n’a été crédité.';
+        });
+      });
+      document.getElementById('demo-reset').addEventListener('click', () => {
+        points = 0;
+        score.textContent = '0';
+        message.textContent = 'Démonstration réinitialisée. Aucun point réel n’a été crédité.';
+      });
     })();
   </script>
 </body>
