@@ -1,0 +1,60 @@
+import assert from "node:assert/strict";
+import { mkdir } from "node:fs/promises";
+import { resolve } from "node:path";
+import { pathToFileURL } from "node:url";
+import { chromium } from "playwright";
+
+const fileUrl = pathToFileURL(resolve("prototype.html")).href;
+const viewports = [
+  { name: "mobile", width: 360, height: 800 },
+  { name: "tablet", width: 768, height: 1024 },
+  { name: "desktop", width: 1440, height: 900 },
+];
+const browser = await chromium.launch({ headless: true });
+const failures = [];
+
+try {
+  await mkdir("artifacts", { recursive: true });
+
+  for (const viewport of viewports) {
+    const page = await browser.newPage({ viewport: { width: viewport.width, height: viewport.height } });
+    const pageErrors = [];
+    page.on("pageerror", error => pageErrors.push(error.message));
+
+    await page.goto(fileUrl, { waitUntil: "load" });
+    await page.locator("main h1").waitFor();
+    assert.equal(await page.title(), "BC ONE — Prototype de l'application", "page title should be present");
+    assert.equal(await page.locator(".nav a").count(), 4, "all four navigation links should render");
+
+    const dimensions = await page.evaluate(() => ({
+      viewportWidth: window.innerWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      bodyWidth: document.body.scrollWidth,
+    }));
+    assert.ok(
+      dimensions.documentWidth <= dimensions.viewportWidth + 1,
+      `horizontal overflow at ${viewport.name}: ${JSON.stringify(dimensions)}`,
+    );
+    assert.deepEqual(pageErrors, [], `browser errors at ${viewport.name}`);
+
+    await page.screenshot({ path: `artifacts/bc-one-${viewport.name}.png`, fullPage: true });
+
+    for (const anchor of ["#accueil", "#portefeuille", "#avantages", "#projet"]) {
+      assert.equal(await page.locator(anchor).count(), 1, `target ${anchor} should exist`);
+    }
+
+    console.log(
+      `PASS ${viewport.name} ${viewport.width}x${viewport.height}: no horizontal overflow; navigation targets present.`,
+    );
+    await page.close();
+  }
+} catch (error) {
+  failures.push(error);
+} finally {
+  await browser.close();
+}
+
+if (failures.length) {
+  console.error(failures.map(error => error.stack ?? String(error)).join("\n"));
+  process.exitCode = 1;
+}
