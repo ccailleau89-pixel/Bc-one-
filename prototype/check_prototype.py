@@ -61,7 +61,7 @@ def main():
         "MODE DÉMONSTRATION",
         "Aucun token réel",
         "aucune transaction blockchain",
-        "Aucun portefeuille",
+        "portefeuille connecté",
     ]
     for phrase in required_copy:
         if phrase.casefold() not in source.casefold():
