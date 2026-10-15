@@ -33,3 +33,16 @@ Ce prototype est une maquette HTML autonome. Il ne se connecte à aucun portefeu
 ## Étape suivante
 
 Valider cette maquette avec quelques utilisateurs, consigner leurs retours, puis décider du modèle fonctionnel avant d'ajouter un backend ou une connexion blockchain.
+
+
+## Contrôle statique automatisé
+
+Le script `check_prototype.py` vérifie la présence des sections principales, l'unicité des identifiants HTML, les liens de navigation internes, les messages de sécurité, l'absence de scripts JavaScript externes et quelques marqueurs de validation/accessibilité.
+
+Pour le lancer localement avec Python 3 :
+
+```sh
+python prototype/check_prototype.py
+```
+
+GitHub Actions exécute ce contrôle sur les changements du dossier `prototype/`. Il s'agit d'un contrôle statique, pas d'un test complet dans un navigateur ni d'un audit de sécurité.
