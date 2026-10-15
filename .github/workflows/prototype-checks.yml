@@ -24,3 +24,16 @@ jobs:
           node-version: 22
       - name: Run static prototype checks
         run: node scripts/check-prototype.mjs
+      - name: Install Playwright
+        run: npm install --no-save playwright
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run browser smoke tests
+        run: node scripts/browser-smoke.mjs
+      - name: Upload viewport screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bc-one-prototype-screenshots
+          path: artifacts/*.png
+          if-no-files-found: ignore
