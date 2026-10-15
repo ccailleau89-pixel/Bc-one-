@@ -113,6 +113,15 @@
     .demo-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
     .demo-actions .btn { font: inherit; font-size: .8rem; }
     .demo-message { min-height: 1.5em; margin: 12px 0 0; color: var(--muted); font-size: .78rem; }
+    .offer-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 14px; }
+    .offer-card { min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--panel); }
+    .offer-card h3 { margin: 0; font-size: .9rem; }
+    .offer-price { display: block; margin-top: 12px; font-size: 1.65rem; font-weight: 900; letter-spacing: -.04em; }
+    .offer-credit { margin: 3px 0 12px; color: var(--gold); font-size: .82rem; font-weight: 750; }
+    .offer-card .btn { width: 100%; font-size: .78rem; }
+    .offer-card.selected { border-color: var(--gold); box-shadow: inset 0 0 0 1px var(--gold-soft); }
+    .offer-summary { margin-top: 14px; padding: 16px; border: 1px dashed #6D552A; border-radius: 14px; background: #11100E; }
+    .offer-summary strong { color: var(--gold); }
     .concept-label { color: var(--orange); font-size: .68rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
     .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; counter-reset: step; }
     .step { padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: #101010; counter-increment: step; }
@@ -257,30 +266,43 @@
       <section class="section" id="avantages" aria-labelledby="benefits-title">
         <div class="section-head">
           <div>
-            <h2 class="section-title" id="benefits-title">Avantages & communauté</h2>
-            <p class="section-caption">Des pistes de travail, pas une offre commerciale ouverte.</p>
+            <h2 class="section-title" id="benefits-title">Carte BC ONE saisonnière</h2>
+            <p class="section-caption">Une piste de préfinancement à étudier pour la réouverture de mars–avril 2027.</p>
           </div>
         </div>
         <article class="card campaign">
           <div>
-            <span class="concept-label">Concept à valider</span>
-            <h3 style="margin-top:8px">Construire une expérience utile avant de parler de jeton.</h3>
-            <p>Fidélité, avantages en restaurant et opérations communautaires pourront être étudiés séparément. Les montants, contreparties, dates et conditions doivent être validés avant toute communication publique.</p>
+            <span class="concept-label">Concept de prévente à valider</span>
+            <h3 style="margin-top:8px">Payer maintenant, profiter pendant la saison.</h3>
+            <p>Le concept étudié est une carte prépayée utilisable à La Cabane de la Pointe Rouge, avec un crédit bonus selon la formule. Les exemples ci-dessous servent uniquement à tester le parcours : aucune vente, réservation, collecte d'argent ou activation n'est possible ici.</p>
           </div>
           <a class="btn secondary" href="#projet">Voir les étapes</a>
         </article>
-        <article class="demo-loyalty" aria-labelledby="demo-title">
-          <span class="concept-label">Interaction de démonstration</span>
-          <h3 id="demo-title" style="margin:8px 0 0;font-size:1rem">Tester la mécanique de fidélité</h3>
-          <p class="card-note">Les points ci-dessous sont fictifs, temporaires et sans valeur. Le barème définitif n'est pas établi.</p>
-          <div class="demo-score"><strong id="demo-points" aria-live="polite">0</strong><span>points de démonstration</span></div>
-          <div class="demo-actions">
-            <button class="btn" type="button" data-demo-add="10">Simuler une visite (+10)</button>
-            <button class="btn secondary" type="button" data-demo-add="25">Simuler un menu (+25)</button>
-            <button class="btn secondary" type="button" id="demo-reset">Remettre à zéro</button>
-          </div>
-          <p class="demo-message" id="demo-message" role="status">Rien n'est enregistré : recharge la page pour réinitialiser.</p>
-        </article>
+
+        <div class="offer-grid" aria-label="Exemples de formules prépayées">
+          <article class="offer-card">
+            <h3>Découverte</h3>
+            <span class="offer-price">20 €</span>
+            <p class="offer-credit">24 € de crédit théorique · +4 €</p>
+            <button class="btn secondary" type="button" data-offer-price="20" data-offer-credit="24">Simuler cette formule</button>
+          </article>
+          <article class="offer-card">
+            <h3>Habitué</h3>
+            <span class="offer-price">50 €</span>
+            <p class="offer-credit">60 € de crédit théorique · +10 €</p>
+            <button class="btn secondary" type="button" data-offer-price="50" data-offer-credit="60">Simuler cette formule</button>
+          </article>
+          <article class="offer-card">
+            <h3>Fondateur</h3>
+            <span class="offer-price">100 €</span>
+            <p class="offer-credit">115 € de crédit théorique · +15 €</p>
+            <button class="btn secondary" type="button" data-offer-price="100" data-offer-credit="115">Simuler cette formule</button>
+          </article>
+        </div>
+        <div class="offer-summary" id="offer-summary" role="status" aria-live="polite">
+          <strong>Simulation uniquement.</strong> Choisis une formule pour afficher le récapitulatif. Aucun paiement ni engagement ne sera effectué.
+        </div>
+        <p class="card-note">Les montants sont des hypothèses de travail déjà évoquées pour le projet, pas une offre commerciale active. Avant lancement, il faudra valider les conditions d'utilisation, la durée de validité, les remboursements, le traitement comptable et le cadre juridique.</p>
       </section>
 
       <section class="section" id="projet" aria-labelledby="project-title">
@@ -333,22 +355,24 @@
       updateActive();
     })();
 
-    // Démo de fidélité purement locale : aucune persistance ni donnée personnelle.
+    // Simulateur local de carte prépayée : aucun paiement, stockage ou engagement.
     (() => {
-      let points = 0;
-      const score = document.getElementById('demo-points');
-      const message = document.getElementById('demo-message');
-      document.querySelectorAll('[data-demo-add]').forEach(button => {
+      const buttons = Array.from(document.querySelectorAll('[data-offer-price]'));
+      const summary = document.getElementById('offer-summary');
+      buttons.forEach(button => {
         button.addEventListener('click', () => {
-          points += Number(button.dataset.demoAdd);
-          score.textContent = String(points);
-          message.textContent = 'Simulation uniquement : aucun point réel n’a été crédité.';
+          const price = Number(button.dataset.offerPrice);
+          const credit = Number(button.dataset.offerCredit);
+          const bonus = credit - price;
+          buttons.forEach(item => {
+            const selected = item === button;
+            item.closest('.offer-card').classList.toggle('selected', selected);
+            item.setAttribute('aria-pressed', String(selected));
+          });
+          summary.innerHTML = '<strong>Formule simulée :</strong> ' + price +
+            ' € payés en théorie, ' + credit + ' € de crédit indicatif, dont ' + bonus +
+            ' € de bonus. Aucun paiement ni engagement ne sera effectué.';
         });
-      });
-      document.getElementById('demo-reset').addEventListener('click', () => {
-        points = 0;
-        score.textContent = '0';
-        message.textContent = 'Démonstration réinitialisée. Aucun point réel n’a été crédité.';
       });
     })();
   </script>
