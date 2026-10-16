@@ -6,8 +6,10 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import re
 
 HTML_FILE = Path(__file__).with_name("index.html")
+BURGER_ID_MIGRATION = HTML_FILE.parents[1] / "supabase/migrations/202610160001_burger_id_profiles.sql"
 
 
 class PageInspector(HTMLParser):
@@ -111,6 +113,30 @@ def main():
     ]:
         if marker not in source:
             errors.append(f"expected validation/accessibility marker missing: {marker}")
+
+    # The Burger ID schema must keep game and membership records private and
+    # prevent browser-side score or balance manipulation.
+    if not BURGER_ID_MIGRATION.is_file():
+        errors.append("Burger ID RLS migration is missing")
+    else:
+        migration = BURGER_ID_MIGRATION.read_text(encoding="utf-8")
+        required_sql = [
+            "alter table public.burger_id_profiles enable row level security",
+            "alter table public.burger_crush_profiles enable row level security",
+            "alter table public.bc_one_member_profiles enable row level security",
+            'create policy "read own Burger Crush profile"',
+            'create policy "read own BC ONE member profile"',
+            "security definer",
+            "set search_path = ''",
+            "after insert on auth.users",
+        ]
+        for marker in required_sql:
+            if marker.casefold() not in migration.casefold():
+                errors.append("Burger ID migration missing security marker: " + marker)
+        if re.search(r"grant\s+(?:insert|update|delete|all)\b[^;]*burger_crush_profiles", migration, re.I | re.S):
+            errors.append("browser clients must not write Burger Crush scores")
+        if re.search(r"grant\s+(?:insert|update|delete|all)\b[^;]*bc_one_member_profiles", migration, re.I | re.S):
+            errors.append("browser clients must not write BC ONE membership records")
 
     # Node.js is available on GitHub-hosted Ubuntu runners. Locally, this
     # check is optional so the static checker remains usable without Node.
