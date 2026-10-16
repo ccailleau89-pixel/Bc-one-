@@ -10,7 +10,7 @@
   "scripts": {
     "start": "node backend/server.js",
     "test": "node --test backend/*.test.js",
-    "check": "node --check backend/server.js && node --check backend/server.test.js && node --check backend/commission.js && node --check backend/commission.test.js && node --check backend/purchase-service.js && node --check backend/purchase-service.test.js && node --check backend/stripe-checkout.js && node --check backend/stripe-checkout.test.js && node --check backend/stripe-webhook.js && node --check backend/stripe-webhook.test.js"
+    "check": "node --check backend/server.js && node --check backend/server.test.js && node --check backend/commission.js && node --check backend/commission.test.js && node --check backend/purchase-service.js && node --check backend/purchase-service.test.js && node --check backend/purchase-create.test.js && node --check backend/stripe-checkout.js && node --check backend/stripe-checkout.test.js && node --check backend/stripe-webhook.js && node --check backend/stripe-webhook.test.js"
   },
   "dependencies": {
     "pg": "^8.13.1",
