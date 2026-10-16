@@ -40,6 +40,12 @@ métier restent séparés par application.
    avant toute action sensible. Ne jamais faire confiance à un identifiant de
    membre envoyé seul par le navigateur.
 
+## Migration de base de données
+
+Le fichier `supabase/migrations/202610160001_burger_id_profiles.sql` crée les trois espaces de profil, active la RLS et limite les droits du navigateur. Les scores Crush et les enregistrements de membre BC ONE sont en lecture seule côté utilisateur ; les écritures sensibles restent côté serveur. La migration crée les profils lors d'une inscription et remplit aussi les profils des comptes déjà existants.
+
+Avant de l'appliquer au projet réel, relire la migration, l'exécuter dans l'éditeur SQL du bon projet Supabase, puis tester avec deux comptes distincts que chaque compte ne lit que ses propres lignes. Ne pas mettre de solde financier ni de clé secrète dans ces tables de profil.
+
 ## Contrat de données recommandé
 
 - **Identité partagée** : identifiant utilisateur fourni par le fournisseur
