@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createApp } from "./server.js";
+import { createApp } from "./server.js";\nimport Stripe from "stripe";
 
 async function withServer(app, run) {
   await new Promise((resolve) => app.listen(0, "127.0.0.1", resolve));
@@ -80,5 +80,36 @@ test("unknown paths return JSON 404", async () => {
     const response = await fetch(base + "/not-real");
     assert.equal(response.status, 404);
     assert.deepEqual(await response.json(), { error: "not_found" });
+  });
+});
+
+test("Stripe webhook rejects invalid signatures without processing payload", async () => {
+  const stripe = new Stripe("sk_test_bc_one");
+  const app = createApp({ stripe, stripeWebhookSecret: "whsec_test", pool: { connect: async () => { throw new Error("must not connect"); } } });
+  await withServer(app, async (base) => {
+    const response = await fetch(base + "/api/v1/webhooks/stripe", {
+      method: "POST",
+      headers: { "content-type": "application/json", "stripe-signature": "invalid" },
+      body: JSON.stringify({ id: "evt_fake", type: "checkout.session.completed", data: { object: {} } })
+    });
+    assert.equal(response.status, 400);
+    assert.deepEqual(await response.json(), { error: "invalid_webhook_signature" });
+  });
+});
+
+test("Stripe webhook verifies raw-body signature before acknowledging event", async () => {
+  const stripe = new Stripe("sk_test_bc_one");
+  const secret = "whsec_test";
+  const payload = JSON.stringify({ id: "evt_unsupported", type: "customer.updated", data: { object: { id: "cus_test" } } });
+  const signature = stripe.webhooks.generateTestHeaderString({ payload, secret });
+  const app = createApp({ stripe, stripeWebhookSecret: secret, pool: {} });
+  await withServer(app, async (base) => {
+    const response = await fetch(base + "/api/v1/webhooks/stripe", {
+      method: "POST",
+      headers: { "content-type": "application/json", "stripe-signature": signature },
+      body: payload
+    });
+    assert.equal(response.status, 200);
+    assert.deepEqual(await response.json(), { received: true, processed: false, reason: "unsupported_event_type" });
   });
 });
