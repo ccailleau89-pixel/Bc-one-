@@ -32,6 +32,8 @@ Commencer par un pilote de fidélité et d'avantages sans blockchain, avec des d
 
 ## Phase 1 — prototype de fidélité sans blockchain
 
+Le parcours fonctionnel de référence est documenté dans [`USER_JOURNEY.md`](./USER_JOURNEY.md). Il définit le Burger ID commun, les espaces séparés, les états d'erreur, les règles de sécurité et les critères d'acceptation. L'implémentation et les tests restent à réaliser.
+
 - Finaliser le parcours mobile de découverte, inscription, connexion, profil et consultation des avantages.
 - Configurer un environnement Supabase de test uniquement après validation du schéma, des règles RLS et des redirections.
 - Tester inscription, confirmation d'e-mail, récupération, déconnexion, session expirée et accès non autorisé.
