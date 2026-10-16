@@ -67,18 +67,20 @@ def main():
 
     required_ids = {
         "accueil", "portefeuille", "profil", "avantages", "activite",
-        "fonctionnement", "faq", "transferDialog", "transferForm",
-        "balance", "txcount", "reset", "openTransfer", "exportActivity",
+        "burger-crush", "transferDialog", "transferForm", "balance",
+        "txcount", "reset", "openTransfer", "exportActivity",
+        "openCrush", "crushDialog", "crushTap", "crushScore",
     }
     missing_ids = sorted(required_ids - set(page.ids))
     if missing_ids:
         errors.append("required interface elements missing: " + ", ".join(missing_ids))
 
     required_copy = [
-        "MODE DÉMONSTRATION",
-        "Aucun token réel",
-        "aucune transaction blockchain",
-        "portefeuille connecté",
+        "Prototype uniquement",
+        "Aucun token",
+        "aucun transfert réel",
+        "Connexion réelle non activée",
+        "Points Crush ≠ BCONE",
     ]
     for phrase in required_copy:
         if phrase.casefold() not in source.casefold():
@@ -88,12 +90,13 @@ def main():
         'type="number"',
         'min="1"',
         'aria-live="polite"',
-        "Number.isInteger(n)",
+        "Number.isSafeInteger(n)",
         "n>balance",
-        "Réinitialiser la démo",
+        "Réinitialiser ↺",
         "localStorage",
         "bc-one-activite-demo.csv",
-        "Sauvegarde locale",
+        "Stockage local indisponible",
+        "crushRound>=10",
     ]:
         if marker not in source:
             errors.append(f"expected validation/accessibility marker missing: {marker}")
