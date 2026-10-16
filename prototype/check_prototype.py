@@ -10,6 +10,7 @@ import re
 
 HTML_FILE = Path(__file__).with_name("index.html")
 BURGER_ID_MIGRATION = HTML_FILE.parents[1] / "supabase/migrations/202610160001_burger_id_profiles.sql"
+WELCOME_CREDITS_MIGRATION = HTML_FILE.parents[1] / "supabase/migrations/202610160002_bc_one_welcome_test_credits.sql"
 JOURNEY_FILE = HTML_FILE.with_name("user-journey.html")
 
 
@@ -138,6 +139,24 @@ def main():
             errors.append("browser clients must not write Burger Crush scores")
         if re.search(r"grant\s+(?:insert|update|delete|all)\b[^;]*bc_one_member_profiles", migration, re.I | re.S):
             errors.append("browser clients must not write BC ONE membership records")
+
+    # The welcome bonus must be server-created, idempotent and read-only for browser clients.
+    if not WELCOME_CREDITS_MIGRATION.is_file():
+        errors.append("BC ONE welcome-credit migration is missing")
+    else:
+        welcome_migration = WELCOME_CREDITS_MIGRATION.read_text(encoding="utf-8")
+        for marker in [
+            "create table if not exists public.bc_one_demo_ledger",
+            "grant select on table public.bc_one_demo_ledger to authenticated",
+            'create policy "read own BC ONE demo ledger"',
+            "(new.id, 100, 'credit', 'welcome_bonus'",
+            "on conflict (idempotency_key) do nothing",
+            "set search_path = ''",
+        ]:
+            if marker.casefold() not in welcome_migration.casefold():
+                errors.append("welcome-credit migration missing security marker: " + marker)
+        if re.search(r"grant\\s+(?:insert|update|delete|all)\\b[^;]*bc_one_demo_ledger", welcome_migration, re.I | re.S):
+            errors.append("browser clients must not write the BC ONE demo ledger")
 
     # Node.js is available on GitHub-hosted Ubuntu runners. Locally, this
     # check is optional so the static checker remains usable without Node.
