@@ -36,6 +36,17 @@ CREATE TABLE IF NOT EXISTS partner_purchases (
   CHECK ((status IN ('paid', 'partially_refunded', 'refunded') AND paid_at IS NOT NULL) OR status NOT IN ('paid', 'partially_refunded', 'refunded'))
 );
 
+
+-- Deduplicate provider notifications. Store IDs only, never card data or secrets.
+CREATE TABLE IF NOT EXISTS payment_provider_events (
+  id BIGSERIAL PRIMARY KEY,
+  provider TEXT NOT NULL CHECK (provider IN ('stripe')),
+  provider_event_id TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  processed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (provider, provider_event_id)
+);
+
 CREATE INDEX IF NOT EXISTS partner_purchases_merchant_created_idx
   ON partner_purchases (merchant_id, created_at DESC, id DESC);
 CREATE INDEX IF NOT EXISTS partner_purchases_member_created_idx
