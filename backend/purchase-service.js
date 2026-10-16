@@ -35,7 +35,10 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
   if (!pool || typeof pool.connect !== "function") {
     throw new PurchaseServiceError("INVALID_POOL", "A PostgreSQL pool is required");
   }
-  requiredText(purchaseId, "purchaseId", 80);
+  requiredText(purchaseId, "purchaseId", 36);
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(purchaseId)) {
+    throw new PurchaseServiceError("INVALID_INPUT", "purchaseId must be a UUID");
+  }
   requiredText(paymentProvider, "paymentProvider", 80);
   requiredText(providerPaymentId, "providerPaymentId", 200);
   positiveSafeInteger(amountCents, "amountCents");
