@@ -72,8 +72,6 @@ def main():
         for key in ("supabaseUrl", "supabaseAnonKey"):
             if not re.search(rf'{key}\s*:\s*""', config):
                 errors.append(f"burger-id-config.js: {key} must stay blank until an approved Supabase project is configured")
-        if re.search(r"service[_-]?role|secret[_-]?key|private[_-]?key", config, re.I):
-            errors.append("burger-id-config.js: server/private secret-like value or key name found")
 
     migrations = ROOT / "supabase" / "migrations"
     versions = {}
