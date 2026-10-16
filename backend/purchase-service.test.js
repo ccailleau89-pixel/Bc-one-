@@ -147,3 +147,22 @@ test("sub-cent commission rounds to zero without inserting an invalid ledger row
   assert.equal(calls.some((call) => call.sql.includes("INSERT INTO purchase_commission_entries")), false);
   assert.equal(state.committed, true);
 });
+
+test("late duplicate payment webhook is harmless after a full refund", async () => {
+  const existingEntry = {
+    id: "commission-1",
+    purchase_id: "00000000-0000-4000-8000-000000000011",
+    entry_type: "commission_accrual",
+    amount_cents: 200,
+    idempotency_key: "purchase-commission:00000000-0000-4000-8000-000000000011"
+  };
+  const { pool, calls, state } = makePool({
+    initialPurchase: { ...purchase, status: "refunded", paid_at: "2026-10-16T00:00:00Z" },
+    existingEntry
+  });
+  const result = await recordVerifiedPayment({ pool, ...validArgs });
+  assert.equal(result.duplicateNotification, true);
+  assert.equal(state.purchase.status, "refunded");
+  assert.equal(calls.some((call) => call.sql.includes("UPDATE partner_purchases")), false);
+  assert.equal(state.committed, true);
+});
