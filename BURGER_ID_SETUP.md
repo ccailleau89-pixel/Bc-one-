@@ -17,8 +17,8 @@ métier restent séparés par application.
 - Aucun projet Supabase n'est connecté dans cet environnement : la modale et le
   client compilé sont intégrés, mais la connexion réelle reste désactivée tant que
   les variables ne sont pas configurées.
-- Aucun compte réel n'est créé et aucun mot de passe n'est collecté par la
-  maquette actuelle.
+- Aucun compte réel n'est créé et aucun mot de passe n'est envoyé tant que la
+  configuration Supabase n'est pas valide.
 
 ## Configuration nécessaire
 
