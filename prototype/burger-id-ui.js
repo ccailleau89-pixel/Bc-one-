@@ -49,7 +49,7 @@ async function syncWallet(user) {
 function updateMember(user) {
   if (user && typeof user.email === "string") {
     const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split("@")[0] || "Membre";
-    const initials = displayName.trim().split(/\\s+/).slice(0, 2).map(part => part[0]?.toUpperCase() || "").join("") || "M";
+    const initials = displayName.trim().split(/\s+/).slice(0, 2).map(part => part[0]?.toUpperCase() || "").join("") || "M";
     userName.textContent = displayName.slice(0, 24) || "Membre";
     if (profileName) profileName.textContent = displayName.slice(0, 40);
     if (profileAvatar) profileAvatar.textContent = initials;
