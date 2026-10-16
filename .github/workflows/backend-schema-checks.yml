@@ -63,5 +63,7 @@ jobs:
           sudo apt-get install --yes postgresql-client
       - name: Apply draft schema
         run: psql --set ON_ERROR_STOP=1 --file backend/schema.sql
+      - name: Apply commerce schema
+        run: psql --set ON_ERROR_STOP=1 --file backend/commerce_schema.sql
       - name: Run schema smoke tests
         run: psql --set ON_ERROR_STOP=1 --file backend/schema_smoke_test.sql
