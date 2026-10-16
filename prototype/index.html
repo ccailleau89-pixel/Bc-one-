@@ -115,6 +115,7 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <a href="#avantages"><span class="nav-ico">✳</span>Avantages</a>
 <a href="#activite"><span class="nav-ico">↗</span>Activité</a>
 <a href="#profil"><span class="nav-ico">◎</span>Mon profil</a>
+<a href="#burger-crush"><span class="nav-ico">🍔</span>Burger Crush</a>
 </nav>
 <div class="sidebar-bottom">
 <div class="network"><strong><span class="dot"></span>Prototype opérationnel</strong>Maquette · données fictives</div>
@@ -158,6 +159,15 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="card-head"><h2>Dernières activités</h2><button class="btn ghost" id="reset" style="padding:7px 10px;font-size:.7rem">Réinitialiser ↺</button></div>
 <div class="activity-list" id="activity"><div class="activity-row"><span class="activity-icon">✦</span><span class="activity-copy"><strong>Bonus de bienvenue</strong><small>Simulation · historique fictif</small></span><span class="activity-value positive">+200</span></div><div class="activity-row"><span class="activity-icon">↙</span><span class="activity-copy"><strong>Crédit de démonstration</strong><small>Simulation · historique fictif</small></span><span class="activity-value positive">+50</span></div></div>
 </section>
+<section class="card" id="burger-crush" style="grid-column:span 12;position:relative;overflow:hidden;background:radial-gradient(ellipse at 92% 10%,#ff9d4225,transparent 35%),linear-gradient(110deg,#19182a,#121522 70%);">
+<div class="card-head"><h2>BURGER CRUSH <span style="color:#ffb46c">/</span> PLAYER HUB</h2><span class="benefit-tag" style="border-color:#ffb46c55;color:#ffd4a7;background:#ffb46c10">INTÉGRATION BC ONE</span></div>
+<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+<div style="width:64px;height:64px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(145deg,#ffcf7d,#ff8c58);font-size:2rem;box-shadow:0 12px 35px #ff9d4225">🍔</div>
+<div style="flex:1;min-width:190px"><div class="eyebrow" style="color:#ffbd7e">Un seul identifiant. Deux univers.</div><h3 style="font-size:1.25rem;letter-spacing:-.03em;margin:6px 0">Burger ID <span style="color:#ffbd7e">#BC-0024</span></h3><p class="subtle" style="max-width:580px;line-height:1.7;margin:0">Retrouvez le même profil de démonstration dans BC ONE et Burger Crush. À terme : une connexion commune, des expériences séparées et des règles de récompenses clairement définies.</p></div>
+<div style="display:flex;flex-direction:column;gap:9px;min-width:190px"><button class="btn" id="openCrush" style="border-color:#ffb46c55;background:#ffb46c12">🍔 &nbsp; Lancer le mini-challenge</button><span class="subtle" style="text-align:center">Score fictif : <strong id="crushScore" style="color:#ffbd7e">0</strong> points Crush</span></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px"><span class="tag">Même Burger ID (démo)</span><span class="tag">Connexion réelle non activée</span><span class="tag">Points Crush ≠ BCONE</span></div>
+</section>
 <section class="card benefits-card" id="avantages">
 <div class="card-head"><h2>Univers & avantages</h2><span class="subtle">Concepts à venir</span></div>
 <div class="benefit"><span class="benefit-art">✧</span><span class="benefit-copy"><strong>Drops communautaires</strong><small>Accès anticipé aux nouveautés</small></span><span class="benefit-tag">À définir</span></div>
@@ -173,6 +183,12 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="close-row"><div class="logo"><span class="logo-mark">B.</span><span>BC <span>ONE</span></span></div><button class="close-btn" id="closeTransfer" aria-label="Fermer">×</button></div>
 <h2 id="transferTitle">Transfert de démonstration</h2><p>Testez l’expérience d’un transfert. Rien ne sera envoyé sur une blockchain.</p>
 <form id="transferForm"><label for="recipient">Destinataire fictif</label><input id="recipient" name="recipient" value="Sam Dupont" maxlength="40" autocomplete="off" required><label for="amount">Montant en BCONE fictifs</label><input id="amount" name="amount" type="number" min="1" max="250" step="1" value="25" required><div class="dialog-actions"><button class="btn" type="button" id="cancelTransfer">Annuler</button><button class="btn primary" type="submit">Confirmer la simulation ↗</button></div><div id="formMessage" class="toast" role="status" aria-live="polite"></div></form>
+</dialog>
+<dialog id="crushDialog" aria-labelledby="crushTitle">
+<div class="close-row"><div class="logo"><span class="logo-mark" style="background:linear-gradient(135deg,#ffcf7d,#ff8c58)">🍔</span><span>BURGER <span style="color:#ffbd7e">CRUSH</span></span></div><button class="close-btn" id="closeCrush" aria-label="Fermer">×</button></div>
+<div class="eyebrow" style="color:#ffbd7e">Mini-challenge de démonstration</div><h2 id="crushTitle" style="margin:8px 0">Crush it. Level up.</h2><p>Appuie sur le burger 10 fois pour tester l’expérience. Les points restent fictifs et ne sont pas convertis en BCONE.</p>
+<div style="display:grid;place-items:center;padding:14px"><button id="crushTap" aria-label="Appuyer pour gagner un point Crush" style="width:150px;height:150px;border-radius:42px;border:1px solid #ffbd7e66;background:radial-gradient(circle at 30% 20%,#ffd98e,#ff9c5b 70%);font-size:4.4rem;box-shadow:0 18px 55px #ff9d4230;transition:transform .1s">🍔</button><div style="margin-top:16px;font-size:1.7rem;font-weight:900"><span id="crushRound">0</span><span style="color:#7f8ba9"> / 10</span></div><div id="crushMessage" class="toast" role="status" aria-live="polite">Prêt ? À toi de jouer.</div></div>
+<div class="dialog-actions"><button class="btn" id="resetCrush">Recommencer</button><button class="btn primary" id="finishCrush">Terminer</button></div>
 </dialog>
 <dialog id="helpDialog" aria-labelledby="helpTitle"><div class="close-row"><h2 id="helpTitle">À propos de BC ONE</h2><button class="close-btn" id="closeHelp" aria-label="Fermer">×</button></div><p>Vous explorez une maquette interactive de l’espace membre BC ONE. Les données restent locales dans votre navigateur. Aucun token, compte financier ou paiement réel n’est connecté.</p><button class="btn primary" id="helpOk">Compris</button></dialog>
 <script>
@@ -265,6 +281,21 @@ byId("reset").addEventListener("click",()=>{
  renderActivity();refresh();byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;
  message.textContent="Démo réinitialisée. Votre solde fictif est revenu à 250 BCONE.";
 });
+let crushRound=0,crushScore=0;
+const crushDialog=byId("crushDialog"),crushRoundEl=byId("crushRound"),crushScoreEl=byId("crushScore"),crushMessage=byId("crushMessage");
+function openCrush(){crushRound=0;crushRoundEl.textContent="0";crushMessage.textContent="Prêt ? À toi de jouer.";crushDialog.showModal();}
+byId("openCrush").addEventListener("click",openCrush);
+byId("closeCrush").addEventListener("click",()=>crushDialog.close());
+byId("finishCrush").addEventListener("click",()=>crushDialog.close());
+byId("resetCrush").addEventListener("click",()=>{crushRound=0;crushRoundEl.textContent="0";crushMessage.textContent="Challenge réinitialisé. À toi de jouer.";});
+byId("crushTap").addEventListener("click",()=>{
+ if(crushRound>=10){crushMessage.textContent="Challenge terminé ! Recommence pour rejouer.";return;}
+ crushRound++;crushRoundEl.textContent=String(crushRound);
+ const button=byId("crushTap");button.style.transform="scale(.94)";window.setTimeout(()=>{button.style.transform="scale(1)";},90);
+ if(crushRound===10){crushScore+=10;crushScoreEl.textContent=String(crushScore);crushMessage.textContent="Bien joué ! +10 points Crush fictifs. Aucun BCONE n’a été crédité.";}
+ else crushMessage.textContent="Crush ! Encore "+(10-crushRound)+" appui(s).";
+});
+crushDialog.addEventListener("click",event=>{if(event.target===crushDialog)crushDialog.close();});
 const help=byId("helpDialog");
 byId("helpBtn").addEventListener("click",()=>help.showModal());
 byId("closeHelp").addEventListener("click",()=>help.close());
