@@ -13,6 +13,8 @@ const modeSelect = $("burgerIdMode");
 const openButton = $("burgerIdOpen");
 const userName = $("memberName");
 const userLabel = $("memberLabel");
+const balance = $("balance");
+const balanceLabel = document.querySelector(".balance-label");
 let adapter = null;
 let configured = false;
 
@@ -43,12 +45,24 @@ function updateMember(user) {
     openButton.textContent = "Mon compte";
     openButton.setAttribute("aria-label", "Gérer mon Burger ID");
     openButton.dataset.signedIn = "true";
+    if (adapter && typeof user.id === "string") {
+      adapter.getTrialBalance(user.id).then(({ data, error }) => {
+        if (error || !data || !Number.isInteger(data.trial_tokens)) {
+          showStatus("Compte connecté, mais le crédit d’essai est momentanément indisponible.", true);
+          return;
+        }
+        balance.textContent = String(data.trial_tokens);
+        balanceLabel.textContent = "Crédit d’essai hors blockchain";
+      }).catch(() => showStatus("Impossible de charger le crédit d’essai.", true));
+    }
   } else {
     userName.textContent = "Alex Martin";
     userLabel.textContent = "Mode démonstration";
     openButton.textContent = "Connexion";
     openButton.setAttribute("aria-label", "Se connecter avec Burger ID");
     openButton.dataset.signedIn = "false";
+    balance.textContent = "250";
+    balanceLabel.textContent = "Solde fictif total";
   }
 }
 
@@ -92,14 +106,21 @@ form.addEventListener("submit", async (event) => {
     let result;
     if (mode === "signup") {
       result = await adapter.signUp({ email, password, redirectTo: window.location.origin + window.location.pathname });
-      if (!result.error) showStatus(result.data?.session ? "Compte créé et connecté." : "Compte créé. Vérifiez votre e-mail pour confirmer l’inscription.");
+      if (!result.error) {
+        if (result.data?.session?.user) {
+          updateMember(result.data.session.user);
+          showStatus("Compte créé : 1 BCONE d’essai a été crédité. C’est un crédit de démonstration hors blockchain, sans valeur monétaire.");
+        } else {
+          showStatus("Compte créé. Confirmez votre e-mail puis connectez-vous pour voir votre BCONE d’essai.");
+        }
+      }
     } else if (mode === "reset") {
       result = await adapter.requestPasswordReset({ email, redirectTo: window.location.origin + window.location.pathname });
       if (!result.error) showStatus("Si cette adresse correspond à un compte, un lien de récupération sera envoyé.");
     } else {
       result = await adapter.signIn({ email, password });
       if (!result.error) {
-        showStatus("Connexion réussie. Votre Burger ID est prêt.");
+        showStatus("Connexion réussie. Chargement de votre crédit d’essai…");
         updateMember(result.data?.user ?? result.data?.session?.user ?? null);
         window.setTimeout(() => { if (dialog.open) dialog.close(); }, 650);
       }
@@ -121,7 +142,7 @@ $("burgerIdSignOut").addEventListener("click", async () => {
     if (error) showStatus("Déconnexion impossible. Réessayez.", true);
     else {
       updateMember(null);
-      showStatus("Déconnecté du Burger ID.");
+      showStatus("Déconnecté du Burger ID. Le portefeuille revient en mode démonstration.");
     }
   } catch {
     showStatus("Déconnexion impossible. Réessayez.", true);
