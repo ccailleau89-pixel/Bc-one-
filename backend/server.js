@@ -1,5 +1,7 @@
 import { createServer } from "node:http";
 import pg from "pg";
+import Stripe from "stripe";
+import { processVerifiedStripeEvent } from "./stripe-webhook.js";
 
 const { Pool } = pg;
 const PORT = Number.parseInt(process.env.PORT ?? "3000", 10);
@@ -27,9 +29,50 @@ function sendJson(response, status, payload) {
   response.end(body);
 }
 
-export function createApp({ query, ready = async () => true } = {}) {
+export function createApp({ query, ready = async () => true, stripe, stripeWebhookSecret, pool } = {}) {
   return createServer(async (request, response) => {
     const url = new URL(request.url ?? "/", "http://localhost");
+
+    if (request.method === "POST" && url.pathname === "/api/v1/webhooks/stripe") {
+      if (!stripe || !stripeWebhookSecret || !pool) {
+        return sendJson(response, 503, { error: "webhook_unavailable" });
+      }
+      const signature = request.headers["stripe-signature"];
+      if (typeof signature !== "string" || signature.length > 500) {
+        return sendJson(response, 400, { error: "invalid_webhook_signature" });
+      }
+      let rawBody;
+      try {
+        const chunks = [];
+        let size = 0;
+        for await (const chunk of request) {
+          size += chunk.length;
+          if (size > 1_000_000) {
+            return sendJson(response, 413, { error: "payload_too_large" });
+          }
+          chunks.push(chunk);
+        }
+        rawBody = Buffer.concat(chunks);
+      } catch {
+        return sendJson(response, 400, { error: "invalid_webhook_body" });
+      }
+
+      let event;
+      try {
+        event = stripe.webhooks.constructEvent(rawBody, signature, stripeWebhookSecret);
+      } catch {
+        return sendJson(response, 400, { error: "invalid_webhook_signature" });
+      }
+
+      try {
+        const result = await processVerifiedStripeEvent({ pool, event });
+        return sendJson(response, 200, result);
+      } catch (error) {
+        // Return a generic response. A 5xx lets Stripe retry transient failures.
+        console.error("Stripe webhook processing failed", error.code ?? "UNKNOWN");
+        return sendJson(response, 500, { error: "webhook_processing_failed" });
+      }
+    }
 
     if (request.method === "GET" && url.pathname === "/health") {
       return sendJson(response, 200, { status: "ok", service: "bc-one-api" });
