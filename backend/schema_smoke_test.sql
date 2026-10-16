@@ -13,7 +13,29 @@ VALUES
   ('00000000-0000-4000-8000-000000000003',
    '00000000-0000-4000-8000-000000000001', 50, 'welcome_credit', 'smoke-key-1', 'Smoke test credit');
 
-DO $$
+INSERT INTO merchants
+  (id, legal_name, public_name, status, commission_bps)
+VALUES
+  ('00000000-0000-4000-8000-000000000010', 'Demo Merchant SARL', 'Demo Shop', 'active', 200);
+
+INSERT INTO partner_purchases
+  (id, merchant_id, member_id, gross_cents, commission_bps, commission_cents,
+   merchant_net_cents, payment_provider, provider_payment_id, idempotency_key, status, paid_at)
+VALUES
+  ('00000000-0000-4000-8000-000000000011',
+   '00000000-0000-4000-8000-000000000010',
+   '00000000-0000-4000-8000-000000000001',
+   10000, 200, 200, 9800, 'test-provider', 'test-payment-1', 'purchase-key-1',
+   'paid', now());
+
+INSERT INTO purchase_commission_entries
+  (id, purchase_id, entry_type, amount_cents, idempotency_key, reason)
+VALUES
+  ('00000000-0000-4000-8000-000000000012',
+   '00000000-0000-4000-8000-000000000011',
+   'commission_accrual', 200, 'commission-key-1', 'Smoke test 2% commission');
+
+DO $
 BEGIN
   BEGIN
     INSERT INTO ledger_entries
@@ -44,6 +66,26 @@ BEGIN
   EXCEPTION WHEN check_violation THEN
     RAISE NOTICE 'PASS: zero ledger amount rejected';
   END;
-END $$;
+  BEGIN
+    INSERT INTO partner_purchases
+      (id, merchant_id, gross_cents, commission_bps, commission_cents, merchant_net_cents,
+       payment_provider, provider_payment_id, idempotency_key, status)
+    VALUES
+      ('00000000-0000-4000-8000-000000000013',
+       '00000000-0000-4000-8000-000000000010', 10000, 200, 201, 9800,
+       'test-provider', 'test-payment-2', 'purchase-key-invalid', 'pending');
+    RAISE EXCEPTION 'Expected invalid purchase split to fail';
+  EXCEPTION WHEN check_violation THEN
+    RAISE NOTICE 'PASS: inconsistent commission split rejected';
+  END;
+
+  BEGIN
+    INSERT INTO merchants (id, legal_name, public_name, commission_bps)
+    VALUES ('00000000-0000-4000-8000-000000000014', 'Invalid SARL', 'Invalid', 10001);
+    RAISE EXCEPTION 'Expected invalid commission rate to fail';
+  EXCEPTION WHEN check_violation THEN
+    RAISE NOTICE 'PASS: invalid commission rate rejected';
+  END;
+END $;
 
 ROLLBACK;
