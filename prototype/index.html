@@ -3,92 +3,191 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#101010">
-<title>BC ONE — Communauté</title>
+<meta name="theme-color" content="#090b12">
+<meta name="description" content="BC ONE — prototype d'interface membre, portefeuille fictif et avantages de la communauté.">
+<title>BC ONE — Member universe</title>
 <style>
-:root{color-scheme:dark;--bg:#101010;--panel:#191919;--line:#35312a;--gold:#d6ad55;--muted:#b6b0a4;--text:#f6f2e9;--good:#a8d5ae}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 85% -10%,#45361b 0,transparent 35%),var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.wrap{max-width:1100px;margin:auto;padding:24px}.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:18px}.nav{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.nav a{color:var(--muted);text-decoration:none;font-size:.88rem;padding:7px 9px;border-radius:8px}.nav a:hover,.nav a:focus-visible{color:var(--gold);background:#24231f}.section-anchor{scroll-margin-top:20px}.brand{font-weight:900;letter-spacing:.12em}.brand b{color:var(--gold)}.demo{font-size:.75rem;border:1px solid #776239;border-radius:30px;padding:6px 10px;color:#f2d99e}.hero{padding:42px 0 24px}.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.16em;font-size:.78rem;font-weight:800}.hero h1{font-size:clamp(2.3rem,7vw,4.5rem);line-height:1.02;max-width:780px;margin:12px 0}.hero p{color:var(--muted);max-width:650px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{background:linear-gradient(145deg,#1c1b18,var(--panel));border:1px solid var(--line);border-radius:18px;padding:20px;min-width:0}.balance{grid-column:span 7}.member{grid-column:span 5}.wide{grid-column:span 12}.half{grid-column:span 6}.card h2{font-size:1.05rem;margin:0 0 12px}.amount{font-size:clamp(2rem,5vw,3.4rem);font-weight:850;letter-spacing:-.04em}.amount small{font-size:1rem;color:var(--gold);letter-spacing:0}.muted{color:var(--muted)}.pill{display:inline-flex;gap:7px;align-items:center;color:var(--good);font-size:.82rem}.stats{display:flex;gap:22px;flex-wrap:wrap;margin-top:20px}.stats strong{display:block;font-size:1.1rem}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.btn{border:1px solid var(--line);border-radius:11px;padding:10px 14px;background:#24231f;color:var(--text)}.btn.primary{background:var(--gold);color:#17130a;border-color:var(--gold);font-weight:800}.btn:disabled{opacity:.4;cursor:not-allowed}.memberrow{display:flex;align-items:center;gap:13px}.avatar{width:48px;height:48px;display:grid;place-items:center;background:#342b19;border:1px solid #725d32;color:var(--gold);border-radius:50%;font-weight:900}.tag{border:1px solid var(--line);border-radius:8px;padding:3px 7px;color:var(--muted);font-size:.75rem}.offer{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line)}.offer:first-of-type{border-top:0}.offer h3{margin:0 0 4px;font-size:1rem}.offer p{margin:0;color:var(--muted);font-size:.9rem}.offer .tag{white-space:nowrap}.activity{display:flex;justify-content:space-between;gap:12px;padding:11px 0;border-top:1px solid var(--line);font-size:.92rem}.plus{color:var(--good)}.minus{color:#e7bd80}label{display:block;color:var(--muted);font-size:.86rem;margin:12px 0 5px}input{width:100%;padding:11px 12px;background:#101010;color:var(--text);border:1px solid var(--line);border-radius:10px}.formrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}.notice{border:1px solid #69582f;background:#272113;color:#e8d9b2;padding:12px;border-radius:12px;font-size:.86rem}.empty{color:var(--muted);font-size:.9rem;padding:12px 0}footer{color:#8f897d;font-size:.78rem;padding:26px 0 10px}dialog{max-width:440px;width:calc(100% - 32px);border:1px solid var(--line);border-radius:18px;background:#191919;color:var(--text);padding:22px}dialog::backdrop{background:#000b}.close{float:right}.toast{min-height:24px;color:var(--good);font-size:.9rem;margin-top:10px}
-@media(max-width:700px){.wrap{padding:16px}.hero{padding-top:30px}.balance,.member,.half,.wide{grid-column:span 12}.top{align-items:flex-start}.nav{order:3;width:100%;gap:3px}.nav a{padding:7px 8px}.stats{gap:14px}.formrow{grid-template-columns:1fr}}
+:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#151a29;--line:#272d40;--text:#f5f7ff;--muted:#929bb3;--blue:#7c8cff;--cyan:#61e6e0;--violet:#b58cff;--green:#7be2b0;--danger:#ff9aaf;--radius:22px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 68% -10%,#22204b 0,transparent 38%),radial-gradient(ellipse at 5% 45%,#102a3a 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}button:disabled{opacity:.4;cursor:not-allowed}
+.layout{max-width:1500px;margin:auto;padding:22px;display:grid;grid-template-columns:238px minmax(0,1fr);gap:22px}.sidebar{position:sticky;top:22px;height:calc(100vh - 44px);min-height:620px;display:flex;flex-direction:column;padding:20px 14px;background:#0e111bdc;border:1px solid #252b3c;border-radius:26px;backdrop-filter:blur(20px)}.logo{display:flex;align-items:center;gap:11px;padding:4px 8px 30px;font-weight:950;letter-spacing:.16em;font-size:1.05rem}.logo-mark{width:37px;height:37px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--blue) 58%,var(--violet));color:#0b1020;letter-spacing:-.12em;font-weight:1000;box-shadow:0 8px 28px #7c8cff35}.logo span:last-child{color:var(--cyan)}.nav-label{padding:8px 12px;color:#6f7891;font-size:.67rem;text-transform:uppercase;letter-spacing:.17em;font-weight:850}.nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;color:var(--muted);border-radius:13px;font-size:.88rem;transition:background .2s,color .2s}.nav a:hover{background:#171d2c;color:var(--text)}.nav a.active{color:#fff;background:linear-gradient(100deg,#7c8cff28,#61e6e011);box-shadow:inset 2px 0 var(--cyan)}.nav-ico{width:21px;text-align:center;font-size:1rem}.sidebar-bottom{margin-top:auto}.network{padding:13px;border:1px solid var(--line);background:#111722;border-radius:15px;font-size:.78rem;color:var(--muted)}.network strong{display:block;color:var(--text);margin-bottom:5px}.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 12px #7be2b0a0}.demo-tag{display:inline-flex;align-items:center;gap:7px;color:#d9dfff;background:#7c8cff15;border:1px solid #7c8cff40;border-radius:30px;padding:7px 10px;font-size:.69rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.main{min-width:0}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:5px 3px 22px}.crumb{color:var(--muted);font-size:.84rem}.crumb strong{color:var(--text)}.top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:41px;height:41px;display:grid;place-items:center;background:#121724;border:1px solid var(--line);border-radius:13px;color:var(--text)}.user{display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#b58cff,#7188ff);color:#11101d;font-weight:950}.user strong{display:block;font-size:.83rem}.user small{color:var(--muted);font-size:.72rem}.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:8px 0 24px}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;font-weight:900}.welcome h1{font-size:clamp(2rem,3.5vw,3rem);line-height:1.08;letter-spacing:-.055em;margin:9px 0 10px}.welcome p{margin:0;color:var(--muted);max-width:570px}.welcome p strong{color:#e5e9ff;font-weight:650}.date-chip{flex-shrink:0;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:#111521;color:#c4cce2;font-size:.78rem}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{min-width:0;border:1px solid #272d40;background:linear-gradient(145deg,#141927eF,#10141fF2);border-radius:var(--radius);padding:21px;box-shadow:0 12px 35px #00000012}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.card-head h2{font-size:.91rem;margin:0;font-weight:800;letter-spacing:-.01em}.subtle{color:var(--muted);font-size:.76rem}.balance-card{grid-column:span 7;position:relative;overflow:hidden;min-height:290px;background:radial-gradient(ellipse at 85% 25%,#7067ff29,transparent 38%),linear-gradient(135deg,#171c30,#111521 70%)}.balance-card:after{content:"";position:absolute;width:280px;height:280px;right:-100px;bottom:-150px;border:1px solid #a1a7ff20;border-radius:50%;box-shadow:0 0 0 24px #a1a7ff08,0 0 0 52px #a1a7ff06;pointer-events:none}.balance-label{color:#aeb8d4;font-size:.81rem}.balance-number{font-size:clamp(2.7rem,5vw,4rem);letter-spacing:-.075em;line-height:1.15;font-weight:900;margin:9px 0 8px}.balance-number span{font-size:.92rem;letter-spacing:-.02em;color:#aeb9ff;font-weight:750}.balance-meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:var(--muted);font-size:.77rem}.tiny-pill{padding:4px 8px;border:1px solid #7be2b033;background:#7be2b00e;color:var(--green);border-radius:8px;font-size:.7rem;font-weight:800}.balance-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px;position:relative;z-index:1}.btn{display:inline-flex;justify-content:center;align-items:center;gap:9px;padding:11px 15px;border:1px solid #343b51;border-radius:12px;background:#1b2131;color:var(--text);font-weight:750;font-size:.81rem;transition:transform .18s,border-color .18s,filter .18s}.btn:hover{transform:translateY(-1px);border-color:#6774a1}.btn.primary{background:linear-gradient(105deg,#61e6e0,#9ba7ff);color:#0a1120;border:0;box-shadow:0 8px 25px #61e6e01c}.btn.primary:hover{filter:brightness(1.07)}.btn.ghost{background:#ffffff04}.profile-card{grid-column:span 5;min-height:290px;display:flex;flex-direction:column}.member-visual{display:flex;align-items:center;gap:14px;padding:5px 0 18px}.member-avatar{width:58px;height:58px;display:grid;place-items:center;border-radius:19px;background:linear-gradient(145deg,#61e6e0,#798aff 58%,#bd8aff);color:#0b1020;font-size:1.15rem;font-weight:1000;box-shadow:0 10px 25px #7c8cff20}.member-visual h3{margin:0 0 3px;font-size:1rem}.member-visual p{margin:0;color:var(--muted);font-size:.77rem}.rank{margin-left:auto;align-self:flex-start;color:#d9d4ff;background:#9e85ff15;border:1px solid #9e85ff40;border-radius:9px;padding:5px 8px;font-size:.68rem;font-weight:850}.member-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto}.mini-stat{background:#0c101a;border:1px solid #252b3d;border-radius:14px;padding:13px}.mini-stat span{display:block;color:var(--muted);font-size:.72rem}.mini-stat strong{display:block;font-size:1.15rem;margin-top:5px}.mini-stat strong em{font-style:normal;color:var(--cyan);font-size:.72rem;font-weight:750}.chart-card{grid-column:span 7}.chart-area{height:170px;position:relative;margin-top:7px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 41px,#29304480 42px,#29304480 43px);border-radius:10px;overflow:hidden}.chart-area svg{width:100%;height:100%;overflow:visible}.chart-labels{display:flex;justify-content:space-between;color:#717b94;font-size:.68rem;padding-top:9px}.chart-legend{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.74rem}.legend-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px #61e6e077}.chart-stat{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}.chart-stat strong{font-size:1.55rem;letter-spacing:-.04em}.chart-stat span{font-size:.74rem;color:var(--green)}.quick-card{grid-column:span 5}.quick-list{display:grid;gap:10px}.quick-item{display:flex;align-items:center;gap:12px;padding:12px;background:#0d121e;border:1px solid #252b3d;border-radius:15px;text-align:left;width:100%;color:var(--text)}.quick-item:hover{border-color:#6977a7;background:#151b2a}.quick-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#7c8cff17;color:#aab5ff;font-size:1.05rem}.quick-item strong{display:block;font-size:.81rem}.quick-item small{display:block;color:var(--muted);font-size:.7rem;margin-top:2px}.quick-arrow{margin-left:auto;color:#7f8ba9;font-size:1.1rem}.activity-card{grid-column:span 7}.activity-list{display:grid}.activity-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #272d3b}.activity-row:first-child{border-top:0}.activity-icon{width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;border:1px solid #2a3345;border-radius:13px;background:#111827;color:var(--cyan)}.activity-copy{min-width:0;flex:1}.activity-copy strong{display:block;font-size:.81rem;overflow-wrap:anywhere}.activity-copy small{display:block;color:var(--muted);font-size:.7rem;margin-top:3px}.activity-value{font-weight:850;font-size:.84rem;white-space:nowrap}.positive{color:var(--green)}.negative{color:var(--danger)}.benefits-card{grid-column:span 5}.benefit{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #272d3b}.benefit:first-of-type{border-top:0}.benefit-art{width:45px;height:45px;display:grid;place-items:center;flex-shrink:0;border-radius:14px;background:linear-gradient(145deg,#2a3150,#1a2137);font-size:1.1rem}.benefit-copy{flex:1;min-width:0}.benefit-copy strong{display:block;font-size:.79rem}.benefit-copy small{display:block;color:var(--muted);font-size:.69rem;margin-top:3px}.benefit-tag{color:#c7d1ff;border:1px solid #788bff40;background:#7c8cff10;padding:5px 7px;border-radius:8px;font-size:.67rem;font-weight:800;white-space:nowrap}.demo-note{grid-column:span 12;display:flex;align-items:center;gap:12px;border:1px solid #5a4b843d;background:linear-gradient(100deg,#7c8cff0d,#b58cff0b);border-radius:16px;padding:14px 16px;color:#aeb8d0;font-size:.76rem}.note-icon{width:30px;height:30px;display:grid;place-items:center;flex-shrink:0;border-radius:10px;background:#9a86ff19;color:#c1b0ff}.demo-note strong{color:#e4e8ff}.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#68728b;font-size:.68rem;padding:20px 3px 4px}
+dialog{width:min(460px,calc(100% - 28px));border:1px solid #343c55;border-radius:23px;background:#111622;color:var(--text);padding:24px;box-shadow:0 30px 100px #000b}dialog::backdrop{background:#03050bd9;backdrop-filter:blur(7px)}dialog h2{margin:0 0 7px;letter-spacing:-.03em}dialog p{margin:0 0 20px;color:var(--muted);font-size:.83rem}label{display:block;color:#c2c9dc;font-size:.76rem;font-weight:750;margin:13px 0 6px}input{width:100%;border:1px solid #343c52;background:#0b0f18;color:var(--text);padding:12px;border-radius:12px}input:focus{border-color:var(--cyan)}.dialog-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}.toast{min-height:22px;margin-top:12px;color:var(--green);font-size:.78rem}.close-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close-row .logo-mark{width:31px;height:31px;border-radius:10px}.close-btn{border:0;background:transparent;color:var(--muted);font-size:1.3rem;padding:4px 8px}.empty{color:var(--muted);font-size:.8rem;padding:18px 0}
+@media(max-width:1100px){.layout{grid-template-columns:205px minmax(0,1fr);gap:15px;padding:15px}.balance-card,.chart-card,.activity-card{grid-column:span 12}.profile-card,.quick-card,.benefits-card{grid-column:span 6}.balance-card{min-height:270px}.profile-card{min-height:240px}}
+@media(max-width:720px){.layout{display:block;padding:12px}.sidebar{position:static;height:auto;min-height:0;padding:12px;border-radius:19px;margin-bottom:15px}.logo{padding:1px 5px 12px}.nav-label,.sidebar-bottom{display:none}.nav{display:flex;overflow-x:auto;gap:4px;padding-bottom:1px}.nav a{flex-shrink:0;white-space:nowrap;font-size:.75rem;padding:9px 10px}.nav-ico{display:none}.topbar{padding:6px 3px 16px}.user .user-copy{display:none}.top-actions{gap:8px}.welcome{display:block;margin:7px 0 19px}.date-chip{display:inline-block;margin-top:14px}.welcome h1{font-size:2.25rem}.grid{gap:12px}.card{padding:17px;border-radius:19px}.balance-card,.profile-card,.chart-card,.quick-card,.activity-card,.benefits-card{grid-column:span 12}.balance-number{font-size:3rem}.balance-card{min-height:260px}.profile-card{min-height:230px}.chart-area{height:145px}.demo-note{align-items:flex-start}.foot{padding:18px 3px}.date-chip{font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-<header class="top"><div class="brand">BC <b>ONE</b></div><nav class="nav" aria-label="Navigation principale"><a href="#accueil">Accueil</a><a href="#portefeuille">Portefeuille démo</a><a href="#avantages">Avantages</a><a href="#profil">Profil</a><a href="#activite">Activité</a><a href="#faq">FAQ</a></nav><span class="demo">MODE DÉMONSTRATION</span></header>
-<section class="hero section-anchor" id="accueil"><div class="eyebrow">La communauté, autrement</div><h1>Plus qu’un token.<br><span style="color:var(--gold)">Un état d’esprit.</span></h1><p>Un espace de démonstration pour les membres BC ONE : avantages, communauté et transferts simulés. Aucun token réel n’est utilisé ici.</p></section>
-<main class="grid">
-<section class="card balance section-anchor" id="portefeuille"><h2>Solde de démonstration</h2><div class="amount"><span id="balance">250</span> <small>BCONE fictifs</small></div><div class="pill">● Données locales de démonstration</div><div class="stats"><div><span class="muted">Statut membre</span><strong>Fondateur</strong></div><div><span class="muted">Avantages disponibles</span><strong>3</strong></div><div><span class="muted">Transactions simulées</span><strong id="txcount">2</strong></div></div><div class="actions"><button class="btn primary" id="openTransfer">Simuler un transfert ↗</button><button class="btn" id="exportActivity">Exporter l’activité CSV</button><button class="btn" id="reset">Réinitialiser la démo</button></div><div id="message" class="toast" role="status" aria-live="polite"></div></section>
-<section class="card member section-anchor" id="profil"><h2>Carte membre</h2><div class="memberrow"><div class="avatar">BC</div><div><strong>Alex Martin</strong><div class="muted">Membre BC ONE</div><span class="tag">ID démo · BC-0024</span></div></div><div class="notice" style="margin-top:18px">Profil fictif. Aucun compte utilisateur réel ni donnée personnelle n’est enregistré.</div></section>
-<section class="card half section-anchor" id="avantages"><h2>Avantages de la communauté</h2><div class="offer"><div><h3>Accès aux drops communautaires</h3><p>Découvrir les éditions et nouveautés en avant-première.</p></div><span class="tag">Membre</span></div><div class="offer"><div><h3>Événements BC ONE</h3><p>Invitations et rencontres réservées à la communauté.</p></div><span class="tag">Accès</span></div><div class="offer"><div><h3>Avantage à La Cabane</h3><p>Offre illustrative, soumise à des conditions qui restent à définir.</p></div><span class="tag">Prototype</span></div></section>
-<section class="card half section-anchor" id="activite"><h2>Activité récente</h2><div id="activity"><div class="activity"><span>Bonus de bienvenue <span class="muted">· démo</span></span><strong class="plus">+200</strong></div><div class="activity"><span>Transfert reçu <span class="muted">· démo</span></span><strong class="plus">+50</strong></div></div><p class="muted" style="font-size:.8rem">Historique fictif — aucune transaction blockchain n’a eu lieu.</p></section>
-<section class="card wide section-anchor" id="fonctionnement"><h2>Comment fonctionne la démo ?</h2><div class="grid"><div style="grid-column:span 4"><strong>01 — Découvrir</strong><p class="muted">Comprendre les avantages et les règles de la communauté.</p></div><div style="grid-column:span 4"><strong>02 — Simuler</strong><p class="muted">Tester un transfert entre profils fictifs, sans portefeuille réel.</p></div><div style="grid-column:span 4"><strong>03 — Clarifier</strong><p class="muted">Les droits, l’offre et le cadre juridique restent à définir avant tout pilote.</p></div></div><div class="notice">BCONE fictif n’a aucune valeur monétaire. Pas de vente, de conversion, de portefeuille connecté ou de promesse de remboursement.</div></section>
-</main>
-<section class="card wide section-anchor" id="faq" style="margin-top:16px"><h2>Questions fréquentes</h2><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Les BCONE affichés sont-ils de vrais tokens ?</summary><p class="muted">Non. Le solde, les profils et les opérations sont fictifs et restent dans la page. Aucun token n’est créé ou envoyé.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Comment gagner ou utiliser des BC ONE ?</summary><p class="muted">Les règles d’attribution et d’utilisation ne sont pas encore décidées. Cette maquette ne constitue pas une offre commerciale.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Les avantages à La Cabane sont-ils garantis ?</summary><p class="muted">Non. L’avantage affiché est une illustration. Toute offre réelle devra préciser les conditions, la durée, les limites et les modalités d’utilisation.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Puis-je envoyer des BCONE à quelqu’un ?</summary><p class="muted">Uniquement dans la simulation locale de cette page. Il n’y a ni compte réel, ni portefeuille, ni transaction blockchain.</p></details></section><footer>BC ONE · Prototype de conception · Aucun service financier · Aucun contrat déployé · Les données de démonstration sont sauvegardées uniquement dans le stockage local de ce navigateur et peuvent être effacées via Réinitialiser la démo.</footer>
+<div class="layout">
+<aside class="sidebar" aria-label="Navigation BC ONE">
+<a class="logo" href="#accueil" aria-label="BC ONE accueil"><span class="logo-mark">B.</span><span>BC <span>ONE</span></span></a>
+<div class="nav-label">Espace membre</div>
+<nav class="nav">
+<a class="active" href="#accueil"><span class="nav-ico">◈</span>Vue d’ensemble</a>
+<a href="#portefeuille"><span class="nav-ico">▣</span>Mon portefeuille</a>
+<a href="#avantages"><span class="nav-ico">✳</span>Avantages</a>
+<a href="#activite"><span class="nav-ico">↗</span>Activité</a>
+<a href="#profil"><span class="nav-ico">◎</span>Mon profil</a>
+</nav>
+<div class="sidebar-bottom">
+<div class="network"><strong><span class="dot"></span>Prototype opérationnel</strong>Univers BC ONE · données fictives</div>
+<div style="padding:15px 9px 0;color:#66718a;font-size:.7rem">UNE COMMUNAUTÉ. DE NOUVELLES POSSIBILITÉS.</div>
 </div>
-<dialog id="transferDialog"><button class="btn close" id="closeTransfer" type="button">Fermer</button><h2>Simuler un transfert</h2><p class="muted">Simulation locale entre profils fictifs. Pas de réseau blockchain ni de frais réels.</p><form id="transferForm"><label for="recipient">Destinataire de démonstration</label><input id="recipient" value="Sam Dupont" maxlength="40" required><label for="amount">Montant en BCONE fictifs</label><input id="amount" type="number" min="1" max="250" step="1" value="25" required><div class="notice" style="margin-top:14px">Le transfert sera enregistré uniquement dans cette page. Il ne crée ni n’envoie de crypto-actifs.</div><div class="actions"><button class="btn primary" type="submit">Confirmer la simulation</button></div><div id="formMessage" class="toast" role="status" aria-live="polite"></div></form></dialog>
+</aside>
+<main class="main" id="accueil">
+<header class="topbar">
+<div class="crumb">Espace membre <span style="color:#525d76">/</span> <strong>Vue d’ensemble</strong></div>
+<div class="top-actions"><span class="demo-tag"><span class="dot"></span>Demo live</span><button class="icon-btn" id="helpBtn" aria-label="À propos du prototype" title="À propos">?</button><div class="user"><div class="avatar">AM</div><div class="user-copy"><strong>Alex Martin</strong><small>Membre fondateur</small></div></div></div>
+</header>
+<section class="welcome"><div><div class="eyebrow">Bienvenue dans votre univers</div><h1>Le pouvoir du collectif<span style="color:var(--cyan)">.</span></h1><p>Tout votre monde BC ONE, au même endroit. <strong>Explorez, simulez, découvrez.</strong></p></div><div class="date-chip">✦ &nbsp; BC ONE MEMBER SPACE</div></section>
+<div class="grid">
+<section class="card balance-card" id="portefeuille">
+<div class="card-head"><h2>Votre portefeuille</h2><span class="subtle">Solde disponible <span style="color:var(--cyan)">●</span></span></div>
+<div class="balance-label">Solde fictif total</div><div class="balance-number"><span id="balance">250</span> <span>BCONE</span></div>
+<div class="balance-meta"><span class="tiny-pill">+ Démo locale</span><span>Aucune crypto réelle détenue</span></div>
+<div class="balance-actions"><button class="btn primary" id="openTransfer">↗ &nbsp; Simuler un transfert</button><button class="btn ghost" id="exportActivity">↓ &nbsp; Exporter l’activité</button></div>
+<div id="message" class="toast" role="status" aria-live="polite"></div>
+</section>
+<section class="card profile-card" id="profil">
+<div class="card-head"><h2>Votre identité BC ONE</h2><span class="subtle">#0024</span></div>
+<div class="member-visual"><div class="member-avatar">AM</div><div><h3>Alex Martin</h3><p>Membre depuis la genèse</p></div><span class="rank">FOUNDER</span></div>
+<div class="member-stats"><div class="mini-stat"><span>Transactions simulées</span><strong id="txcount">2 <em>opérations</em></strong></div><div class="mini-stat"><span>Statut communauté</span><strong>Fondateur <em>✦</em></strong></div></div>
+</section>
+<section class="card chart-card">
+<div class="card-head"><h2>Activité de votre espace</h2><div class="chart-legend"><span class="legend-dot"></span>Solde fictif</div></div>
+<div class="chart-stat"><strong id="chartBalance">250 BCONE</strong><span>● Données de démonstration</span></div>
+<div class="chart-area" aria-label="Graphique illustratif, sans données de marché"><svg viewBox="0 0 600 170" preserveAspectRatio="none" role="img" aria-label="Courbe illustrative du solde fictif"><defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#61e6e0" stop-opacity=".24"/><stop offset="100%" stop-color="#61e6e0" stop-opacity="0"/></linearGradient><linearGradient id="lineFill" x1="0" x2="1"><stop offset="0%" stop-color="#7c8cff"/><stop offset="100%" stop-color="#61e6e0"/></linearGradient></defs><path d="M0 128 C40 119 53 132 92 105 S150 118 185 83 S240 92 277 66 S340 87 375 55 S430 73 463 42 S525 57 600 18 L600 170 L0 170 Z" fill="url(#areaFill)"/><path d="M0 128 C40 119 53 132 92 105 S150 118 185 83 S240 92 277 66 S340 87 375 55 S430 73 463 42 S525 57 600 18" fill="none" stroke="url(#lineFill)" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round"/><circle cx="600" cy="18" r="5" fill="#61e6e0" stroke="#111521" stroke-width="3" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="chart-labels"><span>Départ</span><span>Activité simulée</span><span>Aujourd’hui</span></div>
+</section>
+<section class="card quick-card">
+<div class="card-head"><h2>Accès rapides</h2><span class="subtle">À explorer</span></div>
+<div class="quick-list">
+<button class="quick-item" id="quickTransfer"><span class="quick-icon">↗</span><span><strong>Envoyer des BCONE fictifs</strong><small>Tester un transfert simulé</small></span><span class="quick-arrow">›</span></button>
+<a class="quick-item" href="#avantages"><span class="quick-icon">✧</span><span><strong>Explorer les avantages</strong><small>Découvrir l’univers membre</small></span><span class="quick-arrow">›</span></a>
+<a class="quick-item" href="#activite"><span class="quick-icon">≋</span><span><strong>Voir mon activité</strong><small>Historique local de démonstration</small></span><span class="quick-arrow">›</span></a>
+</div>
+</section>
+<section class="card activity-card" id="activite">
+<div class="card-head"><h2>Dernières activités</h2><button class="btn ghost" id="reset" style="padding:7px 10px;font-size:.7rem">Réinitialiser ↺</button></div>
+<div class="activity-list" id="activity"><div class="activity-row"><span class="activity-icon">✦</span><span class="activity-copy"><strong>Bonus de bienvenue</strong><small>Simulation · historique fictif</small></span><span class="activity-value positive">+200</span></div><div class="activity-row"><span class="activity-icon">↙</span><span class="activity-copy"><strong>Crédit de démonstration</strong><small>Simulation · historique fictif</small></span><span class="activity-value positive">+50</span></div></div>
+</section>
+<section class="card benefits-card" id="avantages">
+<div class="card-head"><h2>Univers & avantages</h2><span class="subtle">Concepts à venir</span></div>
+<div class="benefit"><span class="benefit-art">✧</span><span class="benefit-copy"><strong>Drops communautaires</strong><small>Accès anticipé aux nouveautés</small></span><span class="benefit-tag">À définir</span></div>
+<div class="benefit"><span class="benefit-art">⌁</span><span class="benefit-copy"><strong>Rencontres & événements</strong><small>La communauté dans la vraie vie</small></span><span class="benefit-tag">Concept</span></div>
+<div class="benefit"><span class="benefit-art">◉</span><span class="benefit-copy"><strong>Avantages partenaires</strong><small>Offres soumises à conditions</small></span><span class="benefit-tag">Prototype</span></div>
+</section>
+<div class="demo-note"><span class="note-icon">i</span><span><strong>Prototype uniquement.</strong> Les soldes, profils, courbe et activités sont fictifs. Aucun token n’est émis, aucun portefeuille connecté, aucun paiement ni transfert réel. Les avantages partenaires ne sont pas encore contractuellement définis.</span></div>
+</div>
+<footer class="foot"><span>© BC ONE · Member experience prototype</span><span>Conçu pour une expérience mobile-first · Données fictives</span></footer>
+</main>
+</div>
+<dialog id="transferDialog" aria-labelledby="transferTitle">
+<div class="close-row"><div class="logo"><span class="logo-mark">B.</span><span>BC <span>ONE</span></span></div><button class="close-btn" id="closeTransfer" aria-label="Fermer">×</button></div>
+<h2 id="transferTitle">Transfert de démonstration</h2><p>Testez l’expérience d’un transfert. Rien ne sera envoyé sur une blockchain.</p>
+<form id="transferForm"><label for="recipient">Destinataire fictif</label><input id="recipient" name="recipient" value="Sam Dupont" maxlength="40" autocomplete="off" required><label for="amount">Montant en BCONE fictifs</label><input id="amount" name="amount" type="number" min="1" max="250" step="1" value="25" required><div class="dialog-actions"><button class="btn" type="button" id="cancelTransfer">Annuler</button><button class="btn primary" type="submit">Confirmer la simulation ↗</button></div><div id="formMessage" class="toast" role="status" aria-live="polite"></div></form>
+</dialog>
+<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="close-row"><h2 id="helpTitle">À propos de BC ONE</h2><button class="close-btn" id="closeHelp" aria-label="Fermer">×</button></div><p>Vous explorez une maquette interactive de l’espace membre BC ONE. Les données restent locales dans votre navigateur. Aucun token, compte financier ou paiement réel n’est connecté.</p><button class="btn primary" id="helpOk">Compris</button></dialog>
 <script>
 (function(){
- const initialBalance=250, storageKey='bc-one-demo-v2';
- const initialActivity=[
-  {label:'Bonus de bienvenue · démo',amount:'+200',kind:'plus'},
-  {label:'Transfert reçu · démo',amount:'+50',kind:'plus'}
- ];
- let balance=initialBalance, txs=2, entries=initialActivity.map(x=>({...x}));
- const balanceEl=document.getElementById('balance'),countEl=document.getElementById('txcount');
- const activity=document.getElementById('activity'),message=document.getElementById('message');
- const dialog=document.getElementById('transferDialog');
- const open=document.getElementById('openTransfer'),close=document.getElementById('closeTransfer');
- const reset=document.getElementById('reset'),exportActivity=document.getElementById('exportActivity');
- const form=document.getElementById('transferForm'),amount=document.getElementById('amount');
- const recipient=document.getElementById('recipient'),formMessage=document.getElementById('formMessage');
- function save(){
-  try{localStorage.setItem(storageKey,JSON.stringify({balance,txs,entries:entries.slice(0,100)}));}
-  catch(_){message.textContent='Sauvegarde locale indisponible : la démo fonctionne temporairement en mémoire.';}
- }
- function load(){
-  try{
-   const raw=localStorage.getItem(storageKey);if(!raw)return;
-   const data=JSON.parse(raw);
-   if(!data||!Number.isInteger(data.balance)||data.balance<0||data.balance>initialBalance||
-      !Number.isInteger(data.txs)||data.txs<2||!Array.isArray(data.entries)||data.entries.length>100)return;
-   if(!data.entries.every(x=>x&&typeof x.label==='string'&&x.label.length<=100&&
-      typeof x.amount==='string'&&x.amount.length<=24&&['plus','minus'].includes(x.kind)))return;
-   balance=data.balance;txs=data.txs;entries=data.entries;
-  }catch(_){/* Ignore unavailable or malformed local demo data. */}
- }
- function renderActivity(){
-  activity.replaceChildren();
-  entries.forEach(entry=>{
-   const row=document.createElement('div');row.className='activity';
-   const label=document.createElement('span');label.textContent=entry.label;
-   const value=document.createElement('strong');value.className=entry.kind;value.textContent=entry.amount;
-   row.append(label,value);activity.append(row);
-  });
-  if(!entries.length){const empty=document.createElement('p');empty.className='empty';empty.textContent='Aucune activité pour le moment.';activity.append(empty);}
- }
- function refresh(){balanceEl.textContent=balance;countEl.textContent=txs;amount.max=balance;amount.value=Math.min(Number(amount.value)||1,balance)||1;}
- open.addEventListener('click',()=>{formMessage.textContent='';dialog.showModal();refresh();});
- close.addEventListener('click',()=>dialog.close());
- dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
- form.addEventListener('submit',e=>{
-  e.preventDefault();const n=Number(amount.value),name=recipient.value.trim();
-  if(!name||!Number.isInteger(n)||n<1||n>balance){formMessage.textContent='Vérifie le destinataire et le montant disponible.';return;}
-  balance-=n;txs++;entries.unshift({label:'Transfert simulé vers '+name+' · démo',amount:'−'+n,kind:'minus'});entries=entries.slice(0,100);
-  renderActivity();refresh();save();message.textContent='Simulation effectuée. Aucun token réel n’a été transféré.';
-  formMessage.textContent='Simulation enregistrée localement dans ce navigateur.';setTimeout(()=>dialog.close(),600);
+"use strict";
+const initialBalance=250,storageKey="bc-one-member-demo-v3";
+const initialEntries=[
+ {label:"Bonus de bienvenue",detail:"Simulation · historique fictif",amount:"+200",kind:"positive",icon:"✦"},
+ {label:"Crédit de démonstration",detail:"Simulation · historique fictif",amount:"+50",kind:"positive",icon:"↙"}
+];
+let balance=initialBalance,txs=2,entries=initialEntries.map(x=>({...x}));
+const byId=id=>document.getElementById(id);
+const balanceEl=byId("balance"),countEl=byId("txcount"),chartBalance=byId("chartBalance");
+const activity=byId("activity"),message=byId("message"),dialog=byId("transferDialog");
+const form=byId("transferForm"),amount=byId("amount"),recipient=byId("recipient"),formMessage=byId("formMessage");
+function save(){
+ try{localStorage.setItem(storageKey,JSON.stringify({balance,txs,entries:entries.slice(0,100)}));}
+ catch(_){message.textContent="Stockage local indisponible : la démonstration continue en mémoire.";}
+}
+function load(){
+ try{
+  const raw=localStorage.getItem(storageKey);if(!raw)return;
+  const data=JSON.parse(raw);
+  if(!data||!Number.isSafeInteger(data.balance)||data.balance<0||data.balance>initialBalance||
+     !Number.isSafeInteger(data.txs)||data.txs<2||!Array.isArray(data.entries)||data.entries.length>100)return;
+  if(!data.entries.every(x=>x&&typeof x.label==="string"&&x.label.length<=100&&
+     typeof x.detail==="string"&&x.detail.length<=100&&typeof x.amount==="string"&&x.amount.length<=24&&
+     ["positive","negative"].includes(x.kind)&&typeof x.icon==="string"&&x.icon.length<=4))return;
+  balance=data.balance;txs=data.txs;entries=data.entries;
+ }catch(_){/* Invalid or unavailable local data is ignored. */}
+}
+function renderActivity(){
+ activity.replaceChildren();
+ entries.forEach(entry=>{
+  const row=document.createElement("div");row.className="activity-row";
+  const ico=document.createElement("span");ico.className="activity-icon";ico.textContent=entry.icon;
+  const copy=document.createElement("span");copy.className="activity-copy";
+  const title=document.createElement("strong");title.textContent=entry.label;
+  const detail=document.createElement("small");detail.textContent=entry.detail;
+  copy.append(title,detail);
+  const value=document.createElement("span");value.className="activity-value "+entry.kind;value.textContent=entry.amount;
+  row.append(ico,copy,value);activity.append(row);
  });
- exportActivity.addEventListener('click',()=>{
-  const rows=[['Activité','Montant BCONE fictifs'],...entries.map(x=>[x.label,x.amount])];
-  const csv='\uFEFF'+rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(';')).join('\r\n');
-  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
-  const link=document.createElement('a');link.href=url;link.download='bc-one-activite-demo.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
-  message.textContent='Export CSV téléchargé. Les données restent fictives.';
- });
- reset.addEventListener('click',()=>{
-  balance=initialBalance;txs=2;entries=initialActivity.map(x=>({...x}));
-  try{localStorage.removeItem(storageKey);}catch(_){}
-  renderActivity();refresh();message.textContent='Démo réinitialisée et sauvegarde locale effacée.';
- });
- load();renderActivity();refresh();
+ if(!entries.length){const empty=document.createElement("p");empty.className="empty";empty.textContent="Aucune activité pour le moment.";activity.append(empty);}
+}
+function refresh(){
+ balanceEl.textContent=String(balance);countEl.firstChild.textContent=String(txs)+" ";
+ chartBalance.textContent=String(balance)+" BCONE";
+ amount.max=String(balance);if(Number(amount.value)>balance)amount.value=String(balance);
+ if(balance===0)amount.value="0";
+}
+function openTransfer(){
+ formMessage.textContent="";amount.min="1";amount.max=String(balance);amount.value=balance>0?String(Math.min(25,balance)):"";
+ byId("cancelTransfer").disabled=balance===0;
+ byId("openTransfer").disabled=balance===0;
+ byId("quickTransfer").disabled=balance===0;
+ dialog.showModal();
+ if(balance===0)formMessage.textContent="Solde fictif épuisé. Réinitialisez la démo pour recommencer.";
+}
+byId("openTransfer").addEventListener("click",openTransfer);
+byId("quickTransfer").addEventListener("click",openTransfer);
+byId("closeTransfer").addEventListener("click",()=>dialog.close());
+byId("cancelTransfer").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close();});
+form.addEventListener("submit",event=>{
+ event.preventDefault();
+ const n=Number(amount.value),name=recipient.value.trim();
+ if(!name||name.length>40||!Number.isSafeInteger(n)||n<1||n>balance){
+  formMessage.textContent="Vérifiez le destinataire et le solde fictif disponible.";return;
+ }
+ balance-=n;txs++;
+ entries.unshift({label:"Transfert simulé vers "+name,detail:"À l’instant · simulation locale",amount:"−"+n,kind:"negative",icon:"↗"});
+ entries=entries.slice(0,100);renderActivity();refresh();save();
+ message.textContent="Simulation effectuée. Aucun token réel n’a été transféré.";
+ formMessage.textContent="Enregistré localement dans ce navigateur.";
+ if(balance===0){byId("openTransfer").disabled=true;byId("quickTransfer").disabled=true;}
+ window.setTimeout(()=>{if(dialog.open)dialog.close();},550);
+});
+byId("exportActivity").addEventListener("click",()=>{
+ const rows=[["Activité","Détail","Montant BCONE fictifs"],...entries.map(x=>[x.label,x.detail,x.amount])];
+ const csv="\uFEFF"+rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+ const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ const link=document.createElement("a");link.href=url;link.download="bc-one-activite-demo.csv";document.body.append(link);link.click();link.remove();
+ window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+ message.textContent="Export CSV téléchargé. Les données restent fictives.";
+});
+byId("reset").addEventListener("click",()=>{
+ balance=initialBalance;txs=2;entries=initialEntries.map(x=>({...x}));
+ try{localStorage.removeItem(storageKey);}catch(_){}
+ renderActivity();refresh();byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;
+ message.textContent="Démo réinitialisée. Votre solde fictif est revenu à 250 BCONE.";
+});
+const help=byId("helpDialog");
+byId("helpBtn").addEventListener("click",()=>help.showModal());
+byId("closeHelp").addEventListener("click",()=>help.close());
+byId("helpOk").addEventListener("click",()=>help.close());
+help.addEventListener("click",event=>{if(event.target===help)help.close();});
+document.querySelectorAll(".nav a").forEach(link=>link.addEventListener("click",()=>{
+ document.querySelectorAll(".nav a").forEach(item=>item.classList.toggle("active",item===link));
+}));
+load();renderActivity();refresh();
 })();
 </script>
 </body>
