@@ -68,7 +68,7 @@ def main():
     required_ids = {
         "accueil", "portefeuille", "profil", "avantages", "activite",
         "fonctionnement", "faq", "transferDialog", "transferForm",
-        "balance", "txcount", "reset", "openTransfer",
+        "balance", "txcount", "reset", "openTransfer", "exportActivity",
     }
     missing_ids = sorted(required_ids - set(page.ids))
     if missing_ids:
@@ -91,6 +91,9 @@ def main():
         "Number.isInteger(n)",
         "n>balance",
         "Réinitialiser la démo",
+        "localStorage",
+        "bc-one-activite-demo.csv",
+        "Sauvegarde locale",
     ]:
         if marker not in source:
             errors.append(f"expected validation/accessibility marker missing: {marker}")
@@ -120,7 +123,7 @@ def main():
     print("BC ONE prototype checks passed")
     print(f"- {len(page.ids)} IDs checked; no duplicates")
     print(f"- {len(page.anchors)} in-page navigation links resolve")
-    print("- safety copy, offline scripts, form validation and accessibility markers checked")
+    print("- safety copy, offline scripts, form validation, local demo persistence, CSV export and accessibility markers checked")
     if shutil.which("node"):
         print(f"- {len(page.scripts)} inline JavaScript block(s) syntax-checked with Node.js")
     return 0
