@@ -28,7 +28,7 @@ function fakePool({ duplicateEvent = false } = {}) {
         return { rows: [{ id: 1 }] };
       }
       if (sql.includes("FROM partner_purchases") && sql.includes("FOR UPDATE")) return { rows: [{ ...purchase }] };
-      if (sql.includes("UPDATE partner_purchases")) { state.paid = true; return { rows: [] }; }
+      if (sql.includes("UPDATE partner_purchases")) { state.paid = true; return { rows: [], rowCount: 1 }; }
       if (sql.includes("INSERT INTO purchase_commission_entries")) {
         state.commission = { purchase_id: values[1], amount_cents: values[2] };
         return { rows: [{ id: values[0] }] };
