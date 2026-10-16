@@ -1,5 +1,13 @@
 # BC ONE — prototype communautaire
 
+## Nouveau : parcours utilisateur interactif
+
+Ouvrir [`user-journey.html`](./user-journey.html) dans un navigateur récent pour tester le parcours complet : accueil, simulation de création du Burger ID, avantages avec conditions et confirmation, mini-jeu Burger Crush, historique filtrable/exportable et préférences de confidentialité. Le parcours fonctionne sans serveur ni installation, avec des données en mémoire uniquement. Il ne crée aucun compte réel et n'envoie aucune donnée.
+
+Pour tester : créer un profil de démonstration, lancer le défi Burger Crush (10 appuis), consulter les avantages et confirmer une utilisation fictive, puis filtrer ou exporter l'activité. Le bouton de réinitialisation remet la démo à zéro.
+
+Le fichier `index.html` reste la maquette membre existante ; `user-journey.html` est la version de démonstration du parcours fonctionnel complet.
+
 Ce prototype est une maquette HTML autonome. Il ne se connecte à aucun portefeuille et ne manipule aucun crypto-actif.
 
 ## Ouvrir sur Windows
