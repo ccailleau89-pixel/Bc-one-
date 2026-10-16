@@ -70,3 +70,17 @@ python prototype/check_prototype.py
 ```
 
 GitHub Actions exécute ce contrôle sur les changements du dossier `prototype/`. Il s'agit d'un contrôle statique, pas d'un test complet dans un navigateur ni d'un audit de sécurité.
+
+
+## Bonus d'inscription Burger ID (crédits d'essai)
+
+Après application de la migration `supabase/migrations/202610160002_bc_one_welcome_test_credits.sql`, chaque **nouveau compte** reçoit une seule attribution de **100 crédits BC ONE d'essai** dans le registre Supabase.
+
+- Ce sont des crédits internes de test, non transférables, sans valeur monétaire et distincts du contrat ERC-20.
+- Le crédit est créé côté base de données à la création du compte ; le navigateur ne peut pas créditer, modifier ou supprimer le registre.
+- RLS limite la lecture du registre au compte connecté.
+- Les comptes existants ne reçoivent pas automatiquement le bonus.
+- En cas de confirmation par e-mail, le bonus est visible après confirmation puis connexion.
+- Le code n'applique pas lui-même la migration au projet Supabase distant et ne déploie aucun token.
+
+Tester : créer un nouveau compte, confirmer l'e-mail si demandé, se connecter et vérifier le solde de 100 crédits d'essai ainsi qu'une seule ligne `welcome_bonus` dans `public.bc_one_demo_ledger`.
