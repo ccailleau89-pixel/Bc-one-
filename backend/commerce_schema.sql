@@ -77,7 +77,7 @@ CREATE INDEX IF NOT EXISTS purchase_refunds_purchase_idx
 
 -- Prevent refund totals from exceeding the original paid purchase, even when requests race.
 CREATE OR REPLACE FUNCTION bc_one_guard_refund_totals()
-RETURNS trigger LANGUAGE plpgsql AS $
+RETURNS trigger LANGUAGE plpgsql AS $bc_one$
 DECLARE
   purchase_gross BIGINT;
   purchase_commission BIGINT;
@@ -113,7 +113,7 @@ BEGIN
 
   RETURN NEW;
 END;
-$;
+$bc_one$;
 
 DROP TRIGGER IF EXISTS bc_one_refund_totals_guard ON purchase_refunds;
 CREATE TRIGGER bc_one_refund_totals_guard
