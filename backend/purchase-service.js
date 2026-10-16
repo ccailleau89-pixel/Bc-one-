@@ -94,27 +94,31 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
     }
 
     const commissionKey = `purchase-commission:${purchaseId}`;
-    const inserted = await client.query(
-      `INSERT INTO purchase_commission_entries
-         (id, purchase_id, entry_type, amount_cents, idempotency_key, reason)
-       VALUES ($1, $2, 'commission_accrual', $3, $4, 'Verified partner purchase commission')
-       ON CONFLICT (idempotency_key) DO NOTHING
-       RETURNING id, purchase_id, entry_type, amount_cents, idempotency_key`,
-      [randomUUID(), purchaseId, split.platformCommissionCents, commissionKey]
-    );
-
-    if (inserted.rows.length === 0) {
-      const existing = await client.query(
-        `SELECT purchase_id, entry_type, amount_cents
-           FROM purchase_commission_entries
-          WHERE idempotency_key = $1`,
-        [commissionKey]
+    let commissionEntryCreated = false;
+    if (split.platformCommissionCents > 0) {
+      const inserted = await client.query(
+        `INSERT INTO purchase_commission_entries
+           (id, purchase_id, entry_type, amount_cents, idempotency_key, reason)
+         VALUES ($1, $2, 'commission_accrual', $3, $4, 'Verified partner purchase commission')
+         ON CONFLICT (idempotency_key) DO NOTHING
+         RETURNING id, purchase_id, entry_type, amount_cents, idempotency_key`,
+        [randomUUID(), purchaseId, split.platformCommissionCents, commissionKey]
       );
-      const entry = existing.rows[0];
-      if (!entry || entry.purchase_id !== purchaseId ||
-          entry.entry_type !== "commission_accrual" ||
-          Number(entry.amount_cents) !== split.platformCommissionCents) {
-        throw new PurchaseServiceError("COMMISSION_IDEMPOTENCY_CONFLICT", "Existing commission entry does not match purchase");
+      commissionEntryCreated = inserted.rows.length > 0;
+
+      if (!commissionEntryCreated) {
+        const existing = await client.query(
+          `SELECT purchase_id, entry_type, amount_cents
+             FROM purchase_commission_entries
+            WHERE idempotency_key = $1`,
+          [commissionKey]
+        );
+        const entry = existing.rows[0];
+        if (!entry || entry.purchase_id !== purchaseId ||
+            entry.entry_type !== "commission_accrual" ||
+            Number(entry.amount_cents) !== split.platformCommissionCents) {
+          throw new PurchaseServiceError("COMMISSION_IDEMPOTENCY_CONFLICT", "Existing commission entry does not match purchase");
+        }
       }
     }
 
@@ -125,7 +129,7 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
       status: "paid",
       commissionCents: split.platformCommissionCents,
       merchantNetCents: split.merchantNetCents,
-      duplicateNotification: wasAlreadyPaid && inserted.rows.length === 0
+      duplicateNotification: wasAlreadyPaid && !commissionEntryCreated
     };
   } catch (error) {
     if (transactionOpen) {
