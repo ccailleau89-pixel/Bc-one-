@@ -9,10 +9,13 @@ métier restent séparés par application.
 ## État actuel
 
 - La maquette BC ONE contient un Burger ID fictif et un mini-challenge local.
-- `prototype/burger-id.js` définit un adaptateur d'authentification qui attend
-  un client Supabase configuré.
-- Aucun projet Supabase n'est connecté ; le module n'est pas encore câblé à
-  l'interface.
+- `prototype/burger-id.js` définit l'adaptateur d'authentification.
+- `prototype/burger-id-ui.js` relie la modale de connexion à l'adaptateur et gère
+  l'inscription, la connexion, la déconnexion et la récupération du mot de passe.
+- `prototype/burger-id-config.js` contient uniquement les deux champs publics à
+  configurer : URL du projet et clé navigateur Supabase.
+- Aucun projet Supabase n'est connecté : la modale est intégrée, mais la connexion
+  réelle reste désactivée tant que les valeurs ne sont pas configurées.
 - Aucun compte réel n'est créé et aucun mot de passe n'est collecté par la
   maquette actuelle.
 
@@ -21,9 +24,13 @@ métier restent séparés par application.
 1. Créer ou sélectionner un projet Supabase unique destiné aux deux applications.
 2. Configurer les URL autorisées, les URL de redirection de récupération et
    les paramètres de confirmation d'e-mail.
-3. Configurer l'URL du projet et la clé **publishable/anon** dans la configuration
-   frontend de déploiement. Ces valeurs publiques ne remplacent pas les règles
-   de sécurité de la base.
+3. Renseigner `supabaseUrl` et `supabaseAnonKey` dans
+   `prototype/burger-id-config.js` pour l'aperçu statique, ou les injecter via la
+   configuration frontend de déploiement. Utiliser uniquement la clé
+   **publishable/anon** destinée au navigateur. Ces valeurs publiques ne remplacent
+   pas les règles de sécurité de la base.
+4. Ajouter l'URL exacte de l'aperçu dans les URL de redirection autorisées de
+   Supabase ; le flux d'inscription et de récupération y revient après validation.
 4. Ne jamais placer une clé `service_role`, une clé privée ou un secret serveur
    dans le navigateur, le dépôt Git ou une variable frontend.
 5. Définir des règles RLS restrictives pour que chaque utilisateur ne puisse
