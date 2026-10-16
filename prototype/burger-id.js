@@ -3,10 +3,8 @@
  *
  * Pass a configured Supabase client from the host application. This module
  * deliberately contains no project URL, API key, password, or service-role key.
- * It does not persist game scores or credit BC ONE balances.
- *
- * This is an integration scaffold: the current static prototype does not yet
- * initialize a Supabase client or wire these methods into its UI.
+ * It does not persist game scores or issue a blockchain token. The one-unit
+ * welcome credit is an off-chain trial balance managed by a database trigger.
  */
 export function createBurgerIdAdapter(supabase) {
   if (!supabase?.auth) {
@@ -31,6 +29,15 @@ export function createBurgerIdAdapter(supabase) {
         email: email.trim().toLowerCase(),
         password
       });
+    },
+
+    async getTrialBalance(userId) {
+      requireText(userId, "userId");
+      return supabase
+        .from("bc_one_member_profiles")
+        .select("trial_tokens")
+        .eq("user_id", userId)
+        .single();
     },
 
     async signOut() {
