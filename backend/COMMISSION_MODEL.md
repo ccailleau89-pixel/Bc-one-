@@ -11,7 +11,9 @@ For a purchase of gross amount G cents and commission rate R basis points:
 
 Example: €100.00 => €2.00 gross platform commission and €98.00 merchant amount before payment-provider fees, taxes, refunds, chargebacks and operating costs. The split always adds up to the original gross amount.
 
-The calculation functions are pure and covered by tests in `backend/commission.test.js`. They do not collect money, process card data or integrate a payment provider.
+The calculation functions are pure and covered by tests in `backend/commission.test.js`. The transaction service in `backend/purchase-service.js` locks the pending purchase, checks the verified provider amount and reference, changes the purchase to paid and appends the commission entry in one database transaction. Duplicate payment notifications are idempotent, including retries arriving after a refund. The service is covered by `backend/purchase-service.test.js`.
+
+**Important:** the service deliberately does not verify payment-provider webhook signatures. It must only be called by trusted backend code after signature verification or a server-to-server provider confirmation. No public route currently calls this service, and no payment provider is connected.
 
 ## Transaction lifecycle to implement
 
