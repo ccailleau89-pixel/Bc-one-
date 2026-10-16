@@ -63,7 +63,7 @@ def main():
     migration_versions = {}
     if MIGRATIONS_DIR.is_dir():
         for migration_path in sorted(MIGRATIONS_DIR.glob("*.sql")):
-            match = re.match(r"^(\\d+)_", migration_path.name)
+            match = re.match(r"^(\d+)_", migration_path.name)
             if not match:
                 errors.append("migration filename must start with a numeric version: " + migration_path.name)
                 continue
