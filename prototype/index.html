@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#090b12">
 <meta name="description" content="BC ONE — prototype d'interface membre, portefeuille fictif et avantages de la communauté.">
-<title>BC ONE — Member universe</title>
+<title>BC ONE — Espace membre</title>
 <style>
 :root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#151a29;--line:#272d40;--text:#f5f7ff;--muted:#929bb3;--blue:#7c8cff;--cyan:#61e6e0;--violet:#b58cff;--green:#7be2b0;--danger:#ff9aaf;--radius:22px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 68% -10%,#22204b 0,transparent 38%),radial-gradient(ellipse at 5% 45%,#102a3a 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}button:disabled{opacity:.4;cursor:not-allowed}
@@ -16,6 +16,92 @@ dialog{width:min(460px,calc(100% - 28px));border:1px solid #343c55;border-radius
 @media(max-width:1100px){.layout{grid-template-columns:205px minmax(0,1fr);gap:15px;padding:15px}.balance-card,.chart-card,.activity-card{grid-column:span 12}.profile-card,.quick-card,.benefits-card{grid-column:span 6}.balance-card{min-height:270px}.profile-card{min-height:240px}}
 @media(max-width:720px){.layout{display:block;padding:12px}.sidebar{position:static;height:auto;min-height:0;padding:12px;border-radius:19px;margin-bottom:15px}.logo{padding:1px 5px 12px}.nav-label,.sidebar-bottom{display:none}.nav{display:flex;overflow-x:auto;gap:4px;padding-bottom:1px}.nav a{flex-shrink:0;white-space:nowrap;font-size:.75rem;padding:9px 10px}.nav-ico{display:none}.topbar{padding:6px 3px 16px}.user .user-copy{display:none}.top-actions{gap:8px}.welcome{display:block;margin:7px 0 19px}.date-chip{display:inline-block;margin-top:14px}.welcome h1{font-size:2.25rem}.grid{gap:12px}.card{padding:17px;border-radius:19px}.balance-card,.profile-card,.chart-card,.quick-card,.activity-card,.benefits-card{grid-column:span 12}.balance-number{font-size:3rem}.balance-card{min-height:260px}.profile-card{min-height:230px}.chart-area{height:145px}.demo-note{align-items:flex-start}.foot{padding:18px 3px}.date-chip{font-size:.72rem}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* BC ONE art direction v2 — editorial, tactile, deliberately non-template */
+:root{
+  color-scheme:light;
+  --bg:#f3f0e8;--panel:#fffdf8;--panel2:#f5f1e8;--line:#d8d3c8;
+  --text:#171914;--muted:#6e7068;--blue:#f05a36;--cyan:#f05a36;
+  --violet:#e7a08d;--green:#287a50;--danger:#b33c35;--radius:13px
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;letter-spacing:-.01em}
+.layout{max-width:1440px;gap:20px;padding:20px}
+.sidebar{background:#191b17;border:0;border-radius:8px;color:#f9f6ee;backdrop-filter:none;box-shadow:none;padding:20px 13px}
+.logo{letter-spacing:.08em;padding-bottom:28px}
+.logo-mark{border-radius:4px;background:#f05a36;color:#191b17;box-shadow:none}
+.logo span:last-child,.logo span:last-child span{color:#f9f6ee}
+.nav-label{color:#9b9c92;letter-spacing:.12em}
+.nav a{color:#b9baaf;border-radius:5px}
+.nav a:hover{background:#292b25;color:#fffdf8}
+.nav a.active{color:#fffdf8;background:#303129;box-shadow:inset 3px 0 #f05a36}
+.network{background:#24261f;border:1px solid #393b32;border-radius:5px;color:#b9baaf}
+.network strong{color:#fffdf8}
+.dot{background:#81c39a;box-shadow:none}
+.demo-tag{border-radius:4px;background:#f8e6df;border:1px solid #e5b9aa;color:#96391f;letter-spacing:.04em}
+.topbar{padding:5px 1px 24px}
+.crumb{color:#77786f}
+.icon-btn{background:transparent;border-color:#c9c4b8;border-radius:5px;color:#171914}
+.avatar,.member-avatar{border-radius:5px;background:#f05a36;color:#191b17;box-shadow:none}
+.welcome{margin:7px 0 25px}
+.eyebrow{color:#ba482b;letter-spacing:.14em}
+.welcome h1{font-size:clamp(2.4rem,4vw,4rem);font-weight:900;letter-spacing:-.065em;line-height:.98;max-width:720px}
+.welcome p{color:#6e7068;max-width:500px}
+.welcome p strong{color:#252720}
+.date-chip{background:transparent;border:1px solid #c9c4b8;border-radius:4px;color:#5b5d54}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 2px 0 #17191408}
+.balance-card{background:#1b1d18;color:#fffdf8;border:0;border-radius:8px}
+.balance-card:after{display:none}
+.balance-label,.balance-meta{color:#c2c1b7}
+.balance-number{font-weight:900;letter-spacing:-.08em}
+.balance-number span{color:#f05a36}
+.tiny-pill{background:#283a2d;border:1px solid #3c6347;color:#a6d5b4;border-radius:4px}
+.btn{border-radius:5px;border-color:#cbc6bb;background:#f4f0e7;color:#20221c;box-shadow:none}
+.btn:hover{border-color:#f05a36;transform:none}
+.btn.primary{background:#f05a36;color:#1b1d18;box-shadow:none}
+.btn.primary:hover{filter:brightness(.96)}
+.btn.ghost{background:transparent;color:inherit}
+.profile-card{background:#e8e2d5}
+.rank{border-radius:3px;background:#f5d9cf;border-color:#e5b19f;color:#893c26}
+.mini-stat{background:#f6f2e9;border:1px solid #d9d2c5;border-radius:5px}
+.mini-stat strong em{color:#ba482b}
+.chart-area{background:repeating-linear-gradient(to bottom,transparent 0,transparent 41px,#d9d4c8 42px,#d9d4c8 43px);border-radius:3px}
+.chart-area svg stop:first-child{stop-color:#f05a36}
+.chart-area svg stop:last-child{stop-color:#f05a36}
+.chart-area svg circle{fill:#f05a36;stroke:#fffdf8}
+.chart-legend{color:#77786f}
+.legend-dot{background:#f05a36;box-shadow:none}
+.chart-stat span{color:#77786f}
+.quick-item{background:#f8f5ee;border:1px solid #ded8cc;border-radius:5px;color:#171914}
+.quick-item:hover{background:#fffdf8;border-color:#f05a36}
+.quick-icon{background:#f5d9cf;color:#a94325;border-radius:5px}
+.quick-arrow{color:#a94325}
+.activity-row,.benefit{border-color:#e2ddd2}
+.activity-icon{background:#f8f4eb;border:1px solid #ded8cc;border-radius:5px;color:#b8482a}
+.activity-value.positive{color:#287a50}
+.activity-value.negative{color:#b33c35}
+.benefit-art{background:#f1e6d8;border-radius:5px;color:#a94325}
+.benefit-tag{background:#f5d9cf;border-color:#e5b19f;color:#893c26;border-radius:3px}
+.demo-note{background:#eee7d9;border:1px solid #d8cbbb;border-radius:5px;color:#68685f}
+.note-icon{background:#f05a36;color:#191b17;border-radius:4px}
+.foot{color:#77786f;border-top:1px solid #d8d3c8;margin-top:18px;padding-top:16px}
+dialog{background:#fffdf8;color:#171914;border:1px solid #d8d3c8;border-radius:8px;box-shadow:0 24px 80px #17191430}
+dialog::backdrop{background:#17191499;backdrop-filter:none}
+dialog p{color:#6e7068}
+label{color:#34362e}
+input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
+.close-btn{color:#6e7068}
+.toast{color:#287a50}
+@media(max-width:720px){
+ .layout{padding:10px}
+ .sidebar{border-radius:5px}
+ .logo{padding-bottom:12px}
+ .welcome h1{font-size:2.7rem}
+ .card{border-radius:5px;padding:16px}
+ .balance-card{border-radius:5px}
+ .topbar{padding-bottom:18px}
+}
+
 </style>
 </head>
 <body>
@@ -31,8 +117,8 @@ dialog{width:min(460px,calc(100% - 28px));border:1px solid #343c55;border-radius
 <a href="#profil"><span class="nav-ico">◎</span>Mon profil</a>
 </nav>
 <div class="sidebar-bottom">
-<div class="network"><strong><span class="dot"></span>Prototype opérationnel</strong>Univers BC ONE · données fictives</div>
-<div style="padding:15px 9px 0;color:#66718a;font-size:.7rem">UNE COMMUNAUTÉ. DE NOUVELLES POSSIBILITÉS.</div>
+<div class="network"><strong><span class="dot"></span>Prototype opérationnel</strong>Maquette · données fictives</div>
+<div style="padding:15px 9px 0;color:#66718a;font-size:.7rem">LE COLLECTIF, AU QUOTIDIEN.</div>
 </div>
 </aside>
 <main class="main" id="accueil">
@@ -40,7 +126,7 @@ dialog{width:min(460px,calc(100% - 28px));border:1px solid #343c55;border-radius
 <div class="crumb">Espace membre <span style="color:#525d76">/</span> <strong>Vue d’ensemble</strong></div>
 <div class="top-actions"><span class="demo-tag"><span class="dot"></span>Demo live</span><button class="icon-btn" id="helpBtn" aria-label="À propos du prototype" title="À propos">?</button><div class="user"><div class="avatar">AM</div><div class="user-copy"><strong>Alex Martin</strong><small>Membre fondateur</small></div></div></div>
 </header>
-<section class="welcome"><div><div class="eyebrow">Bienvenue dans votre univers</div><h1>Le pouvoir du collectif<span style="color:var(--cyan)">.</span></h1><p>Tout votre monde BC ONE, au même endroit. <strong>Explorez, simulez, découvrez.</strong></p></div><div class="date-chip">✦ &nbsp; BC ONE MEMBER SPACE</div></section>
+<section class="welcome"><div><div class="eyebrow">L’ESPACE BC ONE</div><h1>Vos avantages. Votre communauté<span style="color:var(--cyan)">.</span></h1><p>Un compte pour retrouver vos avantages, vos partenaires et votre activité.</p></div><div class="date-chip">BC ONE / ESPACE MEMBRE</div></section>
 <div class="grid">
 <section class="card balance-card" id="portefeuille">
 <div class="card-head"><h2>Votre portefeuille</h2><span class="subtle">Solde disponible <span style="color:var(--cyan)">●</span></span></div>
@@ -80,7 +166,7 @@ dialog{width:min(460px,calc(100% - 28px));border:1px solid #343c55;border-radius
 </section>
 <div class="demo-note"><span class="note-icon">i</span><span><strong>Prototype uniquement.</strong> Les soldes, profils, courbe et activités sont fictifs. Aucun token n’est émis, aucun portefeuille connecté, aucun paiement ni transfert réel. Les avantages partenaires ne sont pas encore contractuellement définis.</span></div>
 </div>
-<footer class="foot"><span>© BC ONE · Member experience prototype</span><span>Conçu pour une expérience mobile-first · Données fictives</span></footer>
+<footer class="foot"><span>© BC ONE · Prototype espace membre</span><span>Conçu pour une expérience mobile-first · Données fictives</span></footer>
 </main>
 </div>
 <dialog id="transferDialog" aria-labelledby="transferTitle">
