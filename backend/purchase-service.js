@@ -73,7 +73,7 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
       throw new PurchaseServiceError("PAYMENT_AMOUNT_MISMATCH", "Verified payment amount does not match purchase");
     }
 
-    if (!["pending", "paid"].includes(purchase.status)) {
+    if (!["pending", "paid", "partially_refunded", "refunded"].includes(purchase.status)) {
       throw new PurchaseServiceError("PURCHASE_NOT_PAYABLE", "Purchase is not in a payable state");
     }
 
@@ -86,7 +86,7 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
       throw new PurchaseServiceError("PURCHASE_SPLIT_INVALID", "Stored purchase commission split is inconsistent");
     }
 
-    const wasAlreadyPaid = purchase.status === "paid";
+    const wasAlreadyPaid = purchase.status !== "pending";
     if (!wasAlreadyPaid) {
       await client.query(
         `UPDATE partner_purchases
