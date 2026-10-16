@@ -69,3 +69,25 @@ test("rejects invalid refund values", () => {
     originalGrossCents: 1000, originalCommissionCents: 20, refundCents: 1001
   }), CommissionError);
 });
+
+test("property check: commission split conserves every tested cent amount", () => {
+  for (let grossCents = 1; grossCents <= 20_000; grossCents += 37) {
+    for (const commissionBps of [0, 1, 25, 100, 200, 333, 999, 5000, 9999, 10_000]) {
+      const result = calculateCommission({ grossCents, commissionBps });
+      assert.equal(result.platformCommissionCents + result.merchantNetCents, grossCents);
+      assert.ok(result.platformCommissionCents >= 0);
+      assert.ok(result.merchantNetCents >= 0);
+      assert.ok(result.platformCommissionCents <= grossCents);
+    }
+  }
+});
+
+test("commission is monotonic and uses floor-to-cent rounding", () => {
+  let previous = 0;
+  for (let grossCents = 1; grossCents <= 100_000; grossCents += 1) {
+    const commission = calculateCommission({ grossCents }).platformCommissionCents;
+    assert.ok(commission >= previous);
+    assert.equal(commission, Math.floor((grossCents * 200) / 10_000));
+    previous = commission;
+  }
+});
