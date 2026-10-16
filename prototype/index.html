@@ -22,22 +22,73 @@
 <section class="card half section-anchor" id="activite"><h2>Activité récente</h2><div id="activity"><div class="activity"><span>Bonus de bienvenue <span class="muted">· démo</span></span><strong class="plus">+200</strong></div><div class="activity"><span>Transfert reçu <span class="muted">· démo</span></span><strong class="plus">+50</strong></div></div><p class="muted" style="font-size:.8rem">Historique fictif — aucune transaction blockchain n’a eu lieu.</p></section>
 <section class="card wide section-anchor" id="fonctionnement"><h2>Comment fonctionne la démo ?</h2><div class="grid"><div style="grid-column:span 4"><strong>01 — Découvrir</strong><p class="muted">Comprendre les avantages et les règles de la communauté.</p></div><div style="grid-column:span 4"><strong>02 — Simuler</strong><p class="muted">Tester un transfert entre profils fictifs, sans portefeuille réel.</p></div><div style="grid-column:span 4"><strong>03 — Clarifier</strong><p class="muted">Les droits, l’offre et le cadre juridique restent à définir avant tout pilote.</p></div></div><div class="notice">BCONE fictif n’a aucune valeur monétaire. Pas de vente, de conversion, de portefeuille connecté ou de promesse de remboursement.</div></section>
 </main>
-<section class="card wide section-anchor" id="faq" style="margin-top:16px"><h2>Questions fréquentes</h2><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Les BCONE affichés sont-ils de vrais tokens ?</summary><p class="muted">Non. Le solde, les profils et les opérations sont fictifs et restent dans la page. Aucun token n’est créé ou envoyé.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Comment gagner ou utiliser des BC ONE ?</summary><p class="muted">Les règles d’attribution et d’utilisation ne sont pas encore décidées. Cette maquette ne constitue pas une offre commerciale.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Les avantages à La Cabane sont-ils garantis ?</summary><p class="muted">Non. L’avantage affiché est une illustration. Toute offre réelle devra préciser les conditions, la durée, les limites et les modalités d’utilisation.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Puis-je envoyer des BCONE à quelqu’un ?</summary><p class="muted">Uniquement dans la simulation locale de cette page. Il n’y a ni compte réel, ni portefeuille, ni transaction blockchain.</p></details></section><footer>BC ONE · Prototype de conception · Aucun service financier · Aucun contrat déployé · Les données sont réinitialisées au rechargement de la page.</footer>
+<section class="card wide section-anchor" id="faq" style="margin-top:16px"><h2>Questions fréquentes</h2><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Les BCONE affichés sont-ils de vrais tokens ?</summary><p class="muted">Non. Le solde, les profils et les opérations sont fictifs et restent dans la page. Aucun token n’est créé ou envoyé.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Comment gagner ou utiliser des BC ONE ?</summary><p class="muted">Les règles d’attribution et d’utilisation ne sont pas encore décidées. Cette maquette ne constitue pas une offre commerciale.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Les avantages à La Cabane sont-ils garantis ?</summary><p class="muted">Non. L’avantage affiché est une illustration. Toute offre réelle devra préciser les conditions, la durée, les limites et les modalités d’utilisation.</p></details><details style="border-top:1px solid var(--line);padding:12px 0"><summary style="cursor:pointer;font-weight:700">Puis-je envoyer des BCONE à quelqu’un ?</summary><p class="muted">Uniquement dans la simulation locale de cette page. Il n’y a ni compte réel, ni portefeuille, ni transaction blockchain.</p></details></section><footer>BC ONE · Prototype de conception · Aucun service financier · Aucun contrat déployé · Les données de démonstration sont sauvegardées uniquement dans le stockage local de ce navigateur et peuvent être effacées via Réinitialiser la démo.</footer>
 </div>
 <dialog id="transferDialog"><button class="btn close" id="closeTransfer" type="button">Fermer</button><h2>Simuler un transfert</h2><p class="muted">Simulation locale entre profils fictifs. Pas de réseau blockchain ni de frais réels.</p><form id="transferForm"><label for="recipient">Destinataire de démonstration</label><input id="recipient" value="Sam Dupont" maxlength="40" required><label for="amount">Montant en BCONE fictifs</label><input id="amount" type="number" min="1" max="250" step="1" value="25" required><div class="notice" style="margin-top:14px">Le transfert sera enregistré uniquement dans cette page. Il ne crée ni n’envoie de crypto-actifs.</div><div class="actions"><button class="btn primary" type="submit">Confirmer la simulation</button></div><div id="formMessage" class="toast" role="status" aria-live="polite"></div></form></dialog>
 <script>
 (function(){
- const initial=250;let balance=initial;let txs=2;
- const balanceEl=document.getElementById('balance'),countEl=document.getElementById('txcount'),activity=document.getElementById('activity'),message=document.getElementById('message'),dialog=document.getElementById('transferDialog');
- const open=document.getElementById('openTransfer'),close=document.getElementById('closeTransfer'),reset=document.getElementById('reset'),exportActivity=document.getElementById('exportActivity'),form=document.getElementById('transferForm'),amount=document.getElementById('amount'),recipient=document.getElementById('recipient'),formMessage=document.getElementById('formMessage');
+ const initialBalance=250, storageKey='bc-one-demo-v2';
+ const initialActivity=[
+  {label:'Bonus de bienvenue · démo',amount:'+200',kind:'plus'},
+  {label:'Transfert reçu · démo',amount:'+50',kind:'plus'}
+ ];
+ let balance=initialBalance, txs=2, entries=initialActivity.map(x=>({...x}));
+ const balanceEl=document.getElementById('balance'),countEl=document.getElementById('txcount');
+ const activity=document.getElementById('activity'),message=document.getElementById('message');
+ const dialog=document.getElementById('transferDialog');
+ const open=document.getElementById('openTransfer'),close=document.getElementById('closeTransfer');
+ const reset=document.getElementById('reset'),exportActivity=document.getElementById('exportActivity');
+ const form=document.getElementById('transferForm'),amount=document.getElementById('amount');
+ const recipient=document.getElementById('recipient'),formMessage=document.getElementById('formMessage');
+ function save(){
+  try{localStorage.setItem(storageKey,JSON.stringify({balance,txs,entries:entries.slice(0,100)}));}
+  catch(_){message.textContent='Sauvegarde locale indisponible : la démo fonctionne temporairement en mémoire.';}
+ }
+ function load(){
+  try{
+   const raw=localStorage.getItem(storageKey);if(!raw)return;
+   const data=JSON.parse(raw);
+   if(!data||!Number.isInteger(data.balance)||data.balance<0||data.balance>initialBalance||
+      !Number.isInteger(data.txs)||data.txs<2||!Array.isArray(data.entries)||data.entries.length>100)return;
+   if(!data.entries.every(x=>x&&typeof x.label==='string'&&x.label.length<=100&&
+      typeof x.amount==='string'&&x.amount.length<=24&&['plus','minus'].includes(x.kind)))return;
+   balance=data.balance;txs=data.txs;entries=data.entries;
+  }catch(_){/* Ignore unavailable or malformed local demo data. */}
+ }
+ function renderActivity(){
+  activity.replaceChildren();
+  entries.forEach(entry=>{
+   const row=document.createElement('div');row.className='activity';
+   const label=document.createElement('span');label.textContent=entry.label;
+   const value=document.createElement('strong');value.className=entry.kind;value.textContent=entry.amount;
+   row.append(label,value);activity.append(row);
+  });
+  if(!entries.length){const empty=document.createElement('p');empty.className='empty';empty.textContent='Aucune activité pour le moment.';activity.append(empty);}
+ }
  function refresh(){balanceEl.textContent=balance;countEl.textContent=txs;amount.max=balance;amount.value=Math.min(Number(amount.value)||1,balance)||1;}
  open.addEventListener('click',()=>{formMessage.textContent='';dialog.showModal();refresh();});
  close.addEventListener('click',()=>dialog.close());
  dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.close();});
- form.addEventListener('submit',e=>{e.preventDefault();const n=Number(amount.value),name=recipient.value.trim();if(!name||!Number.isInteger(n)||n<1||n>balance){formMessage.textContent='Vérifie le destinataire et le montant disponible.';return;}balance-=n;txs++;const row=document.createElement('div');row.className='activity';const label=document.createElement('span');label.textContent='Transfert simulé vers '+name+' ';const note=document.createElement('span');note.className='muted';note.textContent='· démo';label.appendChild(note);const value=document.createElement('strong');value.className='minus';value.textContent='−'+n;row.append(label,value);activity.prepend(row);refresh();message.textContent='Simulation effectuée. Aucun token réel n’a été transféré.';formMessage.textContent='Simulation enregistrée dans cette page.';setTimeout(()=>dialog.close(),600);});
- exportActivity.addEventListener('click',()=>{const rows=[['Activité','Montant BCONE fictifs']];activity.querySelectorAll('.activity').forEach(row=>{const label=row.querySelector('span')?.innerText.replace(/\s+/g,' ').trim()||'Activité';const value=row.querySelector('strong')?.innerText.trim()||'';rows.push([label,value]);});const csv='\uFEFF'+rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(';')).join('\r\n');const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));const link=document.createElement('a');link.href=url;link.download='bc-one-activite-demo.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);message.textContent='Export CSV téléchargé. Les données restent fictives.';});
- reset.addEventListener('click',()=>{balance=initial;txs=2;activity.innerHTML='<div class="activity"><span>Bonus de bienvenue <span class="muted">· démo</span></span><strong class="plus">+200</strong></div><div class="activity"><span>Transfert reçu <span class="muted">· démo</span></span><strong class="plus">+50</strong></div>';message.textContent='Démo réinitialisée.';refresh();});
- refresh();
+ form.addEventListener('submit',e=>{
+  e.preventDefault();const n=Number(amount.value),name=recipient.value.trim();
+  if(!name||!Number.isInteger(n)||n<1||n>balance){formMessage.textContent='Vérifie le destinataire et le montant disponible.';return;}
+  balance-=n;txs++;entries.unshift({label:'Transfert simulé vers '+name+' · démo',amount:'−'+n,kind:'minus'});entries=entries.slice(0,100);
+  renderActivity();refresh();save();message.textContent='Simulation effectuée. Aucun token réel n’a été transféré.';
+  formMessage.textContent='Simulation enregistrée localement dans ce navigateur.';setTimeout(()=>dialog.close(),600);
+ });
+ exportActivity.addEventListener('click',()=>{
+  const rows=[['Activité','Montant BCONE fictifs'],...entries.map(x=>[x.label,x.amount])];
+  const csv='\uFEFF'+rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(';')).join('\r\n');
+  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8;'}));
+  const link=document.createElement('a');link.href=url;link.download='bc-one-activite-demo.csv';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);
+  message.textContent='Export CSV téléchargé. Les données restent fictives.';
+ });
+ reset.addEventListener('click',()=>{
+  balance=initialBalance;txs=2;entries=initialActivity.map(x=>({...x}));
+  try{localStorage.removeItem(storageKey);}catch(_){}
+  renderActivity();refresh();message.textContent='Démo réinitialisée et sauvegarde locale effacée.';
+ });
+ load();renderActivity();refresh();
 })();
 </script>
 </body>
