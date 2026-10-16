@@ -29,9 +29,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.x"
+      - name: Check Burger ID module syntax
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+          html = Path("burger-id.html").read_text(encoding="utf-8")
+          scripts = re.findall(r'<script type="module">(.*?)</script>', html, re.S)
+          if len(scripts) != 1:
+              raise SystemExit(f"Expected one module script, found {len(scripts)}")
+          Path("/tmp/burger-id.mjs").write_text(scripts[0], encoding="utf-8")
+          PY
+          node --check /tmp/burger-id.mjs
       - name: Check homepage, Burger ID and migrations
         run: python prototype/check_public_site.py
