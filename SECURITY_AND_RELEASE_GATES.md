@@ -4,9 +4,10 @@
 
 ## Current state
 
-- Development branch only; not merged or deployed.
-- Read-only API foundation, commission calculation module and draft PostgreSQL schema.
-- No payment provider, merchant settlement, login, real customer data or token issuance is active.
+- The interface and technical foundation have been merged into `main`; the public GitHub Pages prototype is deployed.
+- Public deployment is a demo site, not a production payment platform or production backend.
+- Burger ID remains inactive until a shared Supabase project is configured and the reviewed migrations are applied and tested.
+- No payment provider, merchant settlement, live customer database, real-money transaction or token issuance is active.
 - Commission math is deterministic and expressed in integer cents / basis points.
 - Automated checks cover unit tests and a PostgreSQL schema smoke test.
 
