@@ -8,6 +8,15 @@ function mockSupabase() {
     signUp: async (payload) => (calls.push(["signUp", payload]), { data: { user: { id: "user-test" } }, error: null }),
     signInWithPassword: async (payload) => (calls.push(["signInWithPassword", payload]), { data: { session: { access_token: "test-only" } }, error: null }),
     signOut: async () => (calls.push(["signOut"]), { error: null }),
+    from: (table) => ({
+      select: (columns) => ({
+        eq: (column, value) => ({
+          single: async () => (calls.push(["select", table, columns, column, value]), {
+            data: { trial_tokens: 1 }, error: null
+          })
+        })
+      })
+    }),
     resetPasswordForEmail: async (...args) => (calls.push(["resetPasswordForEmail", ...args]), { error: null }),
     getSession: async () => (calls.push(["getSession"]), { data: { session: null }, error: null }),
     onAuthStateChange: (callback) => (calls.push(["onAuthStateChange", callback]), { data: { subscription: { unsubscribe() {} } } })
@@ -57,4 +66,14 @@ test("Burger ID adapter rejects missing inputs and invalid auth callbacks", asyn
   await assert.rejects(adapter.signUp({ email: "x@example.com", password: "" }), /password is required/);
   await assert.rejects(adapter.requestPasswordReset({ email: "" }), /email is required/);
   assert.throws(() => adapter.onAuthStateChange(null), /callback must be a function/);
+});
+
+
+test("Burger ID adapter reads the server-controlled trial balance for the signed-in user", async () => {
+  const { client, calls } = mockSupabase();
+  const adapter = createBurgerIdAdapter(client);
+  const result = await adapter.getTrialBalance("user-test");
+  assert.deepEqual(result.data, { trial_tokens: 1 });
+  assert.deepEqual(calls[0], ["select", "bc_one_member_profiles", "trial_tokens", "user_id", "user-test"]);
+  await assert.rejects(adapter.getTrialBalance(" "), /userId is required/);
 });
