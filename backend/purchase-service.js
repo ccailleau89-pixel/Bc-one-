@@ -42,7 +42,14 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
   requiredText(paymentProvider, "paymentProvider", 80);
   requiredText(providerPaymentId, "providerPaymentId", 200);
   positiveSafeInteger(amountCents, "amountCents");
-  if ((providerEventId && !providerEventType) || (!providerEventId && providerEventType)) {\n    throw new PurchaseServiceError("INVALID_EVENT", "Provider event ID and type must be supplied together");\n  }\n  if (providerEventId) {\n    requiredText(providerEventId, "providerEventId", 255);\n    requiredText(providerEventType, "providerEventType", 120);\n  }\n  if (currency !== "EUR") {
+  if ((providerEventId && !providerEventType) || (!providerEventId && providerEventType)) {
+    throw new PurchaseServiceError("INVALID_EVENT", "Provider event ID and type must be supplied together");
+  }
+  if (providerEventId) {
+    requiredText(providerEventId, "providerEventId", 255);
+    requiredText(providerEventType, "providerEventType", 120);
+  }
+  if (currency !== "EUR") {
     throw new PurchaseServiceError("CURRENCY_MISMATCH", "Only EUR purchases are supported");
   }
 
@@ -51,6 +58,21 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
   try {
     await client.query("BEGIN");
     transactionOpen = true;
+
+    if (providerEventId) {
+      const eventInsert = await client.query(
+        `INSERT INTO payment_provider_events (provider, provider_event_id, event_type)
+         VALUES ($1, $2, $3)
+         ON CONFLICT (provider, provider_event_id) DO NOTHING
+         RETURNING id`,
+        [paymentProvider, providerEventId, providerEventType]
+      );
+      if (eventInsert.rows.length === 0) {
+        await client.query("COMMIT");
+        transactionOpen = false;
+        return { purchaseId, status: "duplicate_event", duplicateNotification: true };
+      }
+    }
 
     const result = await client.query(
       `SELECT id, merchant_id, member_id, currency, gross_cents, commission_bps,
