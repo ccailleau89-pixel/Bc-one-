@@ -1,0 +1,16 @@
+{
+  "name": "bc-one-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BC ONE loyalty MVP API foundation",
+  "type": "module",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "node --test backend/server.test.js",
+    "check": "node --check backend/server.js && node --check backend/server.test.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1"
+  }
+}
