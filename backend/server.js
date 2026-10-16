@@ -131,7 +131,11 @@ async function main() {
     ssl: process.env.PGSSLMODE === "require" ? { rejectUnauthorized: true } : undefined
   });
 
+  const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
   const app = createApp({
+    pool,
+    stripe,
+    stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET,
     query: (text, values) => pool.query(text, values),
     ready: async () => {
       await pool.query("SELECT 1");
