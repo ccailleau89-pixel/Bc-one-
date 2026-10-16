@@ -155,7 +155,7 @@ def main():
         ]:
             if marker.casefold() not in welcome_migration.casefold():
                 errors.append("welcome-credit migration missing security marker: " + marker)
-        if re.search(r"grant\\s+(?:insert|update|delete|all)\\b[^;]*bc_one_demo_ledger", welcome_migration, re.I | re.S):
+        if re.search(r"grant\s+(?:insert|update|delete|all)\b[^;]*bc_one_demo_ledger", welcome_migration, re.I | re.S):
             errors.append("browser clients must not write the BC ONE demo ledger")
 
     # Node.js is available on GitHub-hosted Ubuntu runners. Locally, this
