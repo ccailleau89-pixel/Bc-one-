@@ -13,7 +13,7 @@ Le projet possède déjà une identité visuelle cohérente, plusieurs parcours 
 - **Burger ID** : page et code préparés pour une identité partagée. La configuration Supabase est vide/non raccordée selon la documentation ; aucun compte réel ne doit être considéré comme fonctionnel.
 - **Base technique** : migrations SQL préparées pour les profils et un crédit de bienvenue de démonstration. Elles doivent être relues et testées sur un projet de test avant application ; leur présence dans GitHub ne prouve pas qu'elles sont déployées.
 - **Backend / paiements** : présence de code de fondation et de tests autour des achats/Stripe, mais aucune preuve vérifiée ici d'un déploiement de production ou de paiements réellement activés.
-- **Déploiement** : les URL GitHub Pages sont configurées dans les pages. Une vérification complète du rendu live et des workflows de build n'a pas été établie par cette inspection.
+- **Déploiement** : contrôle public effectué le 17 octobre 2026 : la page BC ONE, la page Burger ID et la démo Crush Burger répondent toutes à leurs URL GitHub Pages. Les métadonnées essentielles et les liens de navigation sont présents. Ce contrôle confirme la disponibilité des pages, pas le fonctionnement d'une authentification, d'une base de données ou de fonctions de production.
 
 ## 3. Valeur potentielle
 1. **Acquisition locale** : les clients de la restauration découvrent un programme d'avantages via QR code, comptoir, événements et réseaux sociaux.
@@ -81,3 +81,10 @@ Le projet possède déjà une identité visuelle cohérente, plusieurs parcours 
 **NO-GO pour le moment** sur la vente d'un token, la promesse de valeur financière, la collecte de fonds, les paiements de production ou l'ouverture d'une application de rencontre à grande échelle.
 
 Le prochain jalon n'est pas « ajouter plus de fonctionnalités » : c'est obtenir une première preuve que des clients utilisent réellement le programme, reviennent et que l'économie des récompenses tient debout.
+
+
+## 9. Contrôle complémentaire des pages publiques — 17 octobre 2026
+- BC ONE : `https://ccailleau89-pixel.github.io/Bc-one-/` — page accessible, description et viewport mobile présents, liens vers Burger ID et Crush Burger visibles dans la navigation.
+- Burger ID : `https://ccailleau89-pixel.github.io/Bc-one-/burger-id.html` — page accessible ; le message indique explicitement que le service doit encore être raccordé à Supabase et que le formulaire ne crée pas de faux compte.
+- Crush Burger : `https://ccailleau89-pixel.github.io/crush-burger-demo/` — page accessible ; elle précise que les profils sont fictifs, les matchs simulés et les données conservées uniquement dans le navigateur.
+- Limite : ce contrôle web ne remplace pas des tests interactifs d'inscription/connexion, ni des tests d'isolation des données, ni l'exécution des migrations dans un projet Supabase.
