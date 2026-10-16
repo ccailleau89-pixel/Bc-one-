@@ -47,6 +47,18 @@ Ce prototype est une maquette HTML autonome. Il ne se connecte à aucun portefeu
 Valider cette maquette avec quelques utilisateurs, consigner leurs retours, puis définir le modèle fonctionnel. La persistance locale et le CSV ne remplacent pas un registre serveur fiable pour un vrai programme de fidélité.
 
 
+## Crédit d’essai à l’inscription
+
+La version Burger ID prévoit un crédit unique de **1 BCONE d’essai** à la création du compte. Il est enregistré côté base de données dans `bc_one_member_profiles.trial_tokens`, avec une ligne d’audit dans `bc_one_trial_ledger`. Le trigger PostgreSQL protège l’attribution contre les doubles inscriptions au même identifiant. Les clients du navigateur peuvent lire leur propre solde mais ne peuvent pas l’augmenter ou le modifier.
+
+**Important :** ce crédit est un compteur d’essai hors blockchain. Il n’est ni un token ERC-20, ni transférable, ni achetable, ni convertible en euros, et ne possède aucune valeur monétaire. Il ne doit pas être présenté comme un actif négociable.
+
+Pour activer le crédit en environnement Supabase :
+1. Configurer `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` dans l’environnement de build.
+2. Appliquer dans le projet Supabase voulu les migrations `supabase/migrations/202610160001_burger_id_profiles.sql` puis `supabase/migrations/202610160002_signup_trial_token.sql`.
+3. Vérifier avec un compte de test que l’inscription déclenche un seul crédit, qu’il apparaît après confirmation de l’e-mail et connexion, et qu’un client ne peut pas modifier son solde.
+4. Ne jamais utiliser de clé `service_role` dans le navigateur. La migration doit être relue et appliquée explicitement au bon projet ; elle n’est pas exécutée par le dépôt GitHub lui-même.
+
 ## Contrôle statique automatisé
 
 Le script `check_prototype.py` vérifie la présence des sections principales, l'unicité des identifiants HTML, les liens de navigation internes, les messages de sécurité, l'absence de scripts JavaScript externes et quelques marqueurs de validation/accessibilité. Si Node.js est installé, il vérifie aussi la syntaxe du JavaScript intégré.
