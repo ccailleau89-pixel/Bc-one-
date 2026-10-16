@@ -75,3 +75,25 @@ Ce prototype ne doit pas prendre de paiements, demander une phrase de récupéra
 ## Hors périmètre actuel
 
 Vente de tokens, paiement en euros, marché d'échange, rachat, staking, rendement, garde de clés, connexion à un portefeuille réel, collecte de données clients, contrat déployé et campagnes publiques. Chaque fonction nécessite une décision produit et une revue de risque spécifique.
+
+
+## Intégration Burger Crush — Burger ID commun
+
+Le prototype d'interface inclut désormais un espace Burger Crush et un mini-challenge jouable localement. C'est une intégration d'expérience et de design, pas encore une connexion de comptes en production.
+
+### Parcours cible
+- **Un Burger ID commun** pour ouvrir BC ONE et Burger Crush avec la même identité, le même profil de base et une récupération de compte commune.
+- **Des espaces séparés** : BC ONE gère le portefeuille/les avantages et l'historique BC ONE ; Burger Crush gère le profil joueur, les défis et les scores du jeu.
+- **Des points distincts** : les points Crush ne sont pas des BCONE et ne doivent pas être convertis automatiquement. Toute règle de récompense ou d'échange doit être décidée, documentée et approuvée avant développement.
+- **Consentement et confidentialité** : expliquer les données partagées, minimiser les données et permettre la suppression du compte selon les obligations applicables.
+- **Sécurité** : une seule authentification côté serveur (par exemple Supabase Auth après validation du projet), sessions sécurisées, autorisations côté serveur et journalisation des événements sensibles. Aucun mot de passe ne doit être conservé dans le frontend.
+
+### Critères avant d'activer les comptes réels
+- [ ] Choisir et configurer un seul projet d'authentification partagé par les deux expériences.
+- [ ] Ajouter des tests de connexion, déconnexion, récupération, expiration de session et accès non autorisé.
+- [ ] Définir le modèle de données et la séparation des droits entre compte commun, profil joueur et portefeuille.
+- [ ] Vérifier que les scores du jeu ne peuvent pas créditer directement un solde financier ou token.
+- [ ] Rédiger les mentions de confidentialité et les conditions de service applicables.
+- [ ] Tester les flux sur mobile et sur plusieurs navigateurs avant un déploiement.
+
+**État actuel :** Burger ID #BC-0024 est fictif dans la maquette ; le mini-challenge ne produit que des points Crush fictifs dans l'interface. La connexion partagée réelle n'est pas encore active.
