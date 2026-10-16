@@ -23,10 +23,11 @@ export function calculateCommission({ grossCents, commissionBps = DEFAULT_COMMIS
   }
 
   // Floor to the nearest cent, ensuring merchantNet + platformCommission = gross.
-  const platformCommissionCents = Math.floor((grossCents * commissionBps) / BASIS_POINTS);
-  if (!Number.isSafeInteger(platformCommissionCents)) {
+  const platformCommissionBigInt = (BigInt(grossCents) * BigInt(commissionBps)) / BigInt(BASIS_POINTS);
+  if (platformCommissionBigInt > BigInt(Number.MAX_SAFE_INTEGER)) {
     throw new CommissionError("AMOUNT_OVERFLOW", "Amount exceeds safe calculation range");
   }
+  const platformCommissionCents = Number(platformCommissionBigInt);
 
   return {
     grossCents,
@@ -50,7 +51,7 @@ export function calculateCommissionReversal({ originalGrossCents, originalCommis
   }
   const commissionReversalCents = refundCents === originalGrossCents
     ? originalCommissionCents
-    : Math.floor((originalCommissionCents * refundCents) / originalGrossCents);
+    : Number((BigInt(originalCommissionCents) * BigInt(refundCents)) / BigInt(originalGrossCents));
   return {
     refundCents,
     commissionReversalCents,
