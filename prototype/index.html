@@ -7,6 +7,9 @@
 <meta name="description" content="BC ONE — prototype d'interface membre, portefeuille fictif et avantages de la communauté.">
 <title>BC ONE — Espace membre</title>
 <style>
+/* Burger ID auth UI */
+.auth-form select{width:100%;border:1px solid #343c52;background:#0b0f18;color:var(--text);padding:12px;border-radius:12px}.auth-form input[hidden]{display:none}.auth-status{min-height:36px;margin-top:12px;font-size:.78rem;color:var(--muted)}.auth-caption{font-size:.74rem;color:var(--muted);margin-top:10px}.auth-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
 :root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#151a29;--line:#272d40;--text:#f5f7ff;--muted:#929bb3;--blue:#7c8cff;--cyan:#61e6e0;--violet:#b58cff;--green:#7be2b0;--danger:#ff9aaf;--radius:22px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 68% -10%,#22204b 0,transparent 38%),radial-gradient(ellipse at 5% 45%,#102a3a 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}button:disabled{opacity:.4;cursor:not-allowed}
 .layout{max-width:1500px;margin:auto;padding:22px;display:grid;grid-template-columns:238px minmax(0,1fr);gap:22px}.sidebar{position:sticky;top:22px;height:calc(100vh - 44px);min-height:620px;display:flex;flex-direction:column;padding:20px 14px;background:#0e111bdc;border:1px solid #252b3c;border-radius:26px;backdrop-filter:blur(20px)}.logo{display:flex;align-items:center;gap:11px;padding:4px 8px 30px;font-weight:950;letter-spacing:.16em;font-size:1.05rem}.logo-mark{width:37px;height:37px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--blue) 58%,var(--violet));color:#0b1020;letter-spacing:-.12em;font-weight:1000;box-shadow:0 8px 28px #7c8cff35}.logo span:last-child{color:var(--cyan)}.nav-label{padding:8px 12px;color:#6f7891;font-size:.67rem;text-transform:uppercase;letter-spacing:.17em;font-weight:850}.nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;color:var(--muted);border-radius:13px;font-size:.88rem;transition:background .2s,color .2s}.nav a:hover{background:#171d2c;color:var(--text)}.nav a.active{color:#fff;background:linear-gradient(100deg,#7c8cff28,#61e6e011);box-shadow:inset 2px 0 var(--cyan)}.nav-ico{width:21px;text-align:center;font-size:1rem}.sidebar-bottom{margin-top:auto}.network{padding:13px;border:1px solid var(--line);background:#111722;border-radius:15px;font-size:.78rem;color:var(--muted)}.network strong{display:block;color:var(--text);margin-bottom:5px}.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 12px #7be2b0a0}.demo-tag{display:inline-flex;align-items:center;gap:7px;color:#d9dfff;background:#7c8cff15;border:1px solid #7c8cff40;border-radius:30px;padding:7px 10px;font-size:.69rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
@@ -125,7 +128,7 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <main class="main" id="accueil">
 <header class="topbar">
 <div class="crumb">Espace membre <span style="color:#525d76">/</span> <strong>Vue d’ensemble</strong></div>
-<div class="top-actions"><span class="demo-tag"><span class="dot"></span>Demo live</span><button class="icon-btn" id="helpBtn" aria-label="À propos du prototype" title="À propos">?</button><div class="user"><div class="avatar">AM</div><div class="user-copy"><strong>Alex Martin</strong><small>Membre fondateur</small></div></div></div>
+<div class="top-actions"><span class="demo-tag"><span class="dot"></span>Demo live</span><button class="btn" id="burgerIdOpen" aria-label="Se connecter avec Burger ID">Connexion</button><button class="icon-btn" id="helpBtn" aria-label="À propos du prototype" title="À propos">?</button><div class="user"><div class="avatar">AM</div><div class="user-copy"><strong id="memberName">Alex Martin</strong><small id="memberLabel">Mode démonstration</small></div></div></div>
 </header>
 <section class="welcome"><div><div class="eyebrow">L’ESPACE BC ONE</div><h1>Vos avantages. Votre communauté<span style="color:var(--cyan)">.</span></h1><p>Un compte pour retrouver vos avantages, vos partenaires et votre activité.</p></div><div class="date-chip">BC ONE / ESPACE MEMBRE</div></section>
 <div class="grid">
@@ -189,6 +192,20 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="eyebrow" style="color:#ffbd7e">Mini-challenge de démonstration</div><h2 id="crushTitle" style="margin:8px 0">Crush it. Level up.</h2><p>Appuie sur le burger 10 fois pour tester l’expérience. Les points restent fictifs et ne sont pas convertis en BCONE.</p>
 <div style="display:grid;place-items:center;padding:14px"><button id="crushTap" aria-label="Appuyer pour gagner un point Crush" style="width:150px;height:150px;border-radius:42px;border:1px solid #ffbd7e66;background:radial-gradient(circle at 30% 20%,#ffd98e,#ff9c5b 70%);font-size:4.4rem;box-shadow:0 18px 55px #ff9d4230;transition:transform .1s">🍔</button><div style="margin-top:16px;font-size:1.7rem;font-weight:900"><span id="crushRound">0</span><span style="color:#7f8ba9"> / 10</span></div><div id="crushMessage" class="toast" role="status" aria-live="polite">Prêt ? À toi de jouer.</div></div>
 <div class="dialog-actions"><button class="btn" id="resetCrush">Recommencer</button><button class="btn primary" id="finishCrush">Terminer</button></div>
+</dialog>
+<dialog id="burgerIdDialog" aria-labelledby="burgerIdTitle">
+<div class="close-row"><div class="logo"><span class="logo-mark">B.</span><span>BURGER <span> ID</span></span></div><button class="close-btn" id="burgerIdClose" aria-label="Fermer">×</button></div>
+<h2 id="burgerIdTitle">Un seul compte. Deux expériences.</h2>
+<p>Connectez-vous à BC ONE et Burger Crush avec le même Burger ID. Vos données de jeu restent distinctes de vos données BC ONE.</p>
+<form id="burgerIdForm" class="auth-form">
+<label for="burgerIdMode">Action</label>
+<select id="burgerIdMode" name="mode"><option value="signin">Se connecter</option><option value="signup">Créer un compte</option><option value="reset">Récupérer mon mot de passe</option></select>
+<label for="burgerIdEmail">Adresse e-mail</label><input id="burgerIdEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+<label for="burgerIdPassword">Mot de passe</label><input id="burgerIdPassword" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required>
+<div class="dialog-actions"><button class="btn ghost" id="burgerIdSignOut" type="button">Se déconnecter</button><button class="btn primary" id="burgerIdSubmit" type="submit">Se connecter</button></div>
+<div id="burgerIdStatus" class="auth-status" role="status" aria-live="polite">Configuration Supabase requise.</div>
+<div class="auth-caption">Sécurité : la clé de navigateur doit être une clé publique Supabase. Ne jamais utiliser une clé service_role ici.</div>
+</form>
 </dialog>
 <dialog id="helpDialog" aria-labelledby="helpTitle"><div class="close-row"><h2 id="helpTitle">À propos de BC ONE</h2><button class="close-btn" id="closeHelp" aria-label="Fermer">×</button></div><p>Vous explorez une maquette interactive de l’espace membre BC ONE. Les données restent locales dans votre navigateur. Aucun token, compte financier ou paiement réel n’est connecté.</p><button class="btn primary" id="helpOk">Compris</button></dialog>
 <script>
@@ -307,5 +324,6 @@ document.querySelectorAll(".nav a").forEach(link=>link.addEventListener("click",
 load();renderActivity();refresh();
 })();
 </script>
+<script type="module" src="./burger-id-ui.js"></script>
 </body>
 </html>
