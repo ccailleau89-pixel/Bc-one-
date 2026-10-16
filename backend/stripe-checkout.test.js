@@ -77,7 +77,7 @@ test("rejects an invalid purchase identifier before querying the database", asyn
   let queried = false;
   const pool = { query: async () => { queried = true; return { rows: [] }; } };
   await assert.rejects(
-    createPartnerCheckoutSession({ pool, stripe: {}, purchaseId: "not-a-uuid", baseUrl: "https://bc-one.example" }),
+    createPartnerCheckoutSession({ pool, stripe: { checkout: { sessions: { create: async () => { throw new Error("must not create"); } } } }, purchaseId: "not-a-uuid", baseUrl: "https://bc-one.example" }),
     (error) => error instanceof PurchaseServiceError && error.code === "INVALID_INPUT"
   );
   assert.equal(queried, false);
