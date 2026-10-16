@@ -32,7 +32,7 @@ function makePool({ initialPurchase = { ...purchase }, existingEntry = null } = 
       if (sql.includes("UPDATE partner_purchases")) {
         state.purchase.status = "paid";
         state.purchase.paid_at = "2026-10-16T00:00:00Z";
-        return { rows: [] };
+        return { rows: [], rowCount: 1 };
       }
       if (sql.includes("INSERT INTO purchase_commission_entries")) {
         const [id, purchaseId, amount, key] = values;
