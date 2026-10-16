@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#090b12">
+<meta name="description" content="BC ONE — prototype d'interface membre, portefeuille fictif et avantages de la communauté.">
+<title>BC ONE — Espace membre</title>
+<style>
+/* Burger ID auth UI */
+.auth-form select{width:100%;border:1px solid #343c52;background:#0b0f18;color:var(--text);padding:12px;border-radius:12px}.auth-form input[hidden]{display:none}.auth-status{min-height:36px;margin-top:12px;font-size:.78rem;color:var(--muted)}.auth-caption{font-size:.74rem;color:var(--muted);margin-top:10px}.auth-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+
+:root{color-scheme:dark;--bg:#090b12;--panel:#111521;--panel2:#151a29;--line:#272d40;--text:#f5f7ff;--muted:#929bb3;--blue:#7c8cff;--cyan:#61e6e0;--violet:#b58cff;--green:#7be2b0;--danger:#ff9aaf;--radius:22px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 68% -10%,#22204b 0,transparent 38%),radial-gradient(ellipse at 5% 45%,#102a3a 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}button,a{ -webkit-tap-highlight-color:transparent}button{cursor:pointer}a{color:inherit;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}button:disabled{opacity:.4;cursor:not-allowed}
+.layout{max-width:1500px;margin:auto;padding:22px;display:grid;grid-template-columns:238px minmax(0,1fr);gap:22px}.sidebar{position:sticky;top:22px;height:calc(100vh - 44px);min-height:620px;display:flex;flex-direction:column;padding:20px 14px;background:#0e111bdc;border:1px solid #252b3c;border-radius:26px;backdrop-filter:blur(20px)}.logo{display:flex;align-items:center;gap:11px;padding:4px 8px 30px;font-weight:950;letter-spacing:.16em;font-size:1.05rem}.logo-mark{width:37px;height:37px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(135deg,var(--cyan),var(--blue) 58%,var(--violet));color:#0b1020;letter-spacing:-.12em;font-weight:1000;box-shadow:0 8px 28px #7c8cff35}.logo span:last-child{color:var(--cyan)}.nav-label{padding:8px 12px;color:#6f7891;font-size:.67rem;text-transform:uppercase;letter-spacing:.17em;font-weight:850}.nav{display:grid;gap:5px}.nav a{display:flex;align-items:center;gap:12px;padding:11px 12px;color:var(--muted);border-radius:13px;font-size:.88rem;transition:background .2s,color .2s}.nav a:hover{background:#171d2c;color:var(--text)}.nav a.active{color:#fff;background:linear-gradient(100deg,#7c8cff28,#61e6e011);box-shadow:inset 2px 0 var(--cyan)}.nav-ico{width:21px;text-align:center;font-size:1rem}.sidebar-bottom{margin-top:auto}.network{padding:13px;border:1px solid var(--line);background:#111722;border-radius:15px;font-size:.78rem;color:var(--muted)}.network strong{display:block;color:var(--text);margin-bottom:5px}.dot{display:inline-block;width:7px;height:7px;background:var(--green);border-radius:50%;margin-right:7px;box-shadow:0 0 12px #7be2b0a0}.demo-tag{display:inline-flex;align-items:center;gap:7px;color:#d9dfff;background:#7c8cff15;border:1px solid #7c8cff40;border-radius:30px;padding:7px 10px;font-size:.69rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.main{min-width:0}.topbar{display:flex;justify-content:space-between;align-items:center;gap:18px;padding:5px 3px 22px}.crumb{color:var(--muted);font-size:.84rem}.crumb strong{color:var(--text)}.top-actions{display:flex;align-items:center;gap:12px}.icon-btn{width:41px;height:41px;display:grid;place-items:center;background:#121724;border:1px solid var(--line);border-radius:13px;color:var(--text)}.user{display:flex;align-items:center;gap:10px}.avatar{width:39px;height:39px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#b58cff,#7188ff);color:#11101d;font-weight:950}.user strong{display:block;font-size:.83rem}.user small{color:var(--muted);font-size:.72rem}.welcome{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;margin:8px 0 24px}.eyebrow{color:var(--cyan);text-transform:uppercase;letter-spacing:.2em;font-size:.68rem;font-weight:900}.welcome h1{font-size:clamp(2rem,3.5vw,3rem);line-height:1.08;letter-spacing:-.055em;margin:9px 0 10px}.welcome p{margin:0;color:var(--muted);max-width:570px}.welcome p strong{color:#e5e9ff;font-weight:650}.date-chip{flex-shrink:0;padding:10px 13px;border:1px solid var(--line);border-radius:13px;background:#111521;color:#c4cce2;font-size:.78rem}
+.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:16px}.card{min-width:0;border:1px solid #272d40;background:linear-gradient(145deg,#141927eF,#10141fF2);border-radius:var(--radius);padding:21px;box-shadow:0 12px 35px #00000012}.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.card-head h2{font-size:.91rem;margin:0;font-weight:800;letter-spacing:-.01em}.subtle{color:var(--muted);font-size:.76rem}.balance-card{grid-column:span 7;position:relative;overflow:hidden;min-height:290px;background:radial-gradient(ellipse at 85% 25%,#7067ff29,transparent 38%),linear-gradient(135deg,#171c30,#111521 70%)}.balance-card:after{content:"";position:absolute;width:280px;height:280px;right:-100px;bottom:-150px;border:1px solid #a1a7ff20;border-radius:50%;box-shadow:0 0 0 24px #a1a7ff08,0 0 0 52px #a1a7ff06;pointer-events:none}.balance-label{color:#aeb8d4;font-size:.81rem}.balance-number{font-size:clamp(2.7rem,5vw,4rem);letter-spacing:-.075em;line-height:1.15;font-weight:900;margin:9px 0 8px}.balance-number span{font-size:.92rem;letter-spacing:-.02em;color:#aeb9ff;font-weight:750}.balance-meta{display:flex;align-items:center;gap:9px;flex-wrap:wrap;color:var(--muted);font-size:.77rem}.tiny-pill{padding:4px 8px;border:1px solid #7be2b033;background:#7be2b00e;color:var(--green);border-radius:8px;font-size:.7rem;font-weight:800}.balance-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:25px;position:relative;z-index:1}.btn{display:inline-flex;justify-content:center;align-items:center;gap:9px;padding:11px 15px;border:1px solid #343b51;border-radius:12px;background:#1b2131;color:var(--text);font-weight:750;font-size:.81rem;transition:transform .18s,border-color .18s,filter .18s}.btn:hover{transform:translateY(-1px);border-color:#6774a1}.btn.primary{background:linear-gradient(105deg,#61e6e0,#9ba7ff);color:#0a1120;border:0;box-shadow:0 8px 25px #61e6e01c}.btn.primary:hover{filter:brightness(1.07)}.btn.ghost{background:#ffffff04}.profile-card{grid-column:span 5;min-height:290px;display:flex;flex-direction:column}.member-visual{display:flex;align-items:center;gap:14px;padding:5px 0 18px}.member-avatar{width:58px;height:58px;display:grid;place-items:center;border-radius:19px;background:linear-gradient(145deg,#61e6e0,#798aff 58%,#bd8aff);color:#0b1020;font-size:1.15rem;font-weight:1000;box-shadow:0 10px 25px #7c8cff20}.member-visual h3{margin:0 0 3px;font-size:1rem}.member-visual p{margin:0;color:var(--muted);font-size:.77rem}.rank{margin-left:auto;align-self:flex-start;color:#d9d4ff;background:#9e85ff15;border:1px solid #9e85ff40;border-radius:9px;padding:5px 8px;font-size:.68rem;font-weight:850}.member-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:auto}.mini-stat{background:#0c101a;border:1px solid #252b3d;border-radius:14px;padding:13px}.mini-stat span{display:block;color:var(--muted);font-size:.72rem}.mini-stat strong{display:block;font-size:1.15rem;margin-top:5px}.mini-stat strong em{font-style:normal;color:var(--cyan);font-size:.72rem;font-weight:750}.chart-card{grid-column:span 7}.chart-area{height:170px;position:relative;margin-top:7px;background:repeating-linear-gradient(to bottom,transparent 0,transparent 41px,#29304480 42px,#29304480 43px);border-radius:10px;overflow:hidden}.chart-area svg{width:100%;height:100%;overflow:visible}.chart-labels{display:flex;justify-content:space-between;color:#717b94;font-size:.68rem;padding-top:9px}.chart-legend{display:flex;align-items:center;gap:7px;color:var(--muted);font-size:.74rem}.legend-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);box-shadow:0 0 10px #61e6e077}.chart-stat{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}.chart-stat strong{font-size:1.55rem;letter-spacing:-.04em}.chart-stat span{font-size:.74rem;color:var(--green)}.quick-card{grid-column:span 5}.quick-list{display:grid;gap:10px}.quick-item{display:flex;align-items:center;gap:12px;padding:12px;background:#0d121e;border:1px solid #252b3d;border-radius:15px;text-align:left;width:100%;color:var(--text)}.quick-item:hover{border-color:#6977a7;background:#151b2a}.quick-icon{width:39px;height:39px;display:grid;place-items:center;border-radius:12px;background:#7c8cff17;color:#aab5ff;font-size:1.05rem}.quick-item strong{display:block;font-size:.81rem}.quick-item small{display:block;color:var(--muted);font-size:.7rem;margin-top:2px}.quick-arrow{margin-left:auto;color:#7f8ba9;font-size:1.1rem}.activity-card{grid-column:span 7}.activity-list{display:grid}.activity-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #272d3b}.activity-row:first-child{border-top:0}.activity-icon{width:38px;height:38px;flex-shrink:0;display:grid;place-items:center;border:1px solid #2a3345;border-radius:13px;background:#111827;color:var(--cyan)}.activity-copy{min-width:0;flex:1}.activity-copy strong{display:block;font-size:.81rem;overflow-wrap:anywhere}.activity-copy small{display:block;color:var(--muted);font-size:.7rem;margin-top:3px}.activity-value{font-weight:850;font-size:.84rem;white-space:nowrap}.positive{color:var(--green)}.negative{color:var(--danger)}.benefits-card{grid-column:span 5}.benefit{display:flex;align-items:center;gap:12px;padding:13px 0;border-top:1px solid #272d3b}.benefit:first-of-type{border-top:0}.benefit-art{width:45px;height:45px;display:grid;place-items:center;flex-shrink:0;border-radius:14px;background:linear-gradient(145deg,#2a3150,#1a2137);font-size:1.1rem}.benefit-copy{flex:1;min-width:0}.benefit-copy strong{display:block;font-size:.79rem}.benefit-copy small{display:block;color:var(--muted);font-size:.69rem;margin-top:3px}.benefit-tag{color:#c7d1ff;border:1px solid #788bff40;background:#7c8cff10;padding:5px 7px;border-radius:8px;font-size:.67rem;font-weight:800;white-space:nowrap}.demo-note{grid-column:span 12;display:flex;align-items:center;gap:12px;border:1px solid #5a4b843d;background:linear-gradient(100deg,#7c8cff0d,#b58cff0b);border-radius:16px;padding:14px 16px;color:#aeb8d0;font-size:.76rem}.note-icon{width:30px;height:30px;display:grid;place-items:center;flex-shrink:0;border-radius:10px;background:#9a86ff19;color:#c1b0ff}.demo-note strong{color:#e4e8ff}.foot{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#68728b;font-size:.68rem;padding:20px 3px 4px}
+dialog{width:min(460px,calc(100% - 28px));border:1px solid #343c55;border-radius:23px;background:#111622;color:var(--text);padding:24px;box-shadow:0 30px 100px #000b}dialog::backdrop{background:#03050bd9;backdrop-filter:blur(7px)}dialog h2{margin:0 0 7px;letter-spacing:-.03em}dialog p{margin:0 0 20px;color:var(--muted);font-size:.83rem}label{display:block;color:#c2c9dc;font-size:.76rem;font-weight:750;margin:13px 0 6px}input{width:100%;border:1px solid #343c52;background:#0b0f18;color:var(--text);padding:12px;border-radius:12px}input:focus{border-color:var(--cyan)}.dialog-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:20px}.toast{min-height:22px;margin-top:12px;color:var(--green);font-size:.78rem}.close-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}.close-row .logo-mark{width:31px;height:31px;border-radius:10px}.close-btn{border:0;background:transparent;color:var(--muted);font-size:1.3rem;padding:4px 8px}.empty{color:var(--muted);font-size:.8rem;padding:18px 0}
+@media(max-width:1100px){.layout{grid-template-columns:205px minmax(0,1fr);gap:15px;padding:15px}.balance-card,.chart-card,.activity-card{grid-column:span 12}.profile-card,.quick-card,.benefits-card{grid-column:span 6}.balance-card{min-height:270px}.profile-card{min-height:240px}}
+@media(max-width:720px){.layout{display:block;padding:12px}.sidebar{position:static;height:auto;min-height:0;padding:12px;border-radius:19px;margin-bottom:15px}.logo{padding:1px 5px 12px}.nav-label,.sidebar-bottom{display:none}.nav{display:flex;overflow-x:auto;gap:4px;padding-bottom:1px}.nav a{flex-shrink:0;white-space:nowrap;font-size:.75rem;padding:9px 10px}.nav-ico{display:none}.topbar{padding:6px 3px 16px}.user .user-copy{display:none}.top-actions{gap:8px}.welcome{display:block;margin:7px 0 19px}.date-chip{display:inline-block;margin-top:14px}.welcome h1{font-size:2.25rem}.grid{gap:12px}.card{padding:17px;border-radius:19px}.balance-card,.profile-card,.chart-card,.quick-card,.activity-card,.benefits-card{grid-column:span 12}.balance-number{font-size:3rem}.balance-card{min-height:260px}.profile-card{min-height:230px}.chart-area{height:145px}.demo-note{align-items:flex-start}.foot{padding:18px 3px}.date-chip{font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* BC ONE art direction v2 — editorial, tactile, deliberately non-template */
+:root{
+  color-scheme:light;
+  --bg:#f3f0e8;--panel:#fffdf8;--panel2:#f5f1e8;--line:#d8d3c8;
+  --text:#171914;--muted:#6e7068;--blue:#f05a36;--cyan:#f05a36;
+  --violet:#e7a08d;--green:#287a50;--danger:#b33c35;--radius:13px
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;letter-spacing:-.01em}
+.layout{max-width:1440px;gap:20px;padding:20px}
+.sidebar{background:#191b17;border:0;border-radius:8px;color:#f9f6ee;backdrop-filter:none;box-shadow:none;padding:20px 13px}
+.logo{letter-spacing:.08em;padding-bottom:28px}
+.logo-mark{border-radius:4px;background:#f05a36;color:#191b17;box-shadow:none}
+.logo span:last-child,.logo span:last-child span{color:#f9f6ee}
+.nav-label{color:#9b9c92;letter-spacing:.12em}
+.nav a{color:#b9baaf;border-radius:5px}
+.nav a:hover{background:#292b25;color:#fffdf8}
+.nav a.active{color:#fffdf8;background:#303129;box-shadow:inset 3px 0 #f05a36}
+.network{background:#24261f;border:1px solid #393b32;border-radius:5px;color:#b9baaf}
+.network strong{color:#fffdf8}
+.dot{background:#81c39a;box-shadow:none}
+.demo-tag{border-radius:4px;background:#f8e6df;border:1px solid #e5b9aa;color:#96391f;letter-spacing:.04em}
+.topbar{padding:5px 1px 24px}
+.crumb{color:#77786f}
+.icon-btn{background:transparent;border-color:#c9c4b8;border-radius:5px;color:#171914}
+.avatar,.member-avatar{border-radius:5px;background:#f05a36;color:#191b17;box-shadow:none}
+.welcome{margin:7px 0 25px}
+.eyebrow{color:#ba482b;letter-spacing:.14em}
+.welcome h1{font-size:clamp(2.4rem,4vw,4rem);font-weight:900;letter-spacing:-.065em;line-height:.98;max-width:720px}
+.welcome p{color:#6e7068;max-width:500px}
+.welcome p strong{color:#252720}
+.date-chip{background:transparent;border:1px solid #c9c4b8;border-radius:4px;color:#5b5d54}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 2px 0 #17191408}
+.balance-card{background:#1b1d18;color:#fffdf8;border:0;border-radius:8px}
+.balance-card:after{display:none}
+.balance-label,.balance-meta{color:#c2c1b7}
+.balance-number{font-weight:900;letter-spacing:-.08em}
+.balance-number span{color:#f05a36}
+.tiny-pill{background:#283a2d;border:1px solid #3c6347;color:#a6d5b4;border-radius:4px}
+.btn{border-radius:5px;border-color:#cbc6bb;background:#f4f0e7;color:#20221c;box-shadow:none}
+.btn:hover{border-color:#f05a36;transform:none}
+.btn.primary{background:#f05a36;color:#1b1d18;box-shadow:none}
+.btn.primary:hover{filter:brightness(.96)}
+.btn.ghost{background:transparent;color:inherit}
+.profile-card{background:#e8e2d5}
+.rank{border-radius:3px;background:#f5d9cf;border-color:#e5b19f;color:#893c26}
+.mini-stat{background:#f6f2e9;border:1px solid #d9d2c5;border-radius:5px}
+.mini-stat strong em{color:#ba482b}
+.chart-area{background:repeating-linear-gradient(to bottom,transparent 0,transparent 41px,#d9d4c8 42px,#d9d4c8 43px);border-radius:3px}
+.chart-area svg stop:first-child{stop-color:#f05a36}
+.chart-area svg stop:last-child{stop-color:#f05a36}
+.chart-area svg circle{fill:#f05a36;stroke:#fffdf8}
+.chart-legend{color:#77786f}
+.legend-dot{background:#f05a36;box-shadow:none}
+.chart-stat span{color:#77786f}
+.quick-item{background:#f8f5ee;border:1px solid #ded8cc;border-radius:5px;color:#171914}
+.quick-item:hover{background:#fffdf8;border-color:#f05a36}
+.quick-icon{background:#f5d9cf;color:#a94325;border-radius:5px}
+.quick-arrow{color:#a94325}
+.activity-row,.benefit{border-color:#e2ddd2}
+.activity-icon{background:#f8f4eb;border:1px solid #ded8cc;border-radius:5px;color:#b8482a}
+.activity-value.positive{color:#287a50}
+.activity-value.negative{color:#b33c35}
+.benefit-art{background:#f1e6d8;border-radius:5px;color:#a94325}
+.benefit-tag{background:#f5d9cf;border-color:#e5b19f;color:#893c26;border-radius:3px}
+.demo-note{background:#eee7d9;border:1px solid #d8cbbb;border-radius:5px;color:#68685f}
+.note-icon{background:#f05a36;color:#191b17;border-radius:4px}
+.foot{color:#77786f;border-top:1px solid #d8d3c8;margin-top:18px;padding-top:16px}
+dialog{background:#fffdf8;color:#171914;border:1px solid #d8d3c8;border-radius:8px;box-shadow:0 24px 80px #17191430}
+dialog::backdrop{background:#17191499;backdrop-filter:none}
+dialog p{color:#6e7068}
+label{color:#34362e}
+input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
+.close-btn{color:#6e7068}
+.toast{color:#287a50}
+@media(max-width:720px){
+ .layout{padding:10px}
+ .sidebar{border-radius:5px}
+ .logo{padding-bottom:12px}
+ .welcome h1{font-size:2.7rem}
+ .card{border-radius:5px;padding:16px}
+ .balance-card{border-radius:5px}
+ .topbar{padding-bottom:18px}
+}
+
+
+/* Founders campaign — transparent pre-launch counter, no payment integration */
+.founders-card{grid-column:span 12;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:24px;background:#fffdf8;border:1px solid #d8d3c8;color:#171914;position:relative;overflow:hidden}
+.founders-card:before{content:"";position:absolute;inset:0 auto 0 0;width:6px;background:#f05a36}
+.founders-kicker{font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#b7472b}
+.founders-card h2{font-size:clamp(1.7rem,3vw,2.65rem);line-height:1;letter-spacing:-.06em;margin:10px 0 12px;max-width:650px}
+.founders-copy{color:#6e7068;max-width:620px;font-size:.91rem}
+.founders-copy strong{color:#171914}
+.founders-side{background:#f3f0e8;border:1px solid #ded8cc;border-radius:6px;padding:18px;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.founders-amounts{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.founders-raised{font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:950;letter-spacing:-.065em;line-height:1}
+.founders-target{font-size:.78rem;color:#6e7068;text-align:right}
+.founders-track{height:11px;border-radius:2px;background:#d9d3c7;overflow:hidden;margin:15px 0 9px}
+.founders-fill{height:100%;width:0%;background:#f05a36;transition:width .25s ease}
+.founders-remaining{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:.76rem;color:#6e7068}
+.founders-remaining strong{font-size:1.05rem;color:#171914}
+.founders-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:19px}
+.founders-stat{padding:11px;background:#f5f1e8;border:1px solid #e1dbcf;border-radius:4px}
+.founders-stat strong{display:block;font-size:1.15rem;letter-spacing:-.035em}
+.founders-stat span{display:block;color:#6e7068;font-size:.67rem;margin-top:3px}
+.founders-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.founders-notice{font-size:.7rem;line-height:1.5;color:#77786f;margin-top:12px}
+.founders-details{grid-column:span 12;background:#e8e2d5;border-color:#d8d0c1}
+.founders-details-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.founders-detail{padding:15px;background:#f8f5ee;border:1px solid #dcd5c8;border-radius:5px}
+.founders-detail strong{display:block;font-size:.85rem;margin-bottom:6px}
+.founders-detail p{margin:0;color:#6e7068;font-size:.76rem;line-height:1.6}
+.founders-status{display:inline-flex;align-items:center;gap:7px;font-size:.69rem;font-weight:850;padding:6px 8px;border:1px solid #e5b19f;background:#f5d9cf;color:#893c26;border-radius:3px}
+@media(max-width:800px){.founders-card{grid-template-columns:1fr;gap:16px}.founders-side{padding:15px}.founders-details-grid{grid-template-columns:1fr}.founders-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.founders-stat{padding:9px}.founders-stat strong{font-size:1rem}}
+@media(max-width:420px){.founders-stats{grid-template-columns:1fr}.founders-amounts{align-items:flex-start;flex-direction:column}.founders-target{text-align:left}}
+
+</style>
+</head>
+<body>
+<div class="layout">
+<aside class="sidebar" aria-label="Navigation BC ONE">
+<a class="logo" href="#accueil" aria-label="BC ONE accueil"><span class="logo-mark">B.</span><span>BC <span>ONE</span></span></a>
+<div class="nav-label">Espace membre</div>
+<nav class="nav">
+<a class="active" href="#accueil"><span class="nav-ico">◈</span>Vue d’ensemble</a>
+<a href="#portefeuille"><span class="nav-ico">▣</span>Mon portefeuille</a>
+<a href="#avantages"><span class="nav-ico">✳</span>Avantages</a>
+<a href="#activite"><span class="nav-ico">↗</span>Activité</a>
+<a href="#profil"><span class="nav-ico">◎</span>Mon profil</a>
+<a href="#burger-crush"><span class="nav-ico">🍔</span>Burger Crush</a>
+<a href="#founders-campaign"><span class="nav-ico">✦</span>100 fondateurs</a>
+</nav>
+<div class="sidebar-bottom">
+<div class="network"><strong><span class="dot"></span>Prototype opérationnel</strong>Maquette · données fictives</div>
+<div style="padding:15px 9px 0;color:#66718a;font-size:.7rem">LE COLLECTIF, AU QUOTIDIEN.</div>
+</div>
+</aside>
+<main class="main" id="accueil">
+<header class="topbar">
+<div class="crumb">Espace membre <span style="color:#525d76">/</span> <strong>Vue d’ensemble</strong></div>
+<div class="top-actions"><span class="demo-tag"><span class="dot"></span>Demo live</span><button class="btn" id="burgerIdOpen" aria-label="Se connecter avec Burger ID">Connexion</button><button class="icon-btn" id="helpBtn" aria-label="À propos du prototype" title="À propos">?</button><div class="user"><div class="avatar">AM</div><div class="user-copy"><strong id="memberName">Alex Martin</strong><small id="memberLabel">Mode démonstration</small></div></div></div>
+</header>
+<section class="welcome"><div><div class="eyebrow">L’ESPACE BC ONE</div><h1>Vos avantages. Votre communauté<span style="color:var(--cyan)">.</span></h1><p>Un seul Burger ID pour BC ONE et Burger Crush. Chaque nouvelle inscription reçoit 100 crédits BC ONE d’essai, non transférables et sans valeur monétaire.</p></div><div class="date-chip">BC ONE / ESPACE MEMBRE</div></section>
+<div class="grid">
+
+<section class="card founders-card" id="founders-campaign" aria-labelledby="foundersTitle">
+  <div>
+    <div class="founders-kicker">BC ONE × BURGER CRUSH · 100 FONDATEURS</div>
+    <h2 id="foundersTitle">Construisons la monnaie de la food community.</h2>
+    <p class="founders-copy">Un objectif commun pour préparer le lancement de l’écosystème BC ONE : une communauté de gourmands, des commerçants partenaires et une expérience partagée autour de la food.</p>
+    <div class="founders-stats" aria-label="Objectifs indicatifs de la campagne">
+      <div class="founders-stat"><strong id="foundersCount">0 / 100</strong><span>fondateurs confirmés</span></div>
+      <div class="founders-stat"><strong>1 000 €</strong><span>contribution indicative</span></div>
+      <div class="founders-stat"><strong>8 %</strong><span>part collective cible</span></div>
+    </div>
+    <div class="founders-actions">
+      <a class="btn primary" href="#foundersDetails">Découvrir le projet ↗</a>
+      <span class="founders-status">Préparation · aucune souscription ouverte</span>
+    </div>
+    <p class="founders-notice">Le compteur affiche uniquement les fonds confirmés. Il ne reçoit aucun paiement et ne peut pas être augmenté par un visiteur. Les chiffres ne changeront qu’après vérification officielle des engagements et des fonds reçus.</p>
+  </div>
+  <div class="founders-side">
+    <div class="card-head"><h2 style="font-size:.88rem;letter-spacing:0;margin:0">Objectif de financement</h2><span class="subtle">PHASE 1</span></div>
+    <div class="founders-amounts"><strong class="founders-raised" id="foundersRaised">0 €</strong><span class="founders-target">sur un objectif de<br><strong id="foundersGoal">100 000 €</strong></span></div>
+    <div class="founders-track" id="foundersProgressTrack" role="progressbar" aria-label="Progression du financement confirmé" aria-valuemin="0" aria-valuemax="100000" aria-valuenow="0"><div class="founders-fill" id="foundersProgressFill"></div></div>
+    <div class="founders-remaining"><span>Reste à financer</span><strong id="foundersRemaining">100 000 €</strong></div>
+    <p class="founders-notice">Plafond collectif prévu : 10 % du capital au maximum pour le groupe des 100 fondateurs à la clôture de cette opération, sous réserve de validation juridique. Ce n’est pas une offre d’investissement.</p>
+  </div>
+</section>
+<section class="card founders-details" id="foundersDetails" aria-labelledby="foundersDetailsTitle">
+  <div class="card-head"><h2 id="foundersDetailsTitle">Une campagne transparente, en trois règles</h2><span class="subtle">DOCUMENT DE TRAVAIL</span></div>
+  <div class="founders-details-grid">
+    <div class="founders-detail"><strong>01 · Le financement</strong><p>Objectif indicatif de 100 000 € : jusqu’à 100 contributions de 1 000 €. La collecte n’est pas ouverte, aucun paiement n’est activé et aucun montant n’est encaissé via cette maquette.</p></div>
+    <div class="founders-detail"><strong>02 · Le capital</strong><p>Cible de 8 % du capital après l’opération, avec un plafond de 10 % pour le groupe lors de la première opération. La valorisation, les titres et les droits restent à valider avec des professionnels.</p></div>
+    <div class="founders-detail"><strong>03 · La monnaie virtuelle</strong><p>BCONE n’est pas déployé ni négociable dans cette maquette. Les crédits d’essai sont internes, non transférables et sans valeur monétaire. Les actions et les crédits restent entièrement distincts.</p></div>
+  </div>
+  <div class="founders-actions"><a class="btn" href="https://github.com/ccailleau89-pixel/Bc-one-/blob/feature/bc-one-erc20-contract-2026-10/FOUNDERS_100_BEST_PLAN_FR.md" target="_blank" rel="noopener noreferrer">Lire le plan des fondateurs ↗</a><span class="subtle">Aucune collecte ni souscription lancée.</span></div>
+</section>
+
+<section class="card balance-card" id="portefeuille">
+<div class="card-head"><h2>Votre portefeuille</h2><span class="subtle">Solde disponible <span style="color:var(--cyan)">●</span></span></div>
+<div class="balance-label" id="balanceLabel">Solde de démonstration</div><div class="balance-number"><span id="balance">250</span> <span>CRÉDITS TEST</span></div>
+<div class="balance-meta"><span class="tiny-pill" id="balanceTag">+ Démo locale</span><span id="balanceCaption">Solde fictif · aucune crypto réelle détenue</span></div>
+<div class="balance-actions"><button class="btn primary" id="openTransfer">↗ &nbsp; Simuler un transfert</button><button class="btn ghost" id="exportActivity">↓ &nbsp; Exporter l’activité</button></div>
+<div id="message" class="toast" role="status" aria-live="polite"></div>
+</section>
+<section class="card profile-card" id="profil">
+<div class="card-head"><h2>Votre identité BC ONE</h2><span class="subtle">BURGER ID</span></div>
+<div class="member-visual"><div class="member-avatar" id="memberAvatar">AM</div><div><h3 id="memberProfileName">Alex Martin</h3><p id="memberProfileStatus">Profil de démonstration</p></div><span class="rank" id="memberRank">DÉMO</span></div>
+<div class="member-stats"><div class="mini-stat"><span>Transactions simulées</span><strong id="txcount">2 <em>opérations</em></strong></div><div class="mini-stat"><span>Statut communauté</span><strong>Fondateur <em>✦</em></strong></div></div>
+</section>
+<section class="card chart-card">
+<div class="card-head"><h2>Activité de votre espace</h2><div class="chart-legend"><span class="legend-dot"></span>Solde fictif</div></div>
+<div class="chart-stat"><strong id="chartBalance">250 BCONE</strong><span>● Données de démonstration</span></div>
+<div class="chart-area" aria-label="Graphique illustratif, sans données de marché"><svg viewBox="0 0 600 170" preserveAspectRatio="none" role="img" aria-label="Courbe illustrative du solde fictif"><defs><linearGradient id="areaFill" x1="0" x2="0" y1="0" y2="1"><stop offset="0%" stop-color="#61e6e0" stop-opacity=".24"/><stop offset="100%" stop-color="#61e6e0" stop-opacity="0"/></linearGradient><linearGradient id="lineFill" x1="0" x2="1"><stop offset="0%" stop-color="#7c8cff"/><stop offset="100%" stop-color="#61e6e0"/></linearGradient></defs><path d="M0 128 C40 119 53 132 92 105 S150 118 185 83 S240 92 277 66 S340 87 375 55 S430 73 463 42 S525 57 600 18 L600 170 L0 170 Z" fill="url(#areaFill)"/><path d="M0 128 C40 119 53 132 92 105 S150 118 185 83 S240 92 277 66 S340 87 375 55 S430 73 463 42 S525 57 600 18" fill="none" stroke="url(#lineFill)" stroke-width="3" vector-effect="non-scaling-stroke" stroke-linecap="round"/><circle cx="600" cy="18" r="5" fill="#61e6e0" stroke="#111521" stroke-width="3" vector-effect="non-scaling-stroke"/></svg></div>
+<div class="chart-labels"><span>Départ</span><span>Activité simulée</span><span>Aujourd’hui</span></div>
+</section>
+<section class="card quick-card">
+<div class="card-head"><h2>Accès rapides</h2><span class="subtle">À explorer</span></div>
+<div class="quick-list">
+<a class="quick-item" href="./user-journey.html"><span class="quick-icon">↗</span><span><strong>Tester le parcours complet</strong><small>Inscription fictive, jeu, avantages et historique</small></span><span class="quick-arrow">›</span></a>
+<button class="quick-item" id="quickTransfer"><span class="quick-icon">↗</span><span><strong>Envoyer des BCONE fictifs</strong><small>Tester un transfert simulé</small></span><span class="quick-arrow">›</span></button>
+<a class="quick-item" href="#avantages"><span class="quick-icon">✧</span><span><strong>Explorer les avantages</strong><small>Découvrir l’univers membre</small></span><span class="quick-arrow">›</span></a>
+<a class="quick-item" href="#activite"><span class="quick-icon">≋</span><span><strong>Voir mon activité</strong><small>Historique local de démonstration</small></span><span class="quick-arrow">›</span></a>
+</div>
+</section>
+<section class="card activity-card" id="activite">
+<div class="card-head"><h2>Dernières activités</h2><button class="btn ghost" id="reset" style="padding:7px 10px;font-size:.7rem">Réinitialiser ↺</button></div>
+<div class="activity-list" id="activity"><div class="activity-row"><span class="activity-icon">✦</span><span class="activity-copy"><strong>Bonus de bienvenue</strong><small>Simulation · historique fictif</small></span><span class="activity-value positive">+200</span></div><div class="activity-row"><span class="activity-icon">↙</span><span class="activity-copy"><strong>Crédit de démonstration</strong><small>Simulation · historique fictif</small></span><span class="activity-value positive">+50</span></div></div>
+</section>
+<section class="card" id="burger-crush" style="grid-column:span 12;position:relative;overflow:hidden;background:radial-gradient(ellipse at 92% 10%,#ff9d4225,transparent 35%),linear-gradient(110deg,#19182a,#121522 70%);">
+<div class="card-head"><h2>BURGER CRUSH <span style="color:#ffb46c">/</span> PLAYER HUB</h2><span class="benefit-tag" style="border-color:#ffb46c55;color:#ffd4a7;background:#ffb46c10">INTÉGRATION BC ONE</span></div>
+<div style="display:flex;align-items:center;gap:18px;flex-wrap:wrap">
+<div style="width:64px;height:64px;display:grid;place-items:center;border-radius:20px;background:linear-gradient(145deg,#ffcf7d,#ff8c58);font-size:2rem;box-shadow:0 12px 35px #ff9d4225">🍔</div>
+<div style="flex:1;min-width:190px"><div class="eyebrow" style="color:#ffbd7e">Un seul identifiant. Deux univers.</div><h3 style="font-size:1.25rem;letter-spacing:-.03em;margin:6px 0">Burger ID <span style="color:#ffbd7e">#BC-0024</span></h3><p class="subtle" style="max-width:580px;line-height:1.7;margin:0">Retrouvez le même profil de démonstration dans BC ONE et Burger Crush. À terme : une connexion commune, des expériences séparées et des règles de récompenses clairement définies.</p></div>
+<div style="display:flex;flex-direction:column;gap:9px;min-width:190px"><button class="btn" id="openCrush" style="border-color:#ffb46c55;background:#ffb46c12">🍔 &nbsp; Lancer le mini-challenge</button><span class="subtle" style="text-align:center">Score fictif : <strong id="crushScore" style="color:#ffbd7e">0</strong> points Crush</span></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px"><span class="tag">Même Burger ID (démo)</span><span class="tag" id="connectionMode">Connexion réelle non activée</span><span class="tag">Points Crush ≠ BCONE</span></div>
+</section>
+<section class="card benefits-card" id="avantages">
+<div class="card-head"><h2>Univers & avantages</h2><span class="subtle">Concepts à venir</span></div>
+<div class="benefit"><span class="benefit-art">✧</span><span class="benefit-copy"><strong>Drops communautaires</strong><small>Accès anticipé aux nouveautés</small></span><span class="benefit-tag">À définir</span></div>
+<div class="benefit"><span class="benefit-art">⌁</span><span class="benefit-copy"><strong>Rencontres & événements</strong><small>La communauté dans la vraie vie</small></span><span class="benefit-tag">Concept</span></div>
+<div class="benefit"><span class="benefit-art">◉</span><span class="benefit-copy"><strong>Avantages partenaires</strong><small>Offres soumises à conditions</small></span><span class="benefit-tag">Prototype</span></div>
+</section>
+<div class="demo-note"><span class="note-icon">i</span><span><strong>Prototype uniquement — crédits d’essai.</strong> Les 100 crédits attribués à l’inscription sont un solde interne de test, non transférable et sans valeur monétaire. Ils ne sont pas des tokens ERC-20. Aucun actif crypto, paiement ou transfert réel n’est activé.</span></div>
+</div>
+<footer class="foot"><span>© BC ONE · Prototype espace membre</span><span>Conçu pour une expérience mobile-first · Données fictives</span></footer>
+</main>
+</div>
+<dialog id="transferDialog" aria-labelledby="transferTitle">
+<div class="close-row"><div class="logo"><span class="logo-mark">B.</span><span>BC <span>ONE</span></span></div><button class="close-btn" id="closeTransfer" aria-label="Fermer">×</button></div>
+<h2 id="transferTitle">Transfert de démonstration</h2><p>Cette simulation ne concerne que le portefeuille fictif local. Les crédits d’essai d’un compte connecté ne peuvent pas être transférés.</p>
+<form id="transferForm"><label for="recipient">Destinataire fictif</label><input id="recipient" name="recipient" value="Sam Dupont" maxlength="40" autocomplete="off" required><label for="amount">Montant en BCONE fictifs</label><input id="amount" name="amount" type="number" min="1" max="250" step="1" value="25" required><div class="dialog-actions"><button class="btn" type="button" id="cancelTransfer">Annuler</button><button class="btn primary" type="submit">Confirmer la simulation ↗</button></div><div id="formMessage" class="toast" role="status" aria-live="polite"></div></form>
+</dialog>
+<dialog id="crushDialog" aria-labelledby="crushTitle">
+<div class="close-row"><div class="logo"><span class="logo-mark" style="background:linear-gradient(135deg,#ffcf7d,#ff8c58)">🍔</span><span>BURGER <span style="color:#ffbd7e">CRUSH</span></span></div><button class="close-btn" id="closeCrush" aria-label="Fermer">×</button></div>
+<div class="eyebrow" style="color:#ffbd7e">Mini-challenge de démonstration</div><h2 id="crushTitle" style="margin:8px 0">Crush it. Level up.</h2><p>Appuie sur le burger 10 fois pour tester l’expérience. Les points restent fictifs et ne sont pas convertis en BCONE.</p>
+<div style="display:grid;place-items:center;padding:14px"><button id="crushTap" aria-label="Appuyer pour gagner un point Crush" style="width:150px;height:150px;border-radius:42px;border:1px solid #ffbd7e66;background:radial-gradient(circle at 30% 20%,#ffd98e,#ff9c5b 70%);font-size:4.4rem;box-shadow:0 18px 55px #ff9d4230;transition:transform .1s">🍔</button><div style="margin-top:16px;font-size:1.7rem;font-weight:900"><span id="crushRound">0</span><span style="color:#7f8ba9"> / 10</span></div><div id="crushMessage" class="toast" role="status" aria-live="polite">Prêt ? À toi de jouer.</div></div>
+<div class="dialog-actions"><button class="btn" id="resetCrush">Recommencer</button><button class="btn primary" id="finishCrush">Terminer</button></div>
+</dialog>
+<dialog id="burgerIdDialog" aria-labelledby="burgerIdTitle">
+<div class="close-row"><div class="logo"><span class="logo-mark">B.</span><span>BURGER <span> ID</span></span></div><button class="close-btn" id="burgerIdClose" aria-label="Fermer">×</button></div>
+<h2 id="burgerIdTitle">Un seul compte. Deux expériences.</h2>
+<p>Connectez-vous à BC ONE et Burger Crush avec le même Burger ID. Vos données de jeu restent distinctes de vos données BC ONE.</p>
+<form id="burgerIdForm" class="auth-form">
+<label for="burgerIdMode">Action</label>
+<select id="burgerIdMode" name="mode"><option value="signin">Se connecter</option><option value="signup">Créer un compte</option><option value="reset">Récupérer mon mot de passe</option></select>
+<label for="burgerIdEmail">Adresse e-mail</label><input id="burgerIdEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+<label for="burgerIdPassword">Mot de passe</label><input id="burgerIdPassword" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" required>
+<div class="dialog-actions"><button class="btn ghost" id="burgerIdSignOut" type="button">Se déconnecter</button><button class="btn primary" id="burgerIdSubmit" type="submit">Se connecter</button></div>
+<div id="burgerIdStatus" class="auth-status" role="status" aria-live="polite">Configuration Supabase requise.</div>
+<div class="auth-caption">Sécurité : la clé de navigateur doit être une clé publique Supabase. Ne jamais utiliser une clé service_role ici.</div>
+</form>
+</dialog>
+<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="close-row"><h2 id="helpTitle">À propos de BC ONE</h2><button class="close-btn" id="closeHelp" aria-label="Fermer">×</button></div><p>BC ONE distingue les crédits d’essai internes d’un véritable crypto-actif. Chaque nouvelle inscription reçoit 100 crédits d’essai non transférables après application de la migration Supabase. Aucun token réel ni paiement n’est activé.</p><button class="btn primary" id="helpOk">Compris</button></dialog>
+<script>
+(function(){
+"use strict";
+const initialBalance=250,storageKey="bc-one-member-demo-v3";
+// Pre-launch founders counter: confirmed funding stays at zero until an authorized
+// operator updates it after verification. This static prototype accepts no money.
+const foundersGoal=100000,foundersRaised=0,foundersConfirmed=0;
+const euro=value=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(value);
+function renderFoundersCounter(){
+ const raised=Math.min(foundersGoal,Math.max(0,foundersRaised));
+ const confirmed=Math.min(100,Math.max(0,foundersConfirmed));
+ const remaining=Math.max(0,foundersGoal-raised);
+ const progress=foundersGoal>0?Math.min(100,raised/foundersGoal*100):0;
+ byId("foundersRaised").textContent=euro(raised);
+ byId("foundersGoal").textContent=euro(foundersGoal);
+ byId("foundersRemaining").textContent=euro(remaining);
+ byId("foundersCount").textContent=confirmed+" / 100";
+ byId("foundersProgressFill").style.width=progress+"%";
+ byId("foundersProgressTrack").setAttribute("aria-valuenow",String(raised));
+ byId("foundersProgressTrack").setAttribute("aria-valuetext",euro(raised)+" confirmés sur "+euro(foundersGoal));
+}
+const initialEntries=[
+ {label:"Bonus de bienvenue",detail:"Simulation · historique fictif",amount:"+200",kind:"positive",icon:"✦"},
+ {label:"Crédit de démonstration",detail:"Simulation · historique fictif",amount:"+50",kind:"positive",icon:"↙"}
+];
+let balance=initialBalance,txs=2,entries=initialEntries.map(x=>({...x}));
+const byId=id=>document.getElementById(id);
+const balanceEl=byId("balance"),countEl=byId("txcount"),chartBalance=byId("chartBalance");
+const activity=byId("activity"),message=byId("message"),dialog=byId("transferDialog");
+const form=byId("transferForm"),amount=byId("amount"),recipient=byId("recipient"),formMessage=byId("formMessage");
+let walletAuthenticated=false;
+function save(){
+ try{localStorage.setItem(storageKey,JSON.stringify({balance,txs,entries:entries.slice(0,100)}));}
+ catch(_){message.textContent="Stockage local indisponible : la démonstration continue en mémoire.";}
+}
+function load(){
+ try{
+  const raw=localStorage.getItem(storageKey);if(!raw)return;
+  const data=JSON.parse(raw);
+  if(!data||!Number.isSafeInteger(data.balance)||data.balance<0||data.balance>initialBalance||
+     !Number.isSafeInteger(data.txs)||data.txs<2||!Array.isArray(data.entries)||data.entries.length>100)return;
+  if(!data.entries.every(x=>x&&typeof x.label==="string"&&x.label.length<=100&&
+     typeof x.detail==="string"&&x.detail.length<=100&&typeof x.amount==="string"&&x.amount.length<=24&&
+     ["positive","negative"].includes(x.kind)&&typeof x.icon==="string"&&x.icon.length<=4))return;
+  balance=data.balance;txs=data.txs;entries=data.entries;
+ }catch(_){/* Invalid or unavailable local data is ignored. */}
+}
+function renderActivity(){
+ activity.replaceChildren();
+ entries.forEach(entry=>{
+  const row=document.createElement("div");row.className="activity-row";
+  const ico=document.createElement("span");ico.className="activity-icon";ico.textContent=entry.icon;
+  const copy=document.createElement("span");copy.className="activity-copy";
+  const title=document.createElement("strong");title.textContent=entry.label;
+  const detail=document.createElement("small");detail.textContent=entry.detail;
+  copy.append(title,detail);
+  const value=document.createElement("span");value.className="activity-value "+entry.kind;value.textContent=entry.amount;
+  row.append(ico,copy,value);activity.append(row);
+ });
+ if(!entries.length){const empty=document.createElement("p");empty.className="empty";empty.textContent="Aucune activité pour le moment.";activity.append(empty);}
+}
+function refresh(){
+ balanceEl.textContent=String(balance);countEl.firstChild.textContent=String(txs)+" ";
+ chartBalance.textContent=String(balance)+" crédits test";
+ amount.max=String(balance);if(Number(amount.value)>balance)amount.value=String(balance);
+ if(balance===0)amount.value="0";
+}
+function openTransfer(){
+ if(walletAuthenticated){message.textContent="Les crédits BC ONE d’essai ne sont pas transférables.";return;}
+ formMessage.textContent="";amount.min="1";amount.max=String(balance);amount.value=balance>0?String(Math.min(25,balance)):"";
+ byId("cancelTransfer").disabled=balance===0;
+ byId("openTransfer").disabled=balance===0;
+ byId("quickTransfer").disabled=balance===0;
+ dialog.showModal();
+ if(balance===0)formMessage.textContent="Solde fictif épuisé. Réinitialisez la démo pour recommencer.";
+}
+byId("openTransfer").addEventListener("click",openTransfer);
+byId("quickTransfer").addEventListener("click",openTransfer);
+byId("closeTransfer").addEventListener("click",()=>dialog.close());
+byId("cancelTransfer").addEventListener("click",()=>dialog.close());
+dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close();});
+form.addEventListener("submit",event=>{
+ event.preventDefault();
+ if(walletAuthenticated){formMessage.textContent="Les crédits d’essai sont non transférables.";return;}
+ const n=Number(amount.value),name=recipient.value.trim();
+ if(!name||name.length>40||!Number.isSafeInteger(n)||n<1||n>balance){
+  formMessage.textContent="Vérifiez le destinataire et le solde fictif disponible.";return;
+ }
+ balance-=n;txs++;
+ entries.unshift({label:"Transfert simulé vers "+name,detail:"À l’instant · simulation locale",amount:"−"+n,kind:"negative",icon:"↗"});
+ entries=entries.slice(0,100);renderActivity();refresh();save();
+ message.textContent="Simulation effectuée. Aucun token réel n’a été transféré.";
+ formMessage.textContent="Enregistré localement dans ce navigateur.";
+ if(balance===0){byId("openTransfer").disabled=true;byId("quickTransfer").disabled=true;}
+ window.setTimeout(()=>{if(dialog.open)dialog.close();},550);
+});
+byId("exportActivity").addEventListener("click",()=>{
+ const rows=[["Activité","Détail","Crédits BC ONE d’essai"],...entries.map(x=>[x.label,x.detail,x.amount])];
+ const csv="\uFEFF"+rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+ const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
+ const link=document.createElement("a");link.href=url;link.download="bc-one-activite-demo.csv";document.body.append(link);link.click();link.remove();
+ window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+ message.textContent="Export CSV téléchargé. Les données restent fictives.";
+});
+byId("reset").addEventListener("click",()=>{
+ if(walletAuthenticated){message.textContent="Le portefeuille connecté ne peut pas être réinitialisé depuis la démo.";return;}
+ balance=initialBalance;txs=2;entries=initialEntries.map(x=>({...x}));
+ try{localStorage.removeItem(storageKey);}catch(_){}
+ renderActivity();refresh();byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;
+ message.textContent="Démo réinitialisée. Votre solde fictif est revenu à 250 crédits de démonstration.";
+});
+let crushRound=0,crushScore=0;
+const crushDialog=byId("crushDialog"),crushRoundEl=byId("crushRound"),crushScoreEl=byId("crushScore"),crushMessage=byId("crushMessage");
+function openCrush(){crushRound=0;crushRoundEl.textContent="0";crushMessage.textContent="Prêt ? À toi de jouer.";crushDialog.showModal();}
+byId("openCrush").addEventListener("click",openCrush);
+byId("closeCrush").addEventListener("click",()=>crushDialog.close());
+byId("finishCrush").addEventListener("click",()=>crushDialog.close());
+byId("resetCrush").addEventListener("click",()=>{crushRound=0;crushRoundEl.textContent="0";crushMessage.textContent="Challenge réinitialisé. À toi de jouer.";});
+byId("crushTap").addEventListener("click",()=>{
+ if(crushRound>=10){crushMessage.textContent="Challenge terminé ! Recommence pour rejouer.";return;}
+ crushRound++;crushRoundEl.textContent=String(crushRound);
+ const button=byId("crushTap");button.style.transform="scale(.94)";window.setTimeout(()=>{button.style.transform="scale(1)";},90);
+ if(crushRound===10){crushScore+=10;crushScoreEl.textContent=String(crushScore);crushMessage.textContent="Bien joué ! +10 points Crush fictifs. Aucun BCONE n’a été crédité.";}
+ else crushMessage.textContent="Crush ! Encore "+(10-crushRound)+" appui(s).";
+});
+crushDialog.addEventListener("click",event=>{if(event.target===crushDialog)crushDialog.close();});
+const help=byId("helpDialog");
+byId("helpBtn").addEventListener("click",()=>help.showModal());
+byId("closeHelp").addEventListener("click",()=>help.close());
+byId("helpOk").addEventListener("click",()=>help.close());
+help.addEventListener("click",event=>{if(event.target===help)help.close();});
+document.querySelectorAll(".nav a").forEach(link=>link.addEventListener("click",()=>{
+ document.querySelectorAll(".nav a").forEach(item=>item.classList.toggle("active",item===link));
+}));
+window.addEventListener("burger-id-wallet",event=>{
+ const detail=event.detail||{}; walletAuthenticated=detail.authenticated===true;
+ if(walletAuthenticated){
+  const rows=Array.isArray(detail.entries)?detail.entries:[];
+  balance=Number.isSafeInteger(detail.balance)?Math.max(0,detail.balance):0; txs=rows.length;
+  entries=rows.map(row=>{
+   const n=Number(row.amount)||0, welcome=row.reason==="welcome_bonus";
+   return {label:welcome?"Bonus de bienvenue BC ONE":(row.entry_type==="debit"?"Utilisation de crédits d’essai":"Crédit BC ONE d’essai"),
+    detail:"Crédit interne non transférable · sans valeur monétaire",
+    amount:(row.entry_type==="debit"?"−":"+")+String(Math.abs(n)),
+    kind:row.entry_type==="debit"?"negative":"positive",icon:welcome?"✦":"↗"};
+  });
+  byId("balanceLabel").textContent="Crédits BC ONE d’essai";
+  byId("balanceTag").textContent="Bonus d’inscription";
+  byId("balanceCaption").textContent="Non transférables · aucune valeur monétaire";
+  byId("openTransfer").disabled=true; byId("quickTransfer").disabled=true; byId("reset").disabled=true;
+  message.textContent="Portefeuille d’essai connecté. Aucun token réel n’est détenu.";
+ }else{
+  balance=initialBalance;txs=2;entries=initialEntries.map(x=>({...x}));load();
+  byId("balanceLabel").textContent="Solde de démonstration";
+  byId("balanceTag").textContent="+ Démo locale";
+  byId("balanceCaption").textContent="Solde fictif · aucune crypto réelle détenue";
+  byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;byId("reset").disabled=false;
+ }
+ renderActivity();refresh();
+});
+load();renderActivity();refresh();renderFoundersCounter();
+})();
+</script>
+<script type="module" src="./burger-id-ui.js"></script>
+</body>
+</html>

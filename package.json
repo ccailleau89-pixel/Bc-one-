@@ -1,0 +1,25 @@
+{
+  "name": "bc-one-backend",
+  "version": "0.1.0",
+  "private": true,
+  "description": "BC ONE loyalty MVP API foundation",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node backend/server.js",
+    "test": "node --test backend/*.test.js prototype/*.test.js",
+    "check": "node --check prototype/burger-id.js && node --check prototype/burger-id.test.js && node --check prototype/burger-id-ui.js && node --check prototype/burger-id-config.js && node --check vite.config.js && node --check backend/server.js && node --check backend/server.test.js && node --check backend/commission.js && node --check backend/commission.test.js && node --check backend/purchase-service.js && node --check backend/purchase-service.test.js && node --check backend/purchase-create.test.js && node --check backend/stripe-checkout.js && node --check backend/stripe-checkout.test.js && node --check backend/stripe-webhook.js && node --check backend/stripe-webhook.test.js",
+    "dev": "vite --config vite.config.js",
+    "build": "vite build --config vite.config.js"
+  },
+  "dependencies": {
+    "pg": "^8.13.1",
+    "stripe": "^18.5.0",
+    "@supabase/supabase-js": "^2.57.4"
+  },
+  "devDependencies": {
+    "vite": "^6.4.1"
+  }
+}

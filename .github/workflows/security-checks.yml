@@ -1,0 +1,74 @@
+name: BC ONE security checks
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [feature/bc-one-erc20-contract-2026-10]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  dependency-and-secret-checks:
+    name: Dependency and secret hygiene
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Check JavaScript syntax
+        run: npm run check
+
+      - name: Run automated tests
+        run: npm test
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Check for common committed secret patterns
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git grep -nEI '(sk_live_[A-Za-z0-9]{20,}|rk_live_[A-Za-z0-9]{20,}|whsec_[A-Za-z0-9]{24,}|sb_secret_[A-Za-z0-9_-]{20,}|eyJ[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{20,}\.[A-Za-z0-9_-]{10,}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY)' -- . ':!SECURITY_HARDENING_PLAN_FR.md' ':!*.lock' ':!.env.example' ':!.github/workflows/security-checks.yml'; then
+            echo "::error::Potential secret or secret-like value found. Review the matching lines and move secrets to a secret manager."
+            exit 1
+          fi
+          echo "No common secret patterns detected by this lightweight check."
+
+  security-migration-static-checks:
+    name: Review migration guardrails
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Validate prototype and database guardrails
+        run: python prototype/check_prototype.py

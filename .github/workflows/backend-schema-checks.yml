@@ -1,0 +1,69 @@
+name: BC ONE backend checks
+
+on:
+  push:
+    branches:
+      - main
+      - feature/bc-one-erc20-contract-2026-10
+    paths:
+      - 'backend/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/backend-schema-checks.yml'
+  pull_request:
+    paths:
+      - 'backend/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - '.github/workflows/backend-schema-checks.yml'
+  workflow_dispatch:
+
+jobs:
+  node-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+      - name: Check JavaScript syntax
+        run: npm run check
+      - name: Run API tests
+        run: npm test
+
+  postgres-schema:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: bc_one
+          POSTGRES_PASSWORD: bc_one_test_only
+          POSTGRES_DB: bc_one_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U bc_one -d bc_one_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: bc_one
+      PGPASSWORD: bc_one_test_only
+      PGDATABASE: bc_one_test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+      - name: Apply draft schema
+        run: psql --set ON_ERROR_STOP=1 --file backend/schema.sql
+      - name: Apply commerce schema
+        run: psql --set ON_ERROR_STOP=1 --file backend/commerce_schema.sql
+      - name: Run schema smoke tests
+        run: psql --set ON_ERROR_STOP=1 --file backend/schema_smoke_test.sql
