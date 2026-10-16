@@ -1,4 +1,4 @@
-name: BC ONE backend schema checks
+name: BC ONE backend checks
 
 on:
   push:
@@ -7,14 +7,33 @@ on:
       - feature/bc-one-erc20-contract-2026-10
     paths:
       - 'backend/**'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/backend-schema-checks.yml'
   pull_request:
     paths:
       - 'backend/**'
+      - 'package.json'
+      - 'package-lock.json'
       - '.github/workflows/backend-schema-checks.yml'
   workflow_dispatch:
 
 jobs:
+  node-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install dependencies
+        run: npm install --ignore-scripts
+      - name: Check JavaScript syntax
+        run: npm run check
+      - name: Run API tests
+        run: npm test
+
   postgres-schema:
     runs-on: ubuntu-latest
     services:
