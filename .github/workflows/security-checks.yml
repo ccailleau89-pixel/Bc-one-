@@ -49,7 +49,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if git grep -nEI '(service_role|STRIPE_SECRET_KEY|STRIPE_WEBHOOK_SECRET|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY|sk_live_[A-Za-z0-9]{12,}|whsec_[A-Za-z0-9]{12,})' -- ':!SECURITY_HARDENING_PLAN_FR.md' ':!*.lock'; then
+          if git grep -nEI '(sk_live_[A-Za-z0-9]{20,}|rk_live_[A-Za-z0-9]{20,}|whsec_[A-Za-z0-9]{24,}|sb_secret_[A-Za-z0-9_-]{20,}|eyJ[A-Za-z0-9_-]{20,}\\.[A-Za-z0-9_-]{20,}\\.[A-Za-z0-9_-]{10,}|BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY)' -- . ':!SECURITY_HARDENING_PLAN_FR.md' ':!*.lock' ':!.env.example' ':!.github/workflows/security-checks.yml'; then
             echo "::error::Potential secret or secret-like value found. Review the matching lines and move secrets to a secret manager."
             exit 1
           fi
