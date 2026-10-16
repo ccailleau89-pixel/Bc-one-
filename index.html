@@ -107,6 +107,17 @@ footer {
   main { padding-top: 95px; }
   .hero { padding: 45px; }
 }
+
+  .ecosystem { margin: 55px 0; padding: 26px; border: 1px solid #735A2C; border-radius: 18px; background: linear-gradient(135deg,#1d1a14,#10100f); }
+  .ecosystem .eyebrow { margin-bottom: 14px; }
+  .ecosystem h2 { margin: 0 0 12px; line-height: 1.1; }
+  .ecosystem p { color: var(--muted); line-height: 1.7; max-width: 650px; }
+  .ecosystem-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:22px; }
+  .ecosystem-link { display:block; padding:18px; border:1px solid #393126; border-radius:12px; color:var(--cream); text-decoration:none; background:#111110; }
+  .ecosystem-link strong { display:block; color:var(--gold); margin-bottom:7px; }
+  .ecosystem-link span { color:var(--muted); font-size:13px; line-height:1.5; }
+  @media(max-width:600px){.ecosystem-links{grid-template-columns:1fr}.ecosystem{padding:20px}}
+
 </style>
 </head>
 <body>
@@ -148,6 +159,16 @@ footer {
         <h3>Penser aux usages</h3>
         <p>Explorer des services utiles avant toute mise en circulation du token.</p>
       </article>
+    </div>
+  </section>
+  <section class="ecosystem" id="compte-unique">
+    <div class="eyebrow">L'écosystème Burger</div>
+    <h2>Un compte. Deux expériences.</h2>
+    <p>Crush Burger pour les rencontres et les affinités. BC ONE pour les avantages et services numériques de la communauté. L'objectif : un identifiant unique, un profil maîtrisé par l'utilisateur et un espace distinct pour les éventuels crédits ou actifs numériques.</p>
+    <p><strong>État actuel :</strong> les deux sites sont reliés par navigation. La connexion unique et le portefeuille ne sont pas encore activés ; aucun solde ni token réel n'est créé.</p>
+    <div class="ecosystem-links">
+      <a class="ecosystem-link" href="https://ccailleau89-pixel.github.io/crush-burger-demo/"><strong>♥ Crush Burger</strong><span>Découverte, profils et affinités — démo interactive</span></a>
+      <a class="ecosystem-link" href="https://ccailleau89-pixel.github.io/Bc-one-/"><strong>₿ BC ONE</strong><span>Projet Burger Currency et futur espace avantages</span></a>
     </div>
   </section>
   <section>
