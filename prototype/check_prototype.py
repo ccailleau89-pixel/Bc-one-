@@ -94,7 +94,7 @@ def main():
         "Prototype uniquement",
         "Aucun token",
         "transfert réel",
-        "Connexion réelle non activée",
+        "Mode démonstration",
         "Points Crush ≠ BCONE",
     ]
     for phrase in required_copy:
