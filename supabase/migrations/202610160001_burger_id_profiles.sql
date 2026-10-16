@@ -95,4 +95,12 @@ create trigger on_auth_user_created_burger_id
 after insert on auth.users
 for each row execute function public.handle_new_burger_id_user();
 
+-- Backfill existing auth users if this migration is applied after accounts exist.
+insert into public.burger_id_profiles (user_id)
+select id from auth.users on conflict (user_id) do nothing;
+insert into public.burger_crush_profiles (user_id)
+select id from auth.users on conflict (user_id) do nothing;
+insert into public.bc_one_member_profiles (user_id)
+select id from auth.users on conflict (user_id) do nothing;
+
 commit;
