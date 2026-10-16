@@ -196,6 +196,8 @@ export async function createPendingPurchase({ pool, merchantId, memberId = null,
     await client.query("BEGIN");
     transactionOpen = true;
 
+    await client.query("SELECT pg_advisory_xact_lock(hashtextextended($1, 0))", [idempotencyKey]);
+
     const existing = await client.query(
       `SELECT id, merchant_id, member_id, gross_cents, commission_bps,
               commission_cents, merchant_net_cents, status, provider_payment_id
