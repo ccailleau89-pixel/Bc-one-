@@ -80,6 +80,41 @@ BEGIN
   END;
 
   BEGIN
+    INSERT INTO partner_purchases
+      (id, merchant_id, gross_cents, commission_bps, commission_cents, merchant_net_cents,
+       payment_provider, provider_payment_id, idempotency_key, status)
+    VALUES
+      ('00000000-0000-4000-8000-000000000015',
+       '00000000-0000-4000-8000-000000000010', 10000, 200, 201, 9799,
+       'test-provider', 'test-payment-wrong-rate', 'purchase-key-wrong-rate', 'pending');
+    RAISE EXCEPTION 'Expected commission formula mismatch to fail';
+  EXCEPTION WHEN check_violation THEN
+    RAISE NOTICE 'PASS: commission formula mismatch rejected';
+  END;
+
+  BEGIN
+    INSERT INTO purchase_refunds
+      (id, purchase_id, provider_refund_id, refund_cents, commission_reversal_cents,
+       merchant_refund_cents, idempotency_key, status)
+    VALUES
+      ('00000000-0000-4000-8000-000000000021',
+       '00000000-0000-4000-8000-000000000011',
+       'test-refund-too-large', 8000, 160, 7840, 'refund-key-too-large', 'pending');
+    RAISE EXCEPTION 'Expected cumulative refund limit to fail';
+  EXCEPTION WHEN check_violation THEN
+    RAISE NOTICE 'PASS: cumulative refund cap enforced';
+  END;
+
+  BEGIN
+    UPDATE purchase_commission_entries
+      SET reason = 'tampered'
+      WHERE id = '00000000-0000-4000-8000-000000000012';
+    RAISE EXCEPTION 'Expected immutable commission ledger to reject update';
+  EXCEPTION WHEN SQLSTATE '55000' THEN
+    RAISE NOTICE 'PASS: commission ledger is append-only';
+  END;
+
+  BEGIN
     INSERT INTO merchants (id, legal_name, public_name, commission_bps)
     VALUES ('00000000-0000-4000-8000-000000000014', 'Invalid SARL', 'Invalid', 10001);
     RAISE EXCEPTION 'Expected invalid commission rate to fail';
