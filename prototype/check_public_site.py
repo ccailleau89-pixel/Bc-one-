@@ -57,8 +57,12 @@ def main():
                     errors.append(f"{filename}: unresolved in-page link {href}")
                 continue
             target = href.split("#", 1)[0].split("?", 1)[0]
-            if target and not (path.parent / target).resolve().is_file():
-                errors.append(f"{filename}: local link target missing: {href}")
+            if target:
+                resolved = (path.parent / target).resolve()
+                if resolved.is_dir():
+                    resolved = resolved / "index.html"
+                if not resolved.is_file():
+                    errors.append(f"{filename}: local link target missing: {href}")
 
     config_path = ROOT / "burger-id-config.js"
     if not config_path.is_file():
