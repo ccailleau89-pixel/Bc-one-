@@ -73,6 +73,22 @@ def main():
             if not re.search(rf'{key}\s*:\s*""', config):
                 errors.append(f"burger-id-config.js: {key} must stay blank until an approved Supabase project is configured")
 
+    burger_page = (ROOT / "burger-id.html").read_text(encoding="utf-8")
+    profile_migration = ROOT / "supabase" / "migrations" / "202610160001_burger_id_profiles.sql"
+    if not profile_migration.is_file():
+        errors.append("current Burger ID profile migration is missing")
+    else:
+        migration_text = profile_migration.read_text(encoding="utf-8")
+        for marker in ("user_id uuid primary key", "display_name text not null"):
+            if marker.casefold() not in migration_text.casefold():
+                errors.append(f"Burger ID profile migration missing expected field: {marker}")
+        for marker in (".select('display_name')", ".eq('user_id',currentUser.id)", ".update({display_name:name})"):
+            if marker not in burger_page:
+                errors.append(f"burger-id.html does not match the current profile schema: {marker}")
+        for obsolete in (".eq('id',currentUser.id)", ".select('display_name,city,burger_favorite')"):
+            if obsolete in burger_page:
+                errors.append(f"burger-id.html contains an obsolete profile query: {obsolete}")
+
     legacy_schema = ROOT / "burger-id-schema.sql"
     if not legacy_schema.is_file():
         errors.append("burger-id-schema.sql: legacy schema notice missing")
