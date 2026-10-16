@@ -61,9 +61,20 @@ def main():
     if missing_targets:
         errors.append("navigation targets missing: " + ", ".join(missing_targets))
 
-    if page.script_sources:
-        errors.append("external JavaScript is not allowed in this offline demo: " +
-                      ", ".join(page.script_sources))
+    # Only repository-local scripts are allowed. The frontend build bundles
+    # dependencies locally; the page must not load executable code from URLs.
+    for script_source in page.script_sources:
+        if script_source.startswith(("//", "http://", "https://")):
+            errors.append("remote JavaScript is not allowed: " + script_source)
+            continue
+        local_script = (HTML_FILE.parent / script_source.split("?", 1)[0]).resolve()
+        try:
+            local_script.relative_to(HTML_FILE.parent.resolve())
+        except ValueError:
+            errors.append("script path escapes prototype directory: " + script_source)
+            continue
+        if not local_script.is_file():
+            errors.append("local script file is missing: " + script_source)
 
     required_ids = {
         "accueil", "portefeuille", "profil", "avantages", "activite",
@@ -126,7 +137,7 @@ def main():
     print("BC ONE prototype checks passed")
     print(f"- {len(page.ids)} IDs checked; no duplicates")
     print(f"- {len(page.anchors)} in-page navigation links resolve")
-    print("- safety copy, offline scripts, form validation, local demo persistence, CSV export and accessibility markers checked")
+    print("- safety copy, local scripts, form validation, local demo persistence, CSV export and accessibility markers checked")
     if shutil.which("node"):
         print(f"- {len(page.scripts)} inline JavaScript block(s) syntax-checked with Node.js")
     return 0
