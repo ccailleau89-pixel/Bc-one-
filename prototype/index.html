@@ -105,6 +105,37 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
  .topbar{padding-bottom:18px}
 }
 
+
+/* Founders campaign — transparent pre-launch counter, no payment integration */
+.founders-card{grid-column:span 12;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:24px;background:#fffdf8;border:1px solid #d8d3c8;color:#171914;position:relative;overflow:hidden}
+.founders-card:before{content:"";position:absolute;inset:0 auto 0 0;width:6px;background:#f05a36}
+.founders-kicker{font-size:.68rem;font-weight:900;letter-spacing:.14em;text-transform:uppercase;color:#b7472b}
+.founders-card h2{font-size:clamp(1.7rem,3vw,2.65rem);line-height:1;letter-spacing:-.06em;margin:10px 0 12px;max-width:650px}
+.founders-copy{color:#6e7068;max-width:620px;font-size:.91rem}
+.founders-copy strong{color:#171914}
+.founders-side{background:#f3f0e8;border:1px solid #ded8cc;border-radius:6px;padding:18px;align-self:stretch;display:flex;flex-direction:column;justify-content:center}
+.founders-amounts{display:flex;align-items:flex-end;justify-content:space-between;gap:12px}
+.founders-raised{font-size:clamp(1.8rem,3.4vw,2.7rem);font-weight:950;letter-spacing:-.065em;line-height:1}
+.founders-target{font-size:.78rem;color:#6e7068;text-align:right}
+.founders-track{height:11px;border-radius:2px;background:#d9d3c7;overflow:hidden;margin:15px 0 9px}
+.founders-fill{height:100%;width:0%;background:#f05a36;transition:width .25s ease}
+.founders-remaining{display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:.76rem;color:#6e7068}
+.founders-remaining strong{font-size:1.05rem;color:#171914}
+.founders-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin-top:19px}
+.founders-stat{padding:11px;background:#f5f1e8;border:1px solid #e1dbcf;border-radius:4px}
+.founders-stat strong{display:block;font-size:1.15rem;letter-spacing:-.035em}
+.founders-stat span{display:block;color:#6e7068;font-size:.67rem;margin-top:3px}
+.founders-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:18px}
+.founders-notice{font-size:.7rem;line-height:1.5;color:#77786f;margin-top:12px}
+.founders-details{grid-column:span 12;background:#e8e2d5;border-color:#d8d0c1}
+.founders-details-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.founders-detail{padding:15px;background:#f8f5ee;border:1px solid #dcd5c8;border-radius:5px}
+.founders-detail strong{display:block;font-size:.85rem;margin-bottom:6px}
+.founders-detail p{margin:0;color:#6e7068;font-size:.76rem;line-height:1.6}
+.founders-status{display:inline-flex;align-items:center;gap:7px;font-size:.69rem;font-weight:850;padding:6px 8px;border:1px solid #e5b19f;background:#f5d9cf;color:#893c26;border-radius:3px}
+@media(max-width:800px){.founders-card{grid-template-columns:1fr;gap:16px}.founders-side{padding:15px}.founders-details-grid{grid-template-columns:1fr}.founders-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.founders-stat{padding:9px}.founders-stat strong{font-size:1rem}}
+@media(max-width:420px){.founders-stats{grid-template-columns:1fr}.founders-amounts{align-items:flex-start;flex-direction:column}.founders-target{text-align:left}}
+
 </style>
 </head>
 <body>
@@ -119,6 +150,7 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <a href="#activite"><span class="nav-ico">↗</span>Activité</a>
 <a href="#profil"><span class="nav-ico">◎</span>Mon profil</a>
 <a href="#burger-crush"><span class="nav-ico">🍔</span>Burger Crush</a>
+<a href="#founders-campaign"><span class="nav-ico">✦</span>100 fondateurs</a>
 </nav>
 <div class="sidebar-bottom">
 <div class="network"><strong><span class="dot"></span>Prototype opérationnel</strong>Maquette · données fictives</div>
@@ -132,6 +164,41 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 </header>
 <section class="welcome"><div><div class="eyebrow">L’ESPACE BC ONE</div><h1>Vos avantages. Votre communauté<span style="color:var(--cyan)">.</span></h1><p>Un seul Burger ID pour BC ONE et Burger Crush. Chaque nouvelle inscription reçoit 100 crédits BC ONE d’essai, non transférables et sans valeur monétaire.</p></div><div class="date-chip">BC ONE / ESPACE MEMBRE</div></section>
 <div class="grid">
+
+<section class="card founders-card" id="founders-campaign" aria-labelledby="foundersTitle">
+  <div>
+    <div class="founders-kicker">BC ONE × BURGER CRUSH · 100 FONDATEURS</div>
+    <h2 id="foundersTitle">Construisons la monnaie de la food community.</h2>
+    <p class="founders-copy">Un objectif commun pour préparer le lancement de l’écosystème BC ONE : une communauté de gourmands, des commerçants partenaires et une expérience partagée autour de la food.</p>
+    <div class="founders-stats" aria-label="Objectifs indicatifs de la campagne">
+      <div class="founders-stat"><strong id="foundersCount">0 / 100</strong><span>fondateurs confirmés</span></div>
+      <div class="founders-stat"><strong>1 000 €</strong><span>contribution indicative</span></div>
+      <div class="founders-stat"><strong>8 %</strong><span>part collective cible</span></div>
+    </div>
+    <div class="founders-actions">
+      <a class="btn primary" href="#foundersDetails">Découvrir le projet ↗</a>
+      <span class="founders-status">Préparation · aucune souscription ouverte</span>
+    </div>
+    <p class="founders-notice">Le compteur affiche uniquement les fonds confirmés. Il ne reçoit aucun paiement et ne peut pas être augmenté par un visiteur. Les chiffres ne changeront qu’après vérification officielle des engagements et des fonds reçus.</p>
+  </div>
+  <div class="founders-side">
+    <div class="card-head"><h2 style="font-size:.88rem;letter-spacing:0;margin:0">Objectif de financement</h2><span class="subtle">PHASE 1</span></div>
+    <div class="founders-amounts"><strong class="founders-raised" id="foundersRaised">0 €</strong><span class="founders-target">sur un objectif de<br><strong id="foundersGoal">100 000 €</strong></span></div>
+    <div class="founders-track" id="foundersProgressTrack" role="progressbar" aria-label="Progression du financement confirmé" aria-valuemin="0" aria-valuemax="100000" aria-valuenow="0"><div class="founders-fill" id="foundersProgressFill"></div></div>
+    <div class="founders-remaining"><span>Reste à financer</span><strong id="foundersRemaining">100 000 €</strong></div>
+    <p class="founders-notice">Plafond collectif prévu : 10 % du capital au maximum pour le groupe des 100 fondateurs à la clôture de cette opération, sous réserve de validation juridique. Ce n’est pas une offre d’investissement.</p>
+  </div>
+</section>
+<section class="card founders-details" id="foundersDetails" aria-labelledby="foundersDetailsTitle">
+  <div class="card-head"><h2 id="foundersDetailsTitle">Une campagne transparente, en trois règles</h2><span class="subtle">DOCUMENT DE TRAVAIL</span></div>
+  <div class="founders-details-grid">
+    <div class="founders-detail"><strong>01 · Le financement</strong><p>Objectif indicatif de 100 000 € : jusqu’à 100 contributions de 1 000 €. La collecte n’est pas ouverte, aucun paiement n’est activé et aucun montant n’est encaissé via cette maquette.</p></div>
+    <div class="founders-detail"><strong>02 · Le capital</strong><p>Cible de 8 % du capital après l’opération, avec un plafond de 10 % pour le groupe lors de la première opération. La valorisation, les titres et les droits restent à valider avec des professionnels.</p></div>
+    <div class="founders-detail"><strong>03 · La monnaie virtuelle</strong><p>BCONE n’est pas déployé ni négociable dans cette maquette. Les crédits d’essai sont internes, non transférables et sans valeur monétaire. Les actions et les crédits restent entièrement distincts.</p></div>
+  </div>
+  <div class="founders-actions"><a class="btn" href="https://github.com/ccailleau89-pixel/Bc-one-/blob/feature/bc-one-erc20-contract-2026-10/FOUNDERS_100_BEST_PLAN_FR.md" target="_blank" rel="noopener noreferrer">Lire le plan des fondateurs ↗</a><span class="subtle">Aucune collecte ni souscription lancée.</span></div>
+</section>
+
 <section class="card balance-card" id="portefeuille">
 <div class="card-head"><h2>Votre portefeuille</h2><span class="subtle">Solde disponible <span style="color:var(--cyan)">●</span></span></div>
 <div class="balance-label" id="balanceLabel">Solde de démonstration</div><div class="balance-number"><span id="balance">250</span> <span>CRÉDITS TEST</span></div>
@@ -213,6 +280,23 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 (function(){
 "use strict";
 const initialBalance=250,storageKey="bc-one-member-demo-v3";
+// Pre-launch founders counter: confirmed funding stays at zero until an authorized
+// operator updates it after verification. This static prototype accepts no money.
+const foundersGoal=100000,foundersRaised=0,foundersConfirmed=0;
+const euro=value=>new Intl.NumberFormat("fr-FR",{style:"currency",currency:"EUR",maximumFractionDigits:0}).format(value);
+function renderFoundersCounter(){
+ const raised=Math.min(foundersGoal,Math.max(0,foundersRaised));
+ const confirmed=Math.min(100,Math.max(0,foundersConfirmed));
+ const remaining=Math.max(0,foundersGoal-raised);
+ const progress=foundersGoal>0?Math.min(100,raised/foundersGoal*100):0;
+ byId("foundersRaised").textContent=euro(raised);
+ byId("foundersGoal").textContent=euro(foundersGoal);
+ byId("foundersRemaining").textContent=euro(remaining);
+ byId("foundersCount").textContent=confirmed+" / 100";
+ byId("foundersProgressFill").style.width=progress+"%";
+ byId("foundersProgressTrack").setAttribute("aria-valuenow",String(raised));
+ byId("foundersProgressTrack").setAttribute("aria-valuetext",euro(raised)+" confirmés sur "+euro(foundersGoal));
+}
 const initialEntries=[
  {label:"Bonus de bienvenue",detail:"Simulation · historique fictif",amount:"+200",kind:"positive",icon:"✦"},
  {label:"Crédit de démonstration",detail:"Simulation · historique fictif",amount:"+50",kind:"positive",icon:"↙"}
@@ -352,7 +436,7 @@ window.addEventListener("burger-id-wallet",event=>{
  }
  renderActivity();refresh();
 });
-load();renderActivity();refresh();
+load();renderActivity();refresh();renderFoundersCounter();
 })();
 </script>
 <script type="module" src="./burger-id-ui.js"></script>
