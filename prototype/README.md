@@ -49,15 +49,15 @@ Valider cette maquette avec quelques utilisateurs, consigner leurs retours, puis
 
 ## Crédit d’essai à l’inscription
 
-La version Burger ID prévoit un crédit unique de **1 BCONE d’essai** à la création du compte. Il est enregistré côté base de données dans `bc_one_member_profiles.trial_tokens`, avec une ligne d’audit dans `bc_one_trial_ledger`. Le trigger PostgreSQL protège l’attribution contre les doubles inscriptions au même identifiant. Les clients du navigateur peuvent lire leur propre solde mais ne peuvent pas l’augmenter ou le modifier.
+La version Burger ID prévoit un bonus unique de **100 crédits BC ONE d’essai** à la création d’un nouveau compte. Il est enregistré dans `public.bc_one_demo_ledger` avec une clé d’idempotence unique. Le trigger PostgreSQL protège l’attribution contre les doublons. Les clients du navigateur peuvent lire uniquement leur propre registre, sans pouvoir créditer, modifier ou supprimer les entrées.
 
 **Important :** ce crédit est un compteur d’essai hors blockchain. Il n’est ni un token ERC-20, ni transférable, ni achetable, ni convertible en euros, et ne possède aucune valeur monétaire. Il ne doit pas être présenté comme un actif négociable.
 
 Pour activer le crédit en environnement Supabase :
 1. Configurer `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` dans l’environnement de build.
-2. Appliquer dans le projet Supabase voulu les migrations `supabase/migrations/202610160001_burger_id_profiles.sql` puis `supabase/migrations/202610160002_signup_trial_token.sql`.
+2. Appliquer dans le projet Supabase voulu les migrations `supabase/migrations/202610160001_burger_id_profiles.sql` puis `supabase/migrations/202610160002_bc_one_welcome_test_credits.sql`.
 3. Vérifier avec un compte de test que l’inscription déclenche un seul crédit, qu’il apparaît après confirmation de l’e-mail et connexion, et qu’un client ne peut pas modifier son solde.
-4. Ne jamais utiliser de clé `service_role` dans le navigateur. La migration doit être relue et appliquée explicitement au bon projet ; elle n’est pas exécutée par le dépôt GitHub lui-même.
+4. Ne jamais utiliser de clé `service_role` dans le navigateur. Relire les migrations puis les appliquer explicitement au bon projet ; le dépôt GitHub ne les exécute pas automatiquement.
 
 ## Contrôle statique automatisé
 
