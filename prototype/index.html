@@ -140,8 +140,8 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div id="message" class="toast" role="status" aria-live="polite"></div>
 </section>
 <section class="card profile-card" id="profil">
-<div class="card-head"><h2>Votre identité BC ONE</h2><span class="subtle">#0024</span></div>
-<div class="member-visual"><div class="member-avatar">AM</div><div><h3>Alex Martin</h3><p>Membre depuis la genèse</p></div><span class="rank">FOUNDER</span></div>
+<div class="card-head"><h2>Votre identité BC ONE</h2><span class="subtle">BURGER ID</span></div>
+<div class="member-visual"><div class="member-avatar" id="memberAvatar">AM</div><div><h3 id="memberProfileName">Alex Martin</h3><p id="memberProfileStatus">Profil de démonstration</p></div><span class="rank" id="memberRank">DÉMO</span></div>
 <div class="member-stats"><div class="mini-stat"><span>Transactions simulées</span><strong id="txcount">2 <em>opérations</em></strong></div><div class="mini-stat"><span>Statut communauté</span><strong>Fondateur <em>✦</em></strong></div></div>
 </section>
 <section class="card chart-card">
@@ -170,7 +170,7 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div style="flex:1;min-width:190px"><div class="eyebrow" style="color:#ffbd7e">Un seul identifiant. Deux univers.</div><h3 style="font-size:1.25rem;letter-spacing:-.03em;margin:6px 0">Burger ID <span style="color:#ffbd7e">#BC-0024</span></h3><p class="subtle" style="max-width:580px;line-height:1.7;margin:0">Retrouvez le même profil de démonstration dans BC ONE et Burger Crush. À terme : une connexion commune, des expériences séparées et des règles de récompenses clairement définies.</p></div>
 <div style="display:flex;flex-direction:column;gap:9px;min-width:190px"><button class="btn" id="openCrush" style="border-color:#ffb46c55;background:#ffb46c12">🍔 &nbsp; Lancer le mini-challenge</button><span class="subtle" style="text-align:center">Score fictif : <strong id="crushScore" style="color:#ffbd7e">0</strong> points Crush</span></div>
 </div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px"><span class="tag">Même Burger ID (démo)</span><span class="tag">Connexion réelle non activée</span><span class="tag">Points Crush ≠ BCONE</span></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px"><span class="tag">Même Burger ID (démo)</span><span class="tag" id="connectionMode">Mode démonstration</span><span class="tag">Points Crush ≠ BCONE</span></div>
 </section>
 <section class="card benefits-card" id="avantages">
 <div class="card-head"><h2>Univers & avantages</h2><span class="subtle">Concepts à venir</span></div>
