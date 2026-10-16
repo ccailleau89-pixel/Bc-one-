@@ -11,6 +11,7 @@ import re
 HTML_FILE = Path(__file__).with_name("index.html")
 BURGER_ID_MIGRATION = HTML_FILE.parents[1] / "supabase/migrations/202610160001_burger_id_profiles.sql"
 WELCOME_CREDITS_MIGRATION = HTML_FILE.parents[1] / "supabase/migrations/202610160002_bc_one_welcome_test_credits.sql"
+MIGRATIONS_DIR = HTML_FILE.parents[1] / "supabase/migrations"
 JOURNEY_FILE = HTML_FILE.with_name("user-journey.html")
 
 
@@ -56,6 +57,21 @@ def main():
     page = PageInspector()
     page.feed(source)
     errors = []
+
+    # Supabase CLI identifies migrations by the leading numeric version.
+    # Duplicate versions make a migration set ambiguous and can block rollout.
+    migration_versions = {}
+    if MIGRATIONS_DIR.is_dir():
+        for migration_path in sorted(MIGRATIONS_DIR.glob("*.sql")):
+            match = re.match(r"^(\\d+)_", migration_path.name)
+            if not match:
+                errors.append("migration filename must start with a numeric version: " + migration_path.name)
+                continue
+            version = match.group(1)
+            migration_versions.setdefault(version, []).append(migration_path.name)
+        for version, names in migration_versions.items():
+            if len(names) > 1:
+                errors.append("duplicate Supabase migration version " + version + ": " + ", ".join(names))
 
     duplicates = sorted({item for item in page.ids if page.ids.count(item) > 1})
     if duplicates:
