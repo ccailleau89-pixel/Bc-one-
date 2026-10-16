@@ -4,6 +4,23 @@ Current status
 
 BC ONE is a project in preparation. No production token has been deployed.
 
+## Verified state — 16 October 2026
+
+- Public GitHub Pages prototype is deployed: https://ccailleau89-pixel.github.io/Bc-one-/
+- Burger ID entry point is published, but authentication remains disabled until a shared Supabase project is configured.
+- Latest public-site smoke workflow passed: HTML titles and required safety copy, local links, Supabase config blank-state, migration version uniqueness, and Burger ID JavaScript syntax.
+- Legacy `burger-id-schema.sql` has been marked deprecated because it conflicts with the current migration schema.
+- Burger ID profile reads/writes now use `user_id` and the current migration's `display_name` field; city and favorite burger remain in user metadata.
+- Current migrations are not applied to any remote Supabase project. No real account, payment, token issuance, or blockchain deployment is active.
+
+## Next release gates
+
+1. Configure one approved Supabase test project for both apps and set only its public URL/key in the browser config.
+2. Apply the two current migrations to that test project after review.
+3. Test signup, email confirmation, login, logout, recovery, and profile updates.
+4. Use two separate accounts to verify row-level security and that one account cannot read or alter the other's records or credits.
+5. Validate the complete flow on mobile and only then decide whether to open a limited pilot.
+
 Main objectives
 
 - Build a premium BC ONE website and mobile-friendly interface.
