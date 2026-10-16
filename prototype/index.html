@@ -134,7 +134,7 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="grid">
 <section class="card balance-card" id="portefeuille">
 <div class="card-head"><h2>Votre portefeuille</h2><span class="subtle">Solde disponible <span style="color:var(--cyan)">●</span></span></div>
-<div class="balance-label" id="balanceLabel">Solde de démonstration</div><div class="balance-number"><span id="balance">250</span> <span>BCONE</span></div>
+<div class="balance-label" id="balanceLabel">Solde de démonstration</div><div class="balance-number"><span id="balance">250</span> <span>CRÉDITS TEST</span></div>
 <div class="balance-meta"><span class="tiny-pill" id="balanceTag">+ Démo locale</span><span id="balanceCaption">Solde fictif · aucune crypto réelle détenue</span></div>
 <div class="balance-actions"><button class="btn primary" id="openTransfer">↗ &nbsp; Simuler un transfert</button><button class="btn ghost" id="exportActivity">↓ &nbsp; Exporter l’activité</button></div>
 <div id="message" class="toast" role="status" aria-live="polite"></div>
@@ -255,7 +255,7 @@ function renderActivity(){
 }
 function refresh(){
  balanceEl.textContent=String(balance);countEl.firstChild.textContent=String(txs)+" ";
- chartBalance.textContent=String(balance)+" BCONE";
+ chartBalance.textContent=String(balance)+" crédits test";
  amount.max=String(balance);if(Number(amount.value)>balance)amount.value=String(balance);
  if(balance===0)amount.value="0";
 }
@@ -289,7 +289,7 @@ form.addEventListener("submit",event=>{
  window.setTimeout(()=>{if(dialog.open)dialog.close();},550);
 });
 byId("exportActivity").addEventListener("click",()=>{
- const rows=[["Activité","Détail","Montant BCONE fictifs"],...entries.map(x=>[x.label,x.detail,x.amount])];
+ const rows=[["Activité","Détail","Crédits BC ONE d’essai"],...entries.map(x=>[x.label,x.detail,x.amount])];
  const csv="\uFEFF"+rows.map(row=>row.map(cell=>'"'+String(cell).replace(/"/g,'""')+'"').join(";")).join("\r\n");
  const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));
  const link=document.createElement("a");link.href=url;link.download="bc-one-activite-demo.csv";document.body.append(link);link.click();link.remove();
@@ -301,7 +301,7 @@ byId("reset").addEventListener("click",()=>{
  balance=initialBalance;txs=2;entries=initialEntries.map(x=>({...x}));
  try{localStorage.removeItem(storageKey);}catch(_){}
  renderActivity();refresh();byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;
- message.textContent="Démo réinitialisée. Votre solde fictif est revenu à 250 BCONE.";
+ message.textContent="Démo réinitialisée. Votre solde fictif est revenu à 250 crédits de démonstration.";
 });
 let crushRound=0,crushScore=0;
 const crushDialog=byId("crushDialog"),crushRoundEl=byId("crushRound"),crushScoreEl=byId("crushScore"),crushMessage=byId("crushMessage");
