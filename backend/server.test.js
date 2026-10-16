@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createApp } from "./server.js";\nimport Stripe from "stripe";
+import { createApp } from "./server.js";
+import Stripe from "stripe";
 
 async function withServer(app, run) {
   await new Promise((resolve) => app.listen(0, "127.0.0.1", resolve));
