@@ -7,6 +7,7 @@ const dialog = $("burgerIdDialog"), form = $("burgerIdForm");
 const emailInput = $("burgerIdEmail"), passwordInput = $("burgerIdPassword");
 const status = $("burgerIdStatus"), submit = $("burgerIdSubmit"), modeSelect = $("burgerIdMode");
 const openButton = $("burgerIdOpen"), userName = $("memberName"), userLabel = $("memberLabel");
+const profileName = $("memberProfileName"), profileAvatar = $("memberAvatar"), profileStatus = $("memberProfileStatus"), memberRank = $("memberRank"), connectionMode = $("connectionMode");
 let adapter = null, configured = false, walletRequest = 0;
 
 function showStatus(text, isError = false) {
@@ -47,12 +48,24 @@ async function syncWallet(user) {
 }
 function updateMember(user) {
   if (user && typeof user.email === "string") {
-    userName.textContent = user.email.split("@")[0].slice(0, 24) || "Membre";
+    const displayName = user.user_metadata?.full_name || user.user_metadata?.name || user.email.split("@")[0] || "Membre";
+    const initials = displayName.trim().split(/\\s+/).slice(0, 2).map(part => part[0]?.toUpperCase() || "").join("") || "M";
+    userName.textContent = displayName.slice(0, 24) || "Membre";
+    if (profileName) profileName.textContent = displayName.slice(0, 40);
+    if (profileAvatar) profileAvatar.textContent = initials;
+    if (profileStatus) profileStatus.textContent = "Burger ID connecté";
+    if (memberRank) memberRank.textContent = "MEMBRE";
+    if (connectionMode) connectionMode.textContent = "Burger ID connecté";
     userLabel.textContent = "Burger ID connecté";
     openButton.textContent = "Mon compte"; openButton.setAttribute("aria-label", "Gérer mon Burger ID");
     openButton.dataset.signedIn = "true"; void syncWallet(user);
   } else {
     userName.textContent = "Alex Martin"; userLabel.textContent = "Mode démonstration";
+    if (profileName) profileName.textContent = "Alex Martin";
+    if (profileAvatar) profileAvatar.textContent = "AM";
+    if (profileStatus) profileStatus.textContent = "Profil de démonstration";
+    if (memberRank) memberRank.textContent = "DÉMO";
+    if (connectionMode) connectionMode.textContent = configured ? "Connexion disponible" : "Mode démonstration";
     openButton.textContent = "Connexion"; openButton.setAttribute("aria-label", "Se connecter avec Burger ID");
     openButton.dataset.signedIn = "false"; void syncWallet(null);
   }
