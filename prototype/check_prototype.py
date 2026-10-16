@@ -85,6 +85,8 @@ def main():
         "burger-crush", "transferDialog", "transferForm", "balance",
         "txcount", "reset", "openTransfer", "exportActivity",
         "openCrush", "crushDialog", "crushTap", "crushScore",
+        "founders-campaign", "foundersRaised", "foundersGoal", "foundersRemaining",
+        "foundersCount", "foundersProgressTrack", "foundersProgressFill", "foundersDetails",
     }
     missing_ids = sorted(required_ids - set(page.ids))
     if missing_ids:
@@ -96,6 +98,9 @@ def main():
         "transfert réel",
         "Mode démonstration",
         "Points Crush ≠ BCONE",
+        "aucune souscription ouverte",
+        "pas une offre d’investissement",
+        "non transférables et sans valeur monétaire",
     ]
     for phrase in required_copy:
         if phrase.casefold() not in source.casefold():
@@ -112,6 +117,11 @@ def main():
         "bc-one-activite-demo.csv",
         "Stockage local indisponible",
         "crushRound>=10",
+        "const foundersGoal=100000",
+        "foundersRaised=0",
+        "foundersConfirmed=0",
+        "renderFoundersCounter()",
+        "aria-valuenow",
     ]:
         if marker not in source:
             errors.append(f"expected validation/accessibility marker missing: {marker}")
