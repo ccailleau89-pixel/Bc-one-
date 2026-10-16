@@ -84,3 +84,19 @@ Après application de la migration `supabase/migrations/202610160002_bc_one_welc
 - Le code n'applique pas lui-même la migration au projet Supabase distant et ne déploie aucun token.
 
 Tester : créer un nouveau compte, confirmer l'e-mail si demandé, se connecter et vérifier le solde de 100 crédits d'essai ainsi qu'une seule ligne `welcome_bonus` dans `public.bc_one_demo_ledger`.
+
+
+## Compteur de financement — 100 fondateurs
+
+Le tableau de bord affiche désormais le projet de campagne **BC ONE × Burger Crush — 100 fondateurs** :
+
+- Objectif indicatif : **100 000 €**.
+- Jusqu'à **100 fondateurs**, contribution indicative de **1 000 €** chacun.
+- Participation collective cible : **8 %**, plafond de travail : **10 %** à la clôture de l'opération initiale, à faire valider juridiquement.
+- Le compteur démarre à **0 € confirmé**, avec **100 000 € restants** et **0 fondateur confirmé**.
+- Le compteur est volontairement statique : aucune saisie utilisateur ne peut augmenter les fonds ou le nombre de fondateurs. Il ne doit être mis à jour qu'après vérification autorisée de fonds réellement reçus et de souscriptions valides.
+- Le prototype n'encaisse aucun paiement, ne collecte aucune réservation d'investissement et n'ouvre aucune souscription. Le bouton mène aux informations du projet et au plan de travail.
+- La valorisation implicite, les titres, les droits des actionnaires et la structure juridique ne sont pas validés. Le compteur ne constitue pas une offre d'investissement.
+- BCONE n'est pas déployé ni négociable dans cette maquette. Les crédits d'essai ne sont ni des actions ni une monnaie transférable et n'ont aucune valeur monétaire.
+
+Le contrôle statique vérifie la présence du compteur, de ses identifiants accessibles, des valeurs de départ et des mentions de sécurité. Cela ne remplace pas un test navigateur, une revue juridique ou un audit de sécurité.
