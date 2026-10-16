@@ -132,3 +132,18 @@ test("invalid amount is rejected before opening a database connection", async ()
   );
   assert.equal(connected, false);
 });
+
+test("sub-cent commission rounds to zero without inserting an invalid ledger row", async () => {
+  const tinyPurchase = {
+    ...purchase,
+    gross_cents: "1",
+    commission_cents: "0",
+    merchant_net_cents: "1"
+  };
+  const { pool, calls, state } = makePool({ initialPurchase: tinyPurchase });
+  const result = await recordVerifiedPayment({ pool, ...validArgs, amountCents: 1 });
+  assert.equal(result.commissionCents, 0);
+  assert.equal(result.merchantNetCents, 1);
+  assert.equal(calls.some((call) => call.sql.includes("INSERT INTO purchase_commission_entries")), false);
+  assert.equal(state.committed, true);
+});
