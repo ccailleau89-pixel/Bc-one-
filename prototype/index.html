@@ -130,12 +130,12 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="crumb">Espace membre <span style="color:#525d76">/</span> <strong>Vue d’ensemble</strong></div>
 <div class="top-actions"><span class="demo-tag"><span class="dot"></span>Demo live</span><button class="btn" id="burgerIdOpen" aria-label="Se connecter avec Burger ID">Connexion</button><button class="icon-btn" id="helpBtn" aria-label="À propos du prototype" title="À propos">?</button><div class="user"><div class="avatar">AM</div><div class="user-copy"><strong id="memberName">Alex Martin</strong><small id="memberLabel">Mode démonstration</small></div></div></div>
 </header>
-<section class="welcome"><div><div class="eyebrow">L’ESPACE BC ONE</div><h1>Vos avantages. Votre communauté<span style="color:var(--cyan)">.</span></h1><p>Un compte pour retrouver vos avantages, vos partenaires et votre activité.</p></div><div class="date-chip">BC ONE / ESPACE MEMBRE</div></section>
+<section class="welcome"><div><div class="eyebrow">L’ESPACE BC ONE</div><h1>Vos avantages. Votre communauté<span style="color:var(--cyan)">.</span></h1><p>Un seul Burger ID pour BC ONE et Burger Crush. Chaque nouvelle inscription reçoit 100 crédits BC ONE d’essai, non transférables et sans valeur monétaire.</p></div><div class="date-chip">BC ONE / ESPACE MEMBRE</div></section>
 <div class="grid">
 <section class="card balance-card" id="portefeuille">
 <div class="card-head"><h2>Votre portefeuille</h2><span class="subtle">Solde disponible <span style="color:var(--cyan)">●</span></span></div>
-<div class="balance-label">Solde fictif total</div><div class="balance-number"><span id="balance">250</span> <span>BCONE</span></div>
-<div class="balance-meta"><span class="tiny-pill">+ Démo locale</span><span>Aucune crypto réelle détenue</span></div>
+<div class="balance-label" id="balanceLabel">Solde de démonstration</div><div class="balance-number"><span id="balance">250</span> <span>BCONE</span></div>
+<div class="balance-meta"><span class="tiny-pill" id="balanceTag">+ Démo locale</span><span id="balanceCaption">Solde fictif · aucune crypto réelle détenue</span></div>
 <div class="balance-actions"><button class="btn primary" id="openTransfer">↗ &nbsp; Simuler un transfert</button><button class="btn ghost" id="exportActivity">↓ &nbsp; Exporter l’activité</button></div>
 <div id="message" class="toast" role="status" aria-live="polite"></div>
 </section>
@@ -178,14 +178,14 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="benefit"><span class="benefit-art">⌁</span><span class="benefit-copy"><strong>Rencontres & événements</strong><small>La communauté dans la vraie vie</small></span><span class="benefit-tag">Concept</span></div>
 <div class="benefit"><span class="benefit-art">◉</span><span class="benefit-copy"><strong>Avantages partenaires</strong><small>Offres soumises à conditions</small></span><span class="benefit-tag">Prototype</span></div>
 </section>
-<div class="demo-note"><span class="note-icon">i</span><span><strong>Prototype uniquement.</strong> Les soldes, profils, courbe et activités sont fictifs. Aucun token n’est émis, aucun portefeuille connecté, aucun paiement ni transfert réel. Les avantages partenaires ne sont pas encore contractuellement définis.</span></div>
+<div class="demo-note"><span class="note-icon">i</span><span><strong>Crédits d’essai uniquement.</strong> Les 100 crédits attribués à l’inscription sont un solde interne de test, non transférable et sans valeur monétaire. Ils ne sont pas des tokens ERC-20. Aucun actif crypto, paiement ou transfert réel n’est activé.</span></div>
 </div>
 <footer class="foot"><span>© BC ONE · Prototype espace membre</span><span>Conçu pour une expérience mobile-first · Données fictives</span></footer>
 </main>
 </div>
 <dialog id="transferDialog" aria-labelledby="transferTitle">
 <div class="close-row"><div class="logo"><span class="logo-mark">B.</span><span>BC <span>ONE</span></span></div><button class="close-btn" id="closeTransfer" aria-label="Fermer">×</button></div>
-<h2 id="transferTitle">Transfert de démonstration</h2><p>Testez l’expérience d’un transfert. Rien ne sera envoyé sur une blockchain.</p>
+<h2 id="transferTitle">Transfert de démonstration</h2><p>Cette simulation ne concerne que le portefeuille fictif local. Les crédits d’essai d’un compte connecté ne peuvent pas être transférés.</p>
 <form id="transferForm"><label for="recipient">Destinataire fictif</label><input id="recipient" name="recipient" value="Sam Dupont" maxlength="40" autocomplete="off" required><label for="amount">Montant en BCONE fictifs</label><input id="amount" name="amount" type="number" min="1" max="250" step="1" value="25" required><div class="dialog-actions"><button class="btn" type="button" id="cancelTransfer">Annuler</button><button class="btn primary" type="submit">Confirmer la simulation ↗</button></div><div id="formMessage" class="toast" role="status" aria-live="polite"></div></form>
 </dialog>
 <dialog id="crushDialog" aria-labelledby="crushTitle">
@@ -208,7 +208,7 @@ input{background:#f8f5ee;border-color:#d8d3c8;color:#171914;border-radius:5px}
 <div class="auth-caption">Sécurité : la clé de navigateur doit être une clé publique Supabase. Ne jamais utiliser une clé service_role ici.</div>
 </form>
 </dialog>
-<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="close-row"><h2 id="helpTitle">À propos de BC ONE</h2><button class="close-btn" id="closeHelp" aria-label="Fermer">×</button></div><p>Vous explorez une maquette interactive de l’espace membre BC ONE. Les données restent locales dans votre navigateur. Aucun token, compte financier ou paiement réel n’est connecté.</p><button class="btn primary" id="helpOk">Compris</button></dialog>
+<dialog id="helpDialog" aria-labelledby="helpTitle"><div class="close-row"><h2 id="helpTitle">À propos de BC ONE</h2><button class="close-btn" id="closeHelp" aria-label="Fermer">×</button></div><p>BC ONE distingue les crédits d’essai internes d’un véritable crypto-actif. Chaque nouvelle inscription reçoit 100 crédits d’essai non transférables après application de la migration Supabase. Aucun token réel ni paiement n’est activé.</p><button class="btn primary" id="helpOk">Compris</button></dialog>
 <script>
 (function(){
 "use strict";
@@ -222,6 +222,7 @@ const byId=id=>document.getElementById(id);
 const balanceEl=byId("balance"),countEl=byId("txcount"),chartBalance=byId("chartBalance");
 const activity=byId("activity"),message=byId("message"),dialog=byId("transferDialog");
 const form=byId("transferForm"),amount=byId("amount"),recipient=byId("recipient"),formMessage=byId("formMessage");
+let walletAuthenticated=false;
 function save(){
  try{localStorage.setItem(storageKey,JSON.stringify({balance,txs,entries:entries.slice(0,100)}));}
  catch(_){message.textContent="Stockage local indisponible : la démonstration continue en mémoire.";}
@@ -259,6 +260,7 @@ function refresh(){
  if(balance===0)amount.value="0";
 }
 function openTransfer(){
+ if(walletAuthenticated){message.textContent="Les crédits BC ONE d’essai ne sont pas transférables.";return;}
  formMessage.textContent="";amount.min="1";amount.max=String(balance);amount.value=balance>0?String(Math.min(25,balance)):"";
  byId("cancelTransfer").disabled=balance===0;
  byId("openTransfer").disabled=balance===0;
@@ -273,6 +275,7 @@ byId("cancelTransfer").addEventListener("click",()=>dialog.close());
 dialog.addEventListener("click",event=>{if(event.target===dialog)dialog.close();});
 form.addEventListener("submit",event=>{
  event.preventDefault();
+ if(walletAuthenticated){formMessage.textContent="Les crédits d’essai sont non transférables.";return;}
  const n=Number(amount.value),name=recipient.value.trim();
  if(!name||name.length>40||!Number.isSafeInteger(n)||n<1||n>balance){
   formMessage.textContent="Vérifiez le destinataire et le solde fictif disponible.";return;
@@ -294,6 +297,7 @@ byId("exportActivity").addEventListener("click",()=>{
  message.textContent="Export CSV téléchargé. Les données restent fictives.";
 });
 byId("reset").addEventListener("click",()=>{
+ if(walletAuthenticated){message.textContent="Le portefeuille connecté ne peut pas être réinitialisé depuis la démo.";return;}
  balance=initialBalance;txs=2;entries=initialEntries.map(x=>({...x}));
  try{localStorage.removeItem(storageKey);}catch(_){}
  renderActivity();refresh();byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;
@@ -322,6 +326,32 @@ help.addEventListener("click",event=>{if(event.target===help)help.close();});
 document.querySelectorAll(".nav a").forEach(link=>link.addEventListener("click",()=>{
  document.querySelectorAll(".nav a").forEach(item=>item.classList.toggle("active",item===link));
 }));
+window.addEventListener("burger-id-wallet",event=>{
+ const detail=event.detail||{}; walletAuthenticated=detail.authenticated===true;
+ if(walletAuthenticated){
+  const rows=Array.isArray(detail.entries)?detail.entries:[];
+  balance=Number.isSafeInteger(detail.balance)?Math.max(0,detail.balance):0; txs=rows.length;
+  entries=rows.map(row=>{
+   const n=Number(row.amount)||0, welcome=row.reason==="welcome_bonus";
+   return {label:welcome?"Bonus de bienvenue BC ONE":(row.entry_type==="debit"?"Utilisation de crédits d’essai":"Crédit BC ONE d’essai"),
+    detail:"Crédit interne non transférable · sans valeur monétaire",
+    amount:(row.entry_type==="debit"?"−":"+")+String(Math.abs(n)),
+    kind:row.entry_type==="debit"?"negative":"positive",icon:welcome?"✦":"↗"};
+  });
+  byId("balanceLabel").textContent="Crédits BC ONE d’essai";
+  byId("balanceTag").textContent="Bonus d’inscription";
+  byId("balanceCaption").textContent="Non transférables · aucune valeur monétaire";
+  byId("openTransfer").disabled=true; byId("quickTransfer").disabled=true; byId("reset").disabled=true;
+  message.textContent="Portefeuille d’essai connecté. Aucun token réel n’est détenu.";
+ }else{
+  balance=initialBalance;txs=2;entries=initialEntries.map(x=>({...x}));load();
+  byId("balanceLabel").textContent="Solde de démonstration";
+  byId("balanceTag").textContent="+ Démo locale";
+  byId("balanceCaption").textContent="Solde fictif · aucune crypto réelle détenue";
+  byId("openTransfer").disabled=false;byId("quickTransfer").disabled=false;byId("reset").disabled=false;
+ }
+ renderActivity();refresh();
+});
 load();renderActivity();refresh();
 })();
 </script>
