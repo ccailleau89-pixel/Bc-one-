@@ -35,7 +35,7 @@ VALUES
    '00000000-0000-4000-8000-000000000011',
    'commission_accrual', 200, 'commission-key-1', 'Smoke test 2% commission');
 
-DO $
+DO $bc_smoke$
 BEGIN
   BEGIN
     INSERT INTO ledger_entries
@@ -121,6 +121,6 @@ BEGIN
   EXCEPTION WHEN check_violation THEN
     RAISE NOTICE 'PASS: invalid commission rate rejected';
   END;
-END $;
+END $bc_smoke$;
 
 ROLLBACK;
