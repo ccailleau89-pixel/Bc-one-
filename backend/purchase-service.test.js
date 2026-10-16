@@ -88,7 +88,8 @@ test("duplicate verified notification does not duplicate commission", async () =
   });
   const result = await recordVerifiedPayment({ pool, ...validArgs });
   assert.equal(result.duplicateNotification, true);
-  assert.equal(calls.filter((call) => call.sql.includes("INSERT INTO purchase_commission_entries")).length, 1);
+  assert.equal(calls.filter((call) => call.sql.includes("INSERT INTO purchase_commission_entries")).length, 0);
+  assert.equal(calls.some((call) => call.sql.includes("FROM purchase_commission_entries")), true);
   assert.equal(state.entry.amount_cents, 200);
   assert.equal(state.committed, true);
 });
@@ -165,4 +166,18 @@ test("late duplicate payment webhook is harmless after a full refund", async () 
   assert.equal(state.purchase.status, "refunded");
   assert.equal(calls.some((call) => call.sql.includes("UPDATE partner_purchases")), false);
   assert.equal(state.committed, true);
+});
+
+
+test("paid purchase with missing commission ledger entry fails closed", async () => {
+  const { pool, state, calls } = makePool({
+    initialPurchase: { ...purchase, status: "refunded", paid_at: "2026-10-16T00:00:00Z" }
+  });
+  await assert.rejects(
+    recordVerifiedPayment({ pool, ...validArgs }),
+    (error) => error instanceof PurchaseServiceError && error.code === "COMMISSION_IDEMPOTENCY_CONFLICT"
+  );
+  assert.equal(calls.some((call) => call.sql.includes("INSERT INTO purchase_commission_entries")), false);
+  assert.equal(state.rolledBack, true);
+  assert.equal(state.committed, false);
 });
