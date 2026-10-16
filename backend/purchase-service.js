@@ -170,3 +170,90 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
     client.release();
   }
 }
+
+
+/**
+ * Creates a pending purchase from a price already resolved by trusted server
+ * code (for example, a product ID looked up in the server-side catalogue).
+ * Never pass a browser-supplied amount directly to this function.
+ */
+export async function createPendingPurchase({ pool, merchantId, memberId = null, grossCents, idempotencyKey }) {
+  if (!pool || typeof pool.connect !== "function") {
+    throw new PurchaseServiceError("INVALID_POOL", "A PostgreSQL pool is required");
+  }
+  if (typeof merchantId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(merchantId)) {
+    throw new PurchaseServiceError("INVALID_INPUT", "merchantId must be a UUID");
+  }
+  if (memberId !== null && (typeof memberId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(memberId))) {
+    throw new PurchaseServiceError("INVALID_INPUT", "memberId must be a UUID or null");
+  }
+  positiveSafeInteger(grossCents, "grossCents");
+  requiredText(idempotencyKey, "idempotencyKey", 200);
+
+  const client = await pool.connect();
+  let transactionOpen = false;
+  try {
+    await client.query("BEGIN");
+    transactionOpen = true;
+
+    const existing = await client.query(
+      `SELECT id, merchant_id, member_id, gross_cents, commission_bps,
+              commission_cents, merchant_net_cents, status, provider_payment_id
+         FROM partner_purchases
+        WHERE idempotency_key = $1
+        FOR UPDATE`,
+      [idempotencyKey]
+    );
+    if (existing.rows.length) {
+      const row = existing.rows[0];
+      if (row.merchant_id !== merchantId || row.member_id !== memberId ||
+          Number(row.gross_cents) !== grossCents) {
+        throw new PurchaseServiceError("IDEMPOTENCY_CONFLICT", "Idempotency key was already used for a different purchase");
+      }
+      await client.query("COMMIT");
+      transactionOpen = false;
+      return { ...row, reused: true };
+    }
+
+    const merchantResult = await client.query(
+      `SELECT id, status, commission_bps, stripe_account_id
+         FROM merchants
+        WHERE id = $1
+        FOR SHARE`,
+      [merchantId]
+    );
+    if (merchantResult.rows.length !== 1) {
+      throw new PurchaseServiceError("MERCHANT_NOT_FOUND", "Merchant was not found");
+    }
+    const merchant = merchantResult.rows[0];
+    if (merchant.status !== "active" || typeof merchant.stripe_account_id !== "string" ||
+        !merchant.stripe_account_id.startsWith("acct_")) {
+      throw new PurchaseServiceError("MERCHANT_NOT_ONBOARDED", "Merchant must be active and connected to Stripe");
+    }
+
+    const split = calculateCommission({ grossCents, commissionBps: Number(merchant.commission_bps) });
+    const id = randomUUID();
+    const inserted = await client.query(
+      `INSERT INTO partner_purchases
+         (id, merchant_id, member_id, currency, gross_cents, commission_bps,
+          commission_cents, merchant_net_cents, payment_provider, provider_payment_id,
+          idempotency_key, status)
+       VALUES ($1, $2, $3, 'EUR', $4, $5, $6, $7, 'stripe', $8, $9, 'pending')
+       RETURNING id, merchant_id, member_id, gross_cents, commission_bps,
+                 commission_cents, merchant_net_cents, status, provider_payment_id`,
+      [id, merchantId, memberId, grossCents, Number(merchant.commission_bps),
+        split.platformCommissionCents, split.merchantNetCents, `pending:${id}`, idempotencyKey]
+    );
+    await client.query("COMMIT");
+    transactionOpen = false;
+    return { ...inserted.rows[0], reused: false };
+  } catch (error) {
+    if (transactionOpen) {
+      try { await client.query("ROLLBACK"); } catch { /* preserve original error */ }
+    }
+    if (error instanceof PurchaseServiceError || error instanceof CommissionError) throw error;
+    throw new PurchaseServiceError("PURCHASE_CREATION_FAILED", "Pending purchase could not be created");
+  } finally {
+    client.release();
+  }
+}
