@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS merchants (
     CHECK (status IN ('pending', 'active', 'suspended', 'closed')),
   commission_bps INTEGER NOT NULL DEFAULT 200 CHECK (commission_bps BETWEEN 0 AND 10000),
   commission_agreement_version TEXT NOT NULL DEFAULT 'draft',
+  stripe_account_id TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -46,6 +47,10 @@ CREATE TABLE IF NOT EXISTS payment_provider_events (
   processed_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   UNIQUE (provider, provider_event_id)
 );
+
+ALTER TABLE merchants ADD COLUMN IF NOT EXISTS stripe_account_id TEXT;
+CREATE UNIQUE INDEX IF NOT EXISTS merchants_stripe_account_id_idx
+  ON merchants (stripe_account_id) WHERE stripe_account_id IS NOT NULL;
 
 CREATE INDEX IF NOT EXISTS partner_purchases_merchant_created_idx
   ON partner_purchases (merchant_id, created_at DESC, id DESC);
