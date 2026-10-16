@@ -7,6 +7,7 @@ on:
       - "index.html"
       - "burger-id.html"
       - "burger-id-config.js"
+      - "burger-id-schema.sql"
       - "supabase/migrations/**"
       - "prototype/check_public_site.py"
       - ".github/workflows/public-site-checks.yml"
