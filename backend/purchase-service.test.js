@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { recordVerifiedPayment, PurchaseServiceError } from "./purchase-service.js";
 
 const purchase = {
-  id: "purchase-1",
+  id: "00000000-0000-4000-8000-000000000011",
   merchant_id: "merchant-1",
   member_id: null,
   currency: "EUR",
@@ -51,7 +51,7 @@ function makePool({ initialPurchase = { ...purchase }, existingEntry = null } = 
 }
 
 const validArgs = {
-  purchaseId: "purchase-1",
+  purchaseId: "00000000-0000-4000-8000-000000000011",
   paymentProvider: "test-provider",
   providerPaymentId: "provider-payment-1",
   amountCents: 10000,
@@ -77,10 +77,10 @@ test("verified payment marks purchase paid and records 2% commission atomically"
 test("duplicate verified notification does not duplicate commission", async () => {
   const existingEntry = {
     id: "commission-1",
-    purchase_id: "purchase-1",
+    purchase_id: "00000000-0000-4000-8000-000000000011",
     entry_type: "commission_accrual",
     amount_cents: 200,
-    idempotency_key: "purchase-commission:purchase-1"
+    idempotency_key: "purchase-commission:00000000-0000-4000-8000-000000000011"
   };
   const { pool, calls, state } = makePool({
     initialPurchase: { ...purchase, status: "paid", paid_at: "2026-10-16T00:00:00Z" },
