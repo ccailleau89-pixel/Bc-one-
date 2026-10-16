@@ -73,6 +73,14 @@ def main():
             if not re.search(rf'{key}\s*:\s*""', config):
                 errors.append(f"burger-id-config.js: {key} must stay blank until an approved Supabase project is configured")
 
+    legacy_schema = ROOT / "burger-id-schema.sql"
+    if not legacy_schema.is_file():
+        errors.append("burger-id-schema.sql: legacy schema notice missing")
+    else:
+        legacy_content = legacy_schema.read_text(encoding="utf-8").casefold()
+        if "deprecated" not in legacy_content or "create table" in legacy_content:
+            errors.append("burger-id-schema.sql must remain a non-executable deprecation notice")
+
     migrations = ROOT / "supabase" / "migrations"
     versions = {}
     if migrations.is_dir():
