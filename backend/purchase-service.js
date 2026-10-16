@@ -31,7 +31,7 @@ function positiveSafeInteger(value, field) {
  * The pending purchase must already exist. Purchase state and commission
  * accrual are committed atomically; duplicate notifications are idempotent.
  */
-export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider, providerPaymentId, amountCents, currency = "EUR" }) {
+export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider, providerPaymentId, amountCents, currency = "EUR", providerEventId, providerEventType }) {
   if (!pool || typeof pool.connect !== "function") {
     throw new PurchaseServiceError("INVALID_POOL", "A PostgreSQL pool is required");
   }
@@ -42,7 +42,7 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
   requiredText(paymentProvider, "paymentProvider", 80);
   requiredText(providerPaymentId, "providerPaymentId", 200);
   positiveSafeInteger(amountCents, "amountCents");
-  if (currency !== "EUR") {
+  if ((providerEventId && !providerEventType) || (!providerEventId && providerEventType)) {\n    throw new PurchaseServiceError("INVALID_EVENT", "Provider event ID and type must be supplied together");\n  }\n  if (providerEventId) {\n    requiredText(providerEventId, "providerEventId", 255);\n    requiredText(providerEventType, "providerEventType", 120);\n  }\n  if (currency !== "EUR") {
     throw new PurchaseServiceError("CURRENCY_MISMATCH", "Only EUR purchases are supported");
   }
 
