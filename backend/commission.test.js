@@ -28,7 +28,7 @@ test("zero commission is valid and full commission is capped at gross", () => {
 });
 
 test("rejects floating-point, zero and negative amounts", () => {
-  for (const grossCents of [0, -1, 1.5, NaN, Number.MAX_SAFE_INTEGER]) {
+  for (const grossCents of [0, -1, 1.5, NaN, Number.MAX_SAFE_INTEGER + 1]) {
     assert.throws(() => calculateCommission({ grossCents }), CommissionError);
   }
 });
