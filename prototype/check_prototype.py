@@ -78,7 +78,7 @@ def main():
     required_copy = [
         "Prototype uniquement",
         "Aucun token",
-        "aucun transfert réel",
+        "transfert réel",
         "Connexion réelle non activée",
         "Points Crush ≠ BCONE",
     ]
