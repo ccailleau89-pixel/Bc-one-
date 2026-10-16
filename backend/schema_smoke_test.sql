@@ -99,7 +99,7 @@ BEGIN
     VALUES
       ('00000000-0000-4000-8000-000000000021',
        '00000000-0000-4000-8000-000000000011',
-       'test-refund-too-large', 8000, 160, 7840, 'refund-key-too-large', 'pending');
+       'test-refund-too-large', 11000, 220, 10780, 'refund-key-too-large', 'pending');
     RAISE EXCEPTION 'Expected cumulative refund limit to fail';
   EXCEPTION WHEN check_violation THEN
     RAISE NOTICE 'PASS: cumulative refund cap enforced';
