@@ -108,17 +108,50 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
       throw new PurchaseServiceError("PURCHASE_SPLIT_INVALID", "Stored purchase commission split is inconsistent");
     }
 
-    const wasAlreadyPaid = purchase.status !== "pending";
-    if (!wasAlreadyPaid) {
-      await client.query(
-        `UPDATE partner_purchases
-            SET status = 'paid', paid_at = COALESCE(paid_at, now())
-          WHERE id = $1 AND status = 'pending'`,
-        [purchaseId]
-      );
+    const commissionKey = `purchase-commission:${purchaseId}`;
+
+    // A replay must never recreate a missing commission after a refund or
+    // silently repair a previously paid purchase. Reconcile that anomaly.
+    if (purchase.status !== "pending") {
+      if (split.platformCommissionCents > 0) {
+        const existing = await client.query(
+          `SELECT purchase_id, entry_type, amount_cents
+             FROM purchase_commission_entries
+            WHERE idempotency_key = $1`,
+          [commissionKey]
+        );
+        const entry = existing.rows[0];
+        if (!entry || entry.purchase_id !== purchaseId ||
+            entry.entry_type !== "commission_accrual" ||
+            Number(entry.amount_cents) !== split.platformCommissionCents) {
+          throw new PurchaseServiceError(
+            "COMMISSION_IDEMPOTENCY_CONFLICT",
+            "Paid purchase is missing its matching commission entry"
+          );
+        }
+      }
+
+      await client.query("COMMIT");
+      transactionOpen = false;
+      return {
+        purchaseId,
+        status: purchase.status,
+        commissionCents: split.platformCommissionCents,
+        merchantNetCents: split.merchantNetCents,
+        duplicateNotification: true
+      };
     }
 
-    const commissionKey = `purchase-commission:${purchaseId}`;
+    const update = await client.query(
+      `UPDATE partner_purchases
+          SET status = 'paid', paid_at = COALESCE(paid_at, now())
+        WHERE id = $1 AND status = 'pending'`,
+      [purchaseId]
+    );
+    if (update.rowCount !== 1) {
+      throw new PurchaseServiceError("PURCHASE_STATE_CHANGED", "Purchase state changed before payment could be recorded");
+    }
+
     let commissionEntryCreated = false;
     if (split.platformCommissionCents > 0) {
       const inserted = await client.query(
@@ -154,7 +187,7 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
       status: "paid",
       commissionCents: split.platformCommissionCents,
       merchantNetCents: split.merchantNetCents,
-      duplicateNotification: wasAlreadyPaid && !commissionEntryCreated
+      duplicateNotification: false
     };
   } catch (error) {
     if (transactionOpen) {
