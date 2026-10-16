@@ -1,0 +1,37 @@
+name: BC ONE public site smoke checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.html"
+      - "burger-id.html"
+      - "burger-id-config.js"
+      - "supabase/migrations/**"
+      - "prototype/check_public_site.py"
+      - ".github/workflows/public-site-checks.yml"
+  pull_request:
+    paths:
+      - "index.html"
+      - "burger-id.html"
+      - "burger-id-config.js"
+      - "supabase/migrations/**"
+      - "prototype/check_public_site.py"
+      - ".github/workflows/public-site-checks.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  public-site:
+    name: Validate published entry points
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+      - name: Check homepage, Burger ID and migrations
+        run: python prototype/check_public_site.py
