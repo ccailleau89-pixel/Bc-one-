@@ -4,6 +4,13 @@ Current status
 
 BC ONE is a project in preparation. No production token has been deployed.
 
+## Verified state — 17 October 2026 (CI and Pages)
+
+- GitHub Actions quality workflow passed on Node.js 20 and 22: dependency installation, JavaScript syntax checks, automated tests, and Vite build all succeeded. Run: https://github.com/ccailleau89-pixel/Bc-one-/actions/runs/38977827080
+- Public-site smoke checks passed for the homepage, Burger ID entry point, migration checks, and Burger ID module syntax. Run: https://github.com/ccailleau89-pixel/Bc-one-/actions/runs/38977767361
+- GitHub Pages deployment completed successfully for the commit containing the MVP roadmap. Run: https://github.com/ccailleau89-pixel/Bc-one-/actions/runs/38977827145
+- These checks validate the repository and static prototype only. They do not validate live Supabase authentication, real customer data, payments, token issuance, or production financial workflows.
+
 ## Verified state — 16 October 2026
 
 - Public GitHub Pages prototype is deployed: https://ccailleau89-pixel.github.io/Bc-one-/
