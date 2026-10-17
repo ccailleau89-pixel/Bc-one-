@@ -1,7 +1,6 @@
 // Burger ID — configuration publique du client Supabase.
-// Renseigner l'URL du projet et la clé publishable/anon du MÊME projet Supabase
-// dans Crush Burger et BC ONE. Ne jamais mettre une service_role key ici.
+// Cette clé publishable est destinée au navigateur ; ne jamais mettre une clé secret/service_role ici.
 window.BURGER_ID_CONFIG = {
-  supabaseUrl: "",
-  supabaseAnonKey: ""
+  supabaseUrl: "https://kjiqpeccnjwxzwgbixke.supabase.co",
+  supabaseAnonKey: "sb_publishable_TFMt2kRw0D7SBXyoltIkzA_mHVLL8zX"
 };
