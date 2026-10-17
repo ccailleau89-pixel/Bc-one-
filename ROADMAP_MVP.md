@@ -12,8 +12,8 @@ Construire d'abord un programme d'avantages utile pour les clients et commerçan
 - [x] Liens vers le portail Burger ID et la démo Crush Burger.
 - [x] Mention explicite que les avantages affichés sont des pistes, pas des récompenses actives.
 - [x] Contrôles CI pour syntaxe, tests et build ajoutés.
-- [ ] Vérifier le résultat du workflow CI après son premier passage complet.
-- [ ] Vérifier le rendu réel sur mobile après déploiement GitHub Pages.
+- [x] Vérifier le résultat du workflow CI : tests, syntaxe et build réussis sur Node.js 20 et 22.
+- [ ] Faire une vérification visuelle manuelle sur plusieurs tailles d'écran après déploiement (non automatisée).
 
 Critère de sortie : le site explique le projet sans laisser croire qu'un compte, un solde ou un avantage est déjà opérationnel.
 
