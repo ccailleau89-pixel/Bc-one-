@@ -114,6 +114,20 @@ footer.site{padding:44px 0 60px;border-top:1px solid var(--line);color:var(--mut
 footer.site .row{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:flex-start}
 footer.site a{color:var(--muted)}
 footer.site a:hover{color:var(--gold)}
+
+/* Finition : fond animé, révélation au défilement, simulateur d'accueil */
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(214,166,74,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(214,166,74,.07) 1px,transparent 1px);background-size:56px 56px;mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%);animation:drift 24s linear infinite}
+@keyframes drift{to{background-position:56px 56px}}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:none}
+.mini{display:grid;gap:22px;grid-template-columns:1fr;align-items:center}
+@media(min-width:820px){.mini{grid-template-columns:1.1fr .9fr}}
+.mini label{display:block;font-size:13px;font-weight:700;color:var(--muted);margin:14px 0 6px}
+.mini input[type=range]{width:100%;accent-color:var(--gold)}
+.mini .out{font-size:clamp(56px,10vw,84px);font-weight:900;letter-spacing:-2px;line-height:1;background:linear-gradient(90deg,var(--gold-hi),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.mini .panel{border:1px solid var(--line);border-radius:20px;padding:26px;background:var(--panel);text-align:center}
+.mini .fine{color:var(--muted);font-size:13px;margin-top:10px}
+@media (prefers-reduced-motion: reduce){.hero::before{animation:none}.reveal{transition:none;opacity:1;transform:none}html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
@@ -263,6 +277,28 @@ footer.site a:hover{color:var(--gold)}
     </div>
   </section>
 
+  
+  <section class="block" id="indice">
+    <div class="wrap mini">
+      <div>
+        <span class="eyebrow">Transparence en direct</span>
+        <h2 class="title">Voir comment le projet se mesure.</h2>
+        <p class="sub" style="margin-bottom:6px">Bougez les curseurs : c'est un simulateur avec des chiffres fictifs. L'indice mesure la santé de la communauté (membres, participation, fidélité), jamais un prix.</p>
+        <label for="mUsers">Membres vérifiés : <span id="vUsers">1 000</span></label>
+        <input id="mUsers" type="range" min="0" max="5000" step="50" value="1000">
+        <label for="mActive">Participation sur 30 jours : <span id="vActive">30</span> %</label>
+        <input id="mActive" type="range" min="0" max="100" step="1" value="30">
+        <label for="mRet">Fidélité (revenus le mois suivant) : <span id="vRet">50</span> %</label>
+        <input id="mRet" type="range" min="0" max="100" step="1" value="50">
+      </div>
+      <div class="panel" aria-live="polite">
+        <div class="eyebrow" style="margin-top:0">Indice fictif</div>
+        <div class="out" id="mScore">100</div>
+        <div class="fine">points sur 200, pas des euros, pas une cotation.</div>
+        <p style="margin:18px 0 0"><a class="btn btn-ghost" href="./indice.html">Voir la formule ↗</a></p>
+      </div>
+    </div>
+  </section>
   <section class="block" id="transparence">
     <div class="wrap">
       <span class="eyebrow">Transparence</span>
@@ -287,5 +323,26 @@ footer.site a:hover{color:var(--gold)}
     </div>
   </div>
 </footer>
+
+<script type="module">
+import { communityIndex } from "./indice.js";
+const $ = (id) => document.getElementById(id);
+function update() {
+  const users = Number($("mUsers").value);
+  const a = Number($("mActive").value) / 100;
+  const r = Number($("mRet").value) / 100;
+  const active = Math.round(users * a);
+  const retained = Math.round(active * r);
+  $("vUsers").textContent = users.toLocaleString("fr-FR");
+  $("vActive").textContent = $("mActive").value;
+  $("vRet").textContent = $("mRet").value;
+  $("mScore").textContent = communityIndex({ users, active, retained, merchants: 20, transactions: Math.round(active * 1.5) })
+    .toLocaleString("fr-FR", { maximumFractionDigits: 0 });
+}
+["mUsers", "mActive", "mRet"].forEach((id) => $(id).addEventListener("input", update));
+update();
+const io = new IntersectionObserver((entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: 0.12 });
+document.querySelectorAll("section.block, .card, .road li").forEach((el) => { el.classList.add("reveal"); io.observe(el); });
+</script>
 </body>
 </html>
