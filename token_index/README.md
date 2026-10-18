@@ -26,6 +26,16 @@ Si A=0, le taux R/A est fixé à 0. Les seuils 1000, 300, 20, 500, les poids et 
 
 Pour amortir les variations : `I_publié(t) = clamp(I_publié(t−1) + 0,25 × (I_brut(t) − I_publié(t−1)), I_publié(t−1) − 10, I_publié(t−1) + 10)`. Premier mois : I_publié=I_brut. Ne pas changer les paramètres sans versionner la méthodologie.
 
+## Agrégation anti-fraude
+
+`aggregate_metrics(users, merchants, transactions)` construit les métriques à partir des enregistrements bruts, côté serveur : une personne vérifiée = un membre (doublons fusionnés), robots et comptes non vérifiés exclus, commerçants non vérifiés ou non indépendants exclus, achats non finalisés, remboursés, auto-achats et identifiants rejoués ignorés, au plus 5 achats comptés par paire client–commerçant et par période. Les tests `test_index_robustness.py` vérifient que ces fraudes ne font pas monter l'indice.
+
+Note : plus d'actifs sans plus de fidèles fait baisser le facteur de rétention (R/A). C'est voulu.
+
+## Page publique
+
+`indice.html` explique la formule et propose un simulateur à données fictives. Il utilise `indice.js`, copie navigateur de la formule ; `prototype/indice.test.js` vérifie qu'elle donne les mêmes résultats que ce module Python.
+
 ## Exécution locale
 
 ```sh

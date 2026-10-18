@@ -7,9 +7,11 @@ import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = {
-    "index.html": {"title": "BC ONE — The Burger Currency", "required": ["THE BURGER CURRENCY", "Un compte. Deux expériences.", "aucun token", "burger-id.html"]},
+    "index.html": {"title": "BC ONE — The Burger Currency", "required": ["THE BURGER CURRENCY", "Un compte. Deux expériences.", "aucun token", "burger-id.html", "indice.html"]},
     "burger-id.html": {"title": "Burger ID — Un compte, deux univers", "required": ["Ton Burger ID", "tabLogin", "tabSignup", "authForm", "Supabase Auth", "CONFIGURATION À FAIRE", "resetPasswordForEmail", "delete_my_burger_id", "confidentialite.html", "supabase-js@2.57.4"]},
     "confidentialite.html": {"title": "Confidentialité — Burger ID", "required": ["Responsable du traitement", "Tes droits", "CNIL"]},
+    "fidelite.html": {"title": "Fidélité BC ONE — parcours en préparation", "required": ["Aucune récompense"]},
+    "indice.html": {"title": "Indice communautaire BC ONE — méthode et simulateur", "required": ["Indice communautaire fictif / non financier", "ni un prix", "./indice.js"]},
 }
 
 class Inspector(HTMLParser):
@@ -84,8 +86,67 @@ def check_supabase_config(config):
     return errors
 
 
+BASE_URL = "https://ccailleau89-pixel.github.io/Bc-one-/"
+
+
+def _meta(source, attr, key):
+    match = re.search(rf'<meta\s+{attr}="{re.escape(key)}"\s+content="([^"]*)"', source, re.I)
+    return match.group(1).strip() if match else None
+
+
+def check_seo(pages):
+    """Every public page needs its own description, canonical URL and share image."""
+    errors, seen_descriptions, seen_canonicals = [], {}, {}
+    for filename in pages:
+        path = ROOT / filename
+        if not path.is_file():
+            continue
+        source = path.read_text(encoding="utf-8")
+        if not re.search(r'<html[^>]*\blang="fr"', source, re.I):
+            errors.append(f"{filename}: <html lang=\"fr\"> missing")
+        if len(re.findall(r"<h1[\s>]", source, re.I)) != 1:
+            errors.append(f"{filename}: exactly one <h1> expected")
+        description = _meta(source, "name", "description")
+        if not description or not 110 <= len(description) <= 165:
+            errors.append(f"{filename}: meta description missing or not 110-165 characters")
+        elif description in seen_descriptions:
+            errors.append(f"{filename}: meta description duplicates {seen_descriptions[description]}")
+        else:
+            seen_descriptions[description] = filename
+        canonical = re.search(r'<link\s+rel="canonical"\s+href="([^"]+)"', source, re.I)
+        expected = BASE_URL + ("" if filename == "index.html" else filename)
+        if not canonical or canonical.group(1) != expected:
+            errors.append(f"{filename}: canonical must be {expected}")
+        elif canonical.group(1) in seen_canonicals:
+            errors.append(f"{filename}: canonical duplicates {seen_canonicals[canonical.group(1)]}")
+        else:
+            seen_canonicals[canonical.group(1)] = filename
+        for attr, key in (("property", "og:title"), ("property", "og:description"), ("property", "og:url"),
+                          ("property", "og:image"), ("name", "twitter:card")):
+            if not _meta(source, attr, key):
+                errors.append(f"{filename}: {key} missing")
+        if _meta(source, "property", "og:image") and not (ROOT / "og-image.png").is_file():
+            errors.append("og-image.png is referenced but missing")
+        if "@import url(" in source:
+            errors.append(f"{filename}: load web fonts with <link>, not CSS @import (render-blocking)")
+    sitemap = ROOT / "sitemap.xml"
+    if not sitemap.is_file():
+        errors.append("sitemap.xml missing")
+    else:
+        listed = set(re.findall(r"<loc>([^<]+)</loc>", sitemap.read_text(encoding="utf-8")))
+        for filename in pages:
+            url = BASE_URL + ("" if filename == "index.html" else filename)
+            if (ROOT / filename).is_file() and url not in listed:
+                errors.append(f"sitemap.xml: {url} not listed")
+    for required in ("robots.txt", "manifest.webmanifest", "favicon.ico", "icon-192.png", "icon-512.png"):
+        if not (ROOT / required).is_file():
+            errors.append(f"{required} missing")
+    return errors
+
+
 def main():
     errors = []
+    errors.extend(check_seo(PAGES))
     for filename in PUBLIC_FILES:
         path = ROOT / filename
         if path.is_file() and "sb_secret_" in path.read_text(encoding="utf-8"):
@@ -174,6 +235,7 @@ def main():
         return 1
     print("Public site smoke checks passed")
     print("- homepage and Burger ID HTML titles, required content, IDs and local links checked")
+    print("- SEO: unique descriptions, canonicals, Open Graph, sitemap, robots, manifest and icons checked")
     print("- browser Supabase config is blank or uses a public key only; no secret/service_role key in public files")
     print("- Supabase migration filenames and version uniqueness checked")
     return 0

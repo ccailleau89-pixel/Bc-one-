@@ -1,0 +1,15 @@
+{
+  "name": "BC ONE — The Burger Currency",
+  "short_name": "BC ONE",
+  "description": "Projet food-tech autour du burger : communauté, commerçants partenaires et futur programme de fidélité.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0B0B0C",
+  "theme_color": "#0B0B0C",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ccailleau89-pixel.github.io/Bc-one-/sitemap.xml

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0B0B0C">
+<title>Indice communautaire BC ONE — méthode et simulateur</title>
+<!-- SEO -->
+<meta name="description" content="Comment se calcule l'indice communautaire BC ONE : formule, hypothèses et simulateur avec données fictives. Un indicateur de santé, jamais un prix ni un cours.">
+<link rel="canonical" href="https://ccailleau89-pixel.github.io/Bc-one-/indice.html">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="BC ONE">
+<meta property="og:title" content="Indice communautaire BC ONE — méthode et simulateur">
+<meta property="og:description" content="Comment se calcule l'indice communautaire BC ONE : formule, hypothèses et simulateur avec données fictives. Un indicateur de santé, jamais un prix ni un cours.">
+<meta property="og:url" content="https://ccailleau89-pixel.github.io/Bc-one-/indice.html">
+<meta property="og:image" content="https://ccailleau89-pixel.github.io/Bc-one-/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="BC ONE — The Burger Currency, projet en préparation">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Indice communautaire BC ONE — méthode et simulateur">
+<meta name="twitter:description" content="Comment se calcule l'indice communautaire BC ONE : formule, hypothèses et simulateur avec données fictives. Un indicateur de santé, jamais un prix ni un cours.">
+<meta name="twitter:image" content="https://ccailleau89-pixel.github.io/Bc-one-/og-image.png">
+<link rel="icon" href="./favicon.ico" sizes="any">
+<link rel="icon" type="image/png" href="./icon-192.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<style>
+:root{--bg:#0B0B0C;--panel:#151513;--ink:#F5F1E8;--muted:#a8a498;--line:#2c2b27;--gold:#D6A64A;--orange:#FF682E}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:auto;padding:20px 16px 56px}a{color:var(--gold)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.brand{font-weight:800;letter-spacing:-.3px;text-decoration:none;color:var(--ink)}.brand span{color:var(--gold)}
+.eyebrow{text-transform:uppercase;letter-spacing:2.5px;font-size:11px;font-weight:800;color:var(--gold);margin-top:32px}
+h1{font-size:clamp(30px,6vw,46px);line-height:1.05;letter-spacing:-1.2px;margin:10px 0 14px}h2{font-size:21px;margin:34px 0 10px;letter-spacing:-.4px}
+.lead{color:var(--muted);max-width:640px}
+.warning{border:1px solid #6b4b1d;background:#21190c;color:#f3d79c;border-radius:14px;padding:14px 16px;margin:22px 0;font-weight:600}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px}
+.grid{display:grid;grid-template-columns:1fr;gap:14px}@media(min-width:720px){.grid{grid-template-columns:1.1fr .9fr}}
+label{display:block;font-size:13px;font-weight:700;margin:12px 0 4px}label small{display:block;color:var(--muted);font-weight:500}
+input[type=number]{width:100%;background:#0f0f0e;border:1px solid #3a3933;color:var(--ink);border-radius:10px;padding:11px 12px;font:inherit}
+input[type=number]:focus{outline:2px solid #D6A64A66;border-color:var(--gold)}
+.result{text-align:center;display:flex;flex-direction:column;justify-content:center}
+.score{font-size:64px;font-weight:800;color:var(--gold);letter-spacing:-2px;line-height:1}.unit{color:var(--muted);font-size:13px;margin-top:6px}
+.bar{height:10px;border-radius:99px;background:#2a2925;margin:16px 0 6px;overflow:hidden}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--orange))}
+.err{color:#ffb3a3;font-size:13px;min-height:20px}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:600}
+code,pre{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}pre{background:#0f0f0e;border:1px solid var(--line);border-radius:12px;padding:14px;overflow-x:auto}
+ul{padding-left:20px}li{margin:6px 0;color:#dedbd2}footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:12px}
+</style></head>
+<body><div class="wrap">
+<header class="top"><a class="brand" href="./">BC <span>ONE</span></a><a href="./burger-id.html">Burger ID</a></header>
+
+<div class="eyebrow">Transparence</div>
+<h1>L'indice communautaire BC ONE</h1>
+<p class="lead">Un indicateur de santé de la communauté : combien de personnes réelles participent, reviennent, et combien de commerçants indépendants sont actifs. Il sert à suivre le projet, pas à le valoriser.</p>
+<p class="warning" id="nonFinancial">Indice communautaire fictif / non financier. Ce n'est ni un prix, ni un cours, ni une valeur en euros, ni une promesse de rendement, ni un signal d'achat. Les chiffres ci-dessous sont des données fictives.</p>
+
+<h2>Simulateur</h2>
+<div class="grid">
+  <form class="panel" id="simForm" novalidate>
+    <label for="users">Membres vérifiés<small>Personnes réelles, sans doublons ni robots</small></label><input id="users" type="number" min="0" step="1" value="1000" inputmode="numeric">
+    <label for="active">Actifs sur 30 jours<small>Parmi les membres vérifiés</small></label><input id="active" type="number" min="0" step="1" value="300" inputmode="numeric">
+    <label for="retained">Fidèles<small>Actifs ce mois-ci et le mois précédent</small></label><input id="retained" type="number" min="0" step="1" value="150" inputmode="numeric">
+    <label for="merchants">Commerçants indépendants vérifiés</label><input id="merchants" type="number" min="0" step="1" value="20" inputmode="numeric">
+    <label for="transactions">Achats finalisés sur 30 jours<small>Hors annulations, remboursements et achats répétés suspects</small></label><input id="transactions" type="number" min="0" step="1" value="500" inputmode="numeric">
+  </form>
+  <div class="panel result" aria-live="polite">
+    <div class="eyebrow" style="margin-top:0">Indice fictif</div>
+    <div class="score" id="score">100</div>
+    <div class="unit">points d'indice sur 200 — pas des euros, pas des BCONE</div>
+    <div class="bar" aria-hidden="true"><i id="bar" style="width:50%"></i></div>
+    <div class="err" id="simError" role="alert"></div>
+  </div>
+</div>
+
+<h2>La formule</h2>
+<p>Chaque facteur est comparé à un seuil de référence, avec des rendements décroissants (logarithme) et un plafond à 2 fois le seuil : doubler un chiffre ne double pas l'indice.</p>
+<table>
+  <tr><th>Facteur</th><th>Poids</th><th>Référence</th></tr>
+  <tr><td>Membres vérifiés</td><td>25 %</td><td>1 000</td></tr>
+  <tr><td>Actifs sur 30 jours</td><td>30 %</td><td>300</td></tr>
+  <tr><td>Taux de fidélité (fidèles ÷ actifs)</td><td>20 %</td><td>50 %</td></tr>
+  <tr><td>Commerçants indépendants</td><td>15 %</td><td>20</td></tr>
+  <tr><td>Achats finalisés</td><td>10 %</td><td>500</td></tr>
+</table>
+<pre>I = 100 × (0,25·f(U,1000) + 0,30·f(A,300) + 0,20·min(2, (R/A)/0,5)
+         + 0,15·f(M,20) + 0,10·f(T,500))
+f(x, réf) = min(2, ln(1+x) / ln(1+réf))       I ∈ [0 ; 200]</pre>
+<p>L'indice publié est lissé chaque mois et ne peut pas bouger de plus de 10 points d'une période à l'autre. Les seuils et les poids sont des <strong>hypothèses de travail</strong>, pas des données observées : toute modification sera versionnée.</p>
+
+<h2>Ce qui ne compte pas</h2>
+<ul>
+  <li>Plusieurs comptes d'une même personne comptent pour une seule personne.</li>
+  <li>Les robots, les comptes non vérifiés et les commerçants non indépendants sont exclus.</li>
+  <li>Un commerçant qui s'achète à lui-même, les remboursements et les annulations ne comptent pas.</li>
+  <li>Au-delà de 5 achats entre le même client et le même commerçant sur la période, les achats suivants ne comptent plus.</li>
+  <li>Attirer plus d'actifs sans qu'ils reviennent fait baisser le taux de fidélité : l'indice récompense la qualité, pas le volume seul.</li>
+</ul>
+
+<footer>BC ONE · projet en préparation · <a href="./">Accueil</a> · <a href="./confidentialite.html">Confidentialité</a></footer>
+</div>
+<script type="module">
+import { communityIndex } from "./indice.js";
+const ids = ["users", "active", "retained", "merchants", "transactions"];
+const read = id => { const v = document.getElementById(id).value.trim(); return v === "" ? NaN : Number(v); };
+function update() {
+  const values = Object.fromEntries(ids.map(id => [id, read(id)]));
+  try {
+    const score = communityIndex(values);
+    document.getElementById("score").textContent = score.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+    document.getElementById("bar").style.width = (score / 2) + "%";
+    document.getElementById("simError").textContent = "";
+  } catch (error) {
+    const messages = {
+      "active users cannot exceed verified users": "Les actifs ne peuvent pas dépasser les membres vérifiés.",
+      "retained users cannot exceed active users": "Les fidèles ne peuvent pas dépasser les actifs."
+    };
+    document.getElementById("simError").textContent = messages[error.message] || "Entre des nombres entiers positifs.";
+  }
+}
+document.getElementById("simForm").addEventListener("input", update);
+update();
+</script>
+</body></html>
