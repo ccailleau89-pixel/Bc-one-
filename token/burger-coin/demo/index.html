@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#111111">
+<title>Burger Coin — BC ONE</title>
+<style>
+:root{color-scheme:dark;--bg:#0d0d0e;--panel:#171719;--line:#303034;--text:#f6f3ed;--muted:#a5a3a0;--orange:#ff7b27;--gold:#ffc66d;--green:#71e0a2}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#4b2818 0,transparent 50%),var(--bg);color:var(--text);font:16px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,sans-serif}button,input{font:inherit}button{cursor:pointer;border:0;border-radius:12px;padding:12px 16px;font-weight:750;background:linear-gradient(135deg,var(--orange),var(--gold));color:#19110b}button.secondary{background:#242427;border:1px solid #39393e;color:var(--text)}button:disabled{opacity:.5;cursor:not-allowed}a{color:var(--gold)}.wrap{max-width:1080px;margin:auto;padding:24px 18px 60px}.nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:35px}.brand{display:flex;gap:11px;align-items:center;font-weight:900;letter-spacing:.04em}.logo{width:45px;height:45px;border-radius:14px;background:linear-gradient(145deg,#ff9b45,#e54e12);display:grid;place-items:center;font-size:25px;box-shadow:0 6px 30px #e95a2038}.tag{color:var(--gold);font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:800}.hero{text-align:center;padding:18px 0 35px}.hero h1{font-size:clamp(38px,8vw,76px);line-height:1.02;letter-spacing:-.055em;margin:12px 0}.hero h1 span{color:var(--orange)}.hero p{color:var(--muted);max-width:590px;margin:0 auto 22px}.actions{display:flex;justify-content:center;flex-wrap:wrap;gap:10px}.notice{border:1px solid #6a4829;background:#21190f;border-radius:12px;padding:12px 14px;color:#ffdcae;font-size:13px;margin:0 auto 22px;max-width:790px}.grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px}.card{background:linear-gradient(160deg,#1b1b1e,#131315);border:1px solid var(--line);border-radius:20px;padding:20px;min-width:0}.wide{grid-column:span 8}.side{grid-column:span 4}.half{grid-column:span 6}.full{grid-column:span 12}.label{color:var(--muted);font-size:13px}.balance{font-size:clamp(30px,5vw,45px);font-weight:850;letter-spacing:-.04em;margin:5px 0}.unit{font-size:15px;color:var(--gold);letter-spacing:0}.row{display:flex;align-items:center;justify-content:space-between;gap:12px}.pill{display:inline-flex;border:1px solid #385c47;background:#13251a;color:var(--green);border-radius:99px;padding:5px 10px;font-size:12px;font-weight:800}.pill.orange{border-color:#624225;background:#2a1c10;color:#ffbd7b}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:22px}.stat{background:#111113;border:1px solid #29292d;border-radius:13px;padding:12px}.stat strong{display:block;font-size:18px}.stat small{color:var(--muted)}h2{font-size:20px;margin:0 0 15px;letter-spacing:-.02em}.field{display:grid;gap:7px;margin:13px 0}.field label{font-size:13px;color:var(--muted)}input{width:100%;min-width:0;background:#0d0d0f;border:1px solid #3a3a40;border-radius:11px;padding:12px;color:var(--text);outline:none}input:focus{border-color:var(--orange)}.field button{width:100%}.help{color:var(--muted);font-size:12px}.status{white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;color:var(--muted);margin-top:12px;min-height:20px}.links{display:flex;gap:14px;flex-wrap:wrap;font-size:13px}.foot{color:var(--muted);font-size:12px;text-align:center;padding:24px 0}.burger{font-size:58px;filter:drop-shadow(0 12px 20px #f66c3130);margin-bottom:3px}@media(max-width:700px){.wide,.side,.half{grid-column:span 12}.nav{align-items:flex-start}.nav button{padding:10px;font-size:13px}.stats{gap:7px}.stat{padding:10px}.stat strong{font-size:16px}.wrap{padding:16px 13px 35px}.card{padding:17px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="nav"><div class="brand"><div class="logo">🍔</div><div>BURGER COIN<div class="tag">BC ONE ecosystem</div></div></div><button id="connect" onclick="connectWallet()">Connecter un wallet</button></header>
+<section class="hero"><div class="burger">🍔</div><div class="tag">La monnaie du burgerverse</div><h1>Un burger.<br><span>Un écosystème.</span></h1><p>Découvre BC ONE, le token de l'univers Burger. Connecte un portefeuille compatible pour lire ton solde et tester les interactions sur Base Sepolia.</p><div class="actions"><button onclick="connectWallet()">Connecter mon wallet</button><button class="secondary" onclick="addNetwork()">Ajouter Base Sepolia</button></div></section>
+<div class="notice"><strong>MODE TESTNET</strong> — Cette interface est une démo. Le contrat BCONE n'est pas encore déployé : les soldes et transferts on-chain seront activés après configuration de l'adresse du contrat. Ne saisis jamais ta phrase de récupération.</div>
+<div class="grid">
+<section class="card wide"><div class="row"><div><div class="label">Solde du portefeuille connecté</div><div class="balance" id="balance">— <span class="unit">BCONE</span></div></div><span class="pill orange" id="chainStatus">Wallet déconnecté</span></div><div class="stats"><div class="stat"><strong>100 M</strong><small>Offre prévue</small></div><div class="stat"><strong>Base</strong><small>Réseau cible</small></div><div class="stat"><strong>18</strong><small>Décimales ERC-20</small></div></div><div class="status" id="walletInfo">Connecte MetaMask ou un wallet EVM compatible pour commencer.</div></section>
+<section class="card side"><h2>État du token</h2><div class="field"><label>Nom</label><input readonly value="Burger Coin"></div><div class="field"><label>Symbole</label><input readonly value="BCONE"></div><div class="field"><label>Réseau de test</label><input readonly value="Base Sepolia · 84532"></div><div class="field"><label>Adresse du contrat</label><input id="contractAddress" placeholder="À renseigner après déploiement"></div><button class="secondary" style="width:100%" onclick="saveContract()">Configurer l’adresse</button><div class="help" style="margin-top:8px">L'adresse est conservée dans cette page seulement, pour cette session.</div></section>
+<section class="card half"><h2>↗ Lire un solde</h2><p class="help">Consulte le solde BCONE d'une adresse une fois le contrat configuré.</p><div class="field"><label>Adresse du wallet</label><input id="readAddress" placeholder="0x…"></div><button onclick="readBalance()">Lire le solde on-chain</button><div class="status" id="readStatus"></div></section>
+<section class="card half"><h2>⇄ Transférer des BCONE</h2><p class="help">Les transferts ne fonctionneront qu'après le déploiement réel du contrat et si le wallet détient des tokens.</p><div class="field"><label>Adresse destinataire</label><input id="toAddress" placeholder="0x…"></div><div class="field"><label>Montant en BCONE</label><input id="amount" type="number" min="0" step="any" placeholder="Ex. 25"></div><button onclick="transferTokens()">Préparer le transfert</button><div class="status" id="transferStatus"></div></section>
+<section class="card full"><h2>Burger ID — un compte, des soldes séparés</h2><div class="grid"><div class="stat" style="grid-column:span 4"><strong>BCONE</strong><small>Solde on-chain du wallet</small></div><div class="stat" style="grid-column:span 4"><strong>BC ONE</strong><small>Points applicatifs séparés</small></div><div class="stat" style="grid-column:span 4"><strong>Crush Burger</strong><small>Fidélité indépendante</small></div></div><p class="help" style="margin-top:14px">Le lien à Burger ID est une étape d'intégration distincte. Cette page ne se connecte pas encore à l'authentification ni à la base de données de l'application. Aucun solde de fidélité n'est converti automatiquement en token.</p></section>
+<section class="card full"><h2>Ressources</h2><div class="links"><a href="https://sepolia.basescan.org/" target="_blank" rel="noopener noreferrer">Explorer Base Sepolia ↗</a><a href="https://docs.base.org/" target="_blank" rel="noopener noreferrer">Documentation Base ↗</a><a href="https://github.com/ccailleau89-pixel/Bc-one-/tree/main/token/burger-coin" target="_blank" rel="noopener noreferrer">Smart contract & tests GitHub ↗</a></div><div class="status" id="appStatus" role="status" aria-live="polite"></div></section>
+</div>
+<footer class="foot">BC ONE · Prototype interactif · Aucun token déployé · Pas une offre d’investissement.</footer>
+</div>
+<script>
+const CHAIN_ID='0x14a34'; // Base Sepolia 84532
+const CHAIN_HEX=CHAIN_ID;
+const CHAIN_PARAMS={chainId:CHAIN_HEX,chainName:'Base Sepolia',nativeCurrency:{name:'Ether',symbol:'ETH',decimals:18},rpcUrls:['https://sepolia.base.org'],blockExplorerUrls:['https://sepolia.basescan.org']};
+const ABI=[
+'function balanceOf(address account) view returns (uint256)',
+'function symbol() view returns (string)',
+'function decimals() view returns (uint8)',
+'function transfer(address to, uint256 amount) returns (bool)',
+'function totalSupply() view returns (uint256)'
+];
+let account=null, provider=null, signer=null, contract=null;
+function say(id,msg){document.getElementById(id).textContent=msg}
+function validAddress(a){return /^0x[a-fA-F0-9]{40}$/.test(a)}
+function ethersLib(){return window.ethers}
+function initContract(){
+ const a=document.getElementById('contractAddress').value.trim();
+ if(!validAddress(a)){contract=null;return false}
+ if(!provider){say('appStatus','Connecte un wallet avant de lire le contrat.');return false}
+ contract=new (ethersLib().Contract)(a,ABI,signer||provider);
+ return true
+}
+async function connectWallet(){
+ if(!window.ethereum){say('walletInfo','Aucun wallet EVM détecté. Installe MetaMask ou ouvre cette page dans un navigateur compatible.');return}
+ try{
+  const lib=ethersLib(); if(!lib){say('walletInfo','Chargement de la bibliothèque web3… recharge la page dans un instant.');return}
+  provider=new lib.BrowserProvider(window.ethereum);
+  const accounts=await window.ethereum.request({method:'eth_requestAccounts'});
+  if(!accounts.length)return;
+  account=accounts[0]; signer=await provider.getSigner();
+  const network=await provider.getNetwork();
+  document.getElementById('connect').textContent=account.slice(0,6)+'…'+account.slice(-4);
+  document.getElementById('chainStatus').textContent=Number(network.chainId)===84532?'Base Sepolia':'Mauvais réseau';
+  document.getElementById('chainStatus').className='pill '+(Number(network.chainId)===84532?'':'orange');
+  say('walletInfo','Wallet : '+account+'\nChain ID : '+network.chainId);
+  if(Number(network.chainId)===84532 && initContract()) await readBalance(account);
+  else if(Number(network.chainId)!==84532) say('appStatus','Passe sur Base Sepolia pour interagir avec le contrat de test.');
+  window.ethereum.on?.('accountsChanged',()=>location.reload());
+  window.ethereum.on?.('chainChanged',()=>location.reload());
+ }catch(e){say('walletInfo','Connexion annulée ou échouée : '+(e.shortMessage||e.message||e))}
+}
+async function addNetwork(){
+ if(!window.ethereum){say('appStatus','Ouvre cette page dans un wallet compatible.');return}
+ try{await window.ethereum.request({method:'wallet_addEthereumChain',params:[CHAIN_PARAMS]});say('appStatus','Base Sepolia ajoutée au wallet. Sélectionne ce réseau puis connecte-toi.')}
+ catch(e){say('appStatus','Ajout du réseau impossible : '+(e.message||e))}
+}
+function saveContract(){
+ const a=document.getElementById('contractAddress').value.trim();
+ if(!validAddress(a)){say('appStatus','Adresse invalide. Colle une adresse de contrat 0x… vérifiée.');return}
+ if(!provider){say('appStatus','Adresse enregistrée dans le champ. Connecte ton wallet pour la lire.');return}
+ if(!initContract())return;
+ say('appStatus','Adresse de contrat configurée pour cette session. Vérifie qu’elle correspond bien au contrat Burger Coin sur Base Sepolia.');
+}
+async function readBalance(address){
+ const input=address||document.getElementById('readAddress').value.trim()||account;
+ if(!validAddress(input)){say('readStatus','Entre une adresse wallet valide.');return}
+ if(!provider){say('readStatus','Connecte d’abord un wallet pour initialiser le fournisseur réseau.');return}
+ if(!initContract()) {say('readStatus','Adresse du contrat manquante. Aucun contrat n’a encore été déployé.');return}
+ try{
+  const network=await provider.getNetwork(); if(Number(network.chainId)!==84532){say('readStatus','Bascule sur Base Sepolia.');return}
+  const [bal,symbol]=await Promise.all([contract.balanceOf(input),contract.symbol()]);
+  say('readStatus','Solde on-chain : '+ethersLib().formatUnits(bal,18)+' '+symbol);
+  if(account&&input.toLowerCase()===account.toLowerCase())document.getElementById('balance').innerHTML=ethersLib().formatUnits(bal,18)+' <span class="unit">'+symbol+'</span>';
+ }catch(e){say('readStatus','Lecture impossible. Vérifie l’adresse du contrat et le réseau. '+(e.shortMessage||e.message||e))}
+}
+async function transferTokens(){
+ if(!account||!signer){say('transferStatus','Connecte ton wallet pour continuer.');return}
+ const to=document.getElementById('toAddress').value.trim(), amount=document.getElementById('amount').value.trim();
+ if(!validAddress(to)){say('transferStatus','Adresse destinataire invalide.');return}
+ if(!amount||!Number.isFinite(Number(amount))||Number(amount)<=0){say('transferStatus','Entre un montant strictement positif.');return}
+ if(!initContract()){say('transferStatus','Contrat non configuré : aucun transfert réel ne peut être envoyé.');return}
+ try{
+  const network=await provider.getNetwork(); if(Number(network.chainId)!==84532){say('transferStatus','Bascule sur Base Sepolia avant de transférer.');return}
+  const parsed=ethersLib().parseUnits(amount,18);
+  say('transferStatus','Demande de confirmation dans le wallet…');
+  const tx=await contract.transfer(to,parsed);
+  say('transferStatus','Transaction envoyée : '+tx.hash+'\nEn attente de confirmation…');
+  const receipt=await tx.wait();
+  say('transferStatus','Transfert confirmé dans le réseau de test. Transaction : '+tx.hash+'\nhttps://sepolia.basescan.org/tx/'+receipt.hash);
+  if(account)await readBalance(account);
+ }catch(e){say('transferStatus','Transfert échoué ou annulé : '+(e.shortMessage||e.message||e))}
+}
+(function loadEthers(){const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js';s.onload=()=>say('appStatus','Bibliothèque Web3 chargée. Prêt à connecter un wallet.');s.onerror=()=>say('appStatus','Impossible de charger ethers.js. Vérifie la connexion internet.');document.head.appendChild(s)})();
+</script>
+</body>
+</html>
