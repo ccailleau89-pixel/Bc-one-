@@ -8,7 +8,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = {
     "index.html": {"title": "BC ONE — The Burger Currency", "required": ["THE BURGER CURRENCY", "Un compte. Deux expériences.", "aucun token", "burger-id.html"]},
-    "burger-id.html": {"title": "Burger ID — Un compte, deux univers", "required": ["Ton Burger ID", "tabLogin", "tabSignup", "authForm", "Supabase Auth", "CONFIGURATION À FAIRE"]},
+    "burger-id.html": {"title": "Burger ID — Un compte, deux univers", "required": ["Ton Burger ID", "tabLogin", "tabSignup", "authForm", "Supabase Auth", "CONFIGURATION À FAIRE", "resetPasswordForEmail", "delete_my_burger_id", "confidentialite.html", "supabase-js@2.57.4"]},
+    "confidentialite.html": {"title": "Confidentialité — Burger ID", "required": ["Responsable du traitement", "Tes droits", "CNIL"]},
 }
 
 class Inspector(HTMLParser):
@@ -124,6 +125,10 @@ def main():
     else:
         config = config_path.read_text(encoding="utf-8")
         errors.extend(check_supabase_config(config))
+        if re.search(r"signupOpen\s*:\s*true", config):
+            notice = ROOT / "confidentialite.html"
+            if not notice.is_file() or "[À COMPLÉTER" in notice.read_text(encoding="utf-8"):
+                errors.append("burger-id-config.js: signupOpen must stay false until confidentialite.html has no [À COMPLÉTER] placeholder")
 
     burger_page = (ROOT / "burger-id.html").read_text(encoding="utf-8")
     profile_migration = ROOT / "supabase" / "migrations" / "202610160001_burger_id_profiles.sql"

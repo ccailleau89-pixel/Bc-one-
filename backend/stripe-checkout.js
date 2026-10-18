@@ -25,13 +25,14 @@ function appBaseUrl(value) {
  * Call only from an authenticated backend flow; never expose this service
  * directly to unauthenticated clients.
  */
-export async function createPartnerCheckoutSession({ pool, stripe, purchaseId, baseUrl }) {
+export async function createPartnerCheckoutSession({ pool, stripe, purchaseId: rawPurchaseId, baseUrl }) {
   if (!pool || typeof pool.query !== "function" || !stripe?.checkout?.sessions?.create) {
     throw new PurchaseServiceError("CHECKOUT_NOT_CONFIGURED", "Database and Stripe SDK must be configured");
   }
-  if (typeof purchaseId !== "string" || !UUID_RE.test(purchaseId)) {
+  if (typeof rawPurchaseId !== "string" || !UUID_RE.test(rawPurchaseId)) {
     throw new PurchaseServiceError("INVALID_INPUT", "purchaseId must be a UUID");
   }
+  const purchaseId = rawPurchaseId.toLowerCase();
   const appUrl = appBaseUrl(baseUrl);
 
   const result = await pool.query(
@@ -71,16 +72,29 @@ export async function createPartnerCheckoutSession({ pool, stripe, purchaseId, b
     throw new PurchaseServiceError("CHECKOUT_REFERENCE_CONFLICT", "Purchase already has a different provider reference");
   }
 
-  let session;
+  // The reference the purchase must still hold when the new session is bound.
+  let currentReference = expectedPlaceholder;
+  let idempotencyKey = `bc-one-checkout-${purchaseId}`;
+
   if (purchase.provider_payment_id.startsWith("cs_")) {
-    session = await stripe.checkout.sessions.retrieve(purchase.provider_payment_id);
-    if (session.metadata?.purchase_id !== purchaseId) {
+    const existing = await stripe.checkout.sessions.retrieve(purchase.provider_payment_id);
+    if (existing.metadata?.purchase_id !== purchaseId) {
       throw new PurchaseServiceError("CHECKOUT_REFERENCE_CONFLICT", "Existing Checkout Session does not match purchase");
     }
-    return { sessionId: session.id, url: session.url, reused: true };
+    if (existing.status === "open") {
+      return { sessionId: existing.id, url: existing.url, reused: true };
+    }
+    if (existing.status !== "expired") {
+      // "complete": paid or awaiting an asynchronous payment; the webhook settles it.
+      throw new PurchaseServiceError("CHECKOUT_ALREADY_COMPLETED", "Checkout Session is already completed");
+    }
+    // Expired sessions are dead links (Stripe expires them after 24h by default).
+    // Replace it; the key is deterministic so concurrent retries share one new session.
+    currentReference = existing.id;
+    idempotencyKey = `bc-one-checkout-${purchaseId}-after-${existing.id}`;
   }
 
-  session = await stripe.checkout.sessions.create({
+  const session = await stripe.checkout.sessions.create({
     mode: "payment",
     client_reference_id: purchaseId,
     metadata: { purchase_id: purchaseId, merchant_id: purchase.merchant_id },
@@ -99,7 +113,7 @@ export async function createPartnerCheckoutSession({ pool, stripe, purchaseId, b
     }],
     success_url: `${appUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${appUrl}/checkout/cancel?purchase_id=${encodeURIComponent(purchaseId)}`
-  }, { idempotencyKey: `bc-one-checkout-${purchaseId}` });
+  }, { idempotencyKey });
 
   if (typeof session.id !== "string" || !session.id.startsWith("cs_") || typeof session.url !== "string") {
     throw new PurchaseServiceError("STRIPE_CHECKOUT_FAILED", "Stripe did not return a valid Checkout Session");
@@ -112,7 +126,7 @@ export async function createPartnerCheckoutSession({ pool, stripe, purchaseId, b
         AND payment_provider = 'stripe'
         AND provider_payment_id = $3
       RETURNING id`,
-    [purchaseId, session.id, expectedPlaceholder]
+    [purchaseId, session.id, currentReference]
   );
   if (update.rows.length !== 1) {
     const current = await pool.query(

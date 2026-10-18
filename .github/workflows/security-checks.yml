@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   push:
-    branches: [feature/bc-one-erc20-contract-2026-10]
+    branches: [main, feature/bc-one-erc20-contract-2026-10]
   workflow_dispatch:
 
 permissions:

@@ -16,6 +16,18 @@ function requiredText(value, field, maxLength = 200) {
   return value;
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// PostgreSQL returns UUIDs in lower case; compare and store them the same way so an
+// upper-case identifier is never mistaken for a different purchase.
+function normalizedUuid(value, field, { nullable = false } = {}) {
+  if (nullable && value === null) return null;
+  if (typeof value !== "string" || !UUID_RE.test(value)) {
+    throw new PurchaseServiceError("INVALID_INPUT", `${field} must be a UUID${nullable ? " or null" : ""}`);
+  }
+  return value.toLowerCase();
+}
+
 function positiveSafeInteger(value, field) {
   if (!Number.isSafeInteger(value) || value <= 0) {
     throw new PurchaseServiceError("INVALID_INPUT", `${field} must be positive integer cents`);
@@ -31,14 +43,11 @@ function positiveSafeInteger(value, field) {
  * The pending purchase must already exist. Purchase state and commission
  * accrual are committed atomically; duplicate notifications are idempotent.
  */
-export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider, providerPaymentId, amountCents, currency = "EUR", providerEventId, providerEventType }) {
+export async function recordVerifiedPayment({ pool, purchaseId: rawPurchaseId, paymentProvider, providerPaymentId, amountCents, currency = "EUR", providerEventId, providerEventType }) {
   if (!pool || typeof pool.connect !== "function") {
     throw new PurchaseServiceError("INVALID_POOL", "A PostgreSQL pool is required");
   }
-  requiredText(purchaseId, "purchaseId", 36);
-  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(purchaseId)) {
-    throw new PurchaseServiceError("INVALID_INPUT", "purchaseId must be a UUID");
-  }
+  const purchaseId = normalizedUuid(rawPurchaseId, "purchaseId");
   requiredText(paymentProvider, "paymentProvider", 80);
   requiredText(providerPaymentId, "providerPaymentId", 200);
   positiveSafeInteger(amountCents, "amountCents");
@@ -210,16 +219,12 @@ export async function recordVerifiedPayment({ pool, purchaseId, paymentProvider,
  * code (for example, a product ID looked up in the server-side catalogue).
  * Never pass a browser-supplied amount directly to this function.
  */
-export async function createPendingPurchase({ pool, merchantId, memberId = null, grossCents, idempotencyKey }) {
+export async function createPendingPurchase({ pool, merchantId: rawMerchantId, memberId: rawMemberId = null, grossCents, idempotencyKey }) {
   if (!pool || typeof pool.connect !== "function") {
     throw new PurchaseServiceError("INVALID_POOL", "A PostgreSQL pool is required");
   }
-  if (typeof merchantId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(merchantId)) {
-    throw new PurchaseServiceError("INVALID_INPUT", "merchantId must be a UUID");
-  }
-  if (memberId !== null && (typeof memberId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(memberId))) {
-    throw new PurchaseServiceError("INVALID_INPUT", "memberId must be a UUID or null");
-  }
+  const merchantId = normalizedUuid(rawMerchantId, "merchantId");
+  const memberId = normalizedUuid(rawMemberId, "memberId", { nullable: true });
   positiveSafeInteger(grossCents, "grossCents");
   requiredText(idempotencyKey, "idempotencyKey", 200);
 
@@ -288,6 +293,74 @@ export async function createPendingPurchase({ pool, merchantId, memberId = null,
     }
     if (error instanceof PurchaseServiceError || error instanceof CommissionError) throw error;
     throw new PurchaseServiceError("PURCHASE_CREATION_FAILED", "Pending purchase could not be created");
+  } finally {
+    client.release();
+  }
+}
+
+
+/**
+ * Marks a pending purchase as failed after a VERIFIED provider notification that
+ * an asynchronous payment failed. Idempotent; never touches a paid purchase.
+ */
+export async function recordFailedPayment({ pool, purchaseId: rawPurchaseId, paymentProvider, providerPaymentId, providerEventId, providerEventType }) {
+  if (!pool || typeof pool.connect !== "function") {
+    throw new PurchaseServiceError("INVALID_POOL", "A PostgreSQL pool is required");
+  }
+  const purchaseId = normalizedUuid(rawPurchaseId, "purchaseId");
+  requiredText(paymentProvider, "paymentProvider", 80);
+  requiredText(providerPaymentId, "providerPaymentId", 200);
+  requiredText(providerEventId, "providerEventId", 255);
+  requiredText(providerEventType, "providerEventType", 120);
+
+  const client = await pool.connect();
+  let transactionOpen = false;
+  try {
+    await client.query("BEGIN");
+    transactionOpen = true;
+    const eventInsert = await client.query(
+      `INSERT INTO payment_provider_events (provider, provider_event_id, event_type)
+       VALUES ($1, $2, $3)
+       ON CONFLICT (provider, provider_event_id) DO NOTHING
+       RETURNING id`,
+      [paymentProvider, providerEventId, providerEventType]
+    );
+    if (eventInsert.rows.length === 0) {
+      await client.query("COMMIT");
+      transactionOpen = false;
+      return { purchaseId, status: "duplicate_event", duplicateNotification: true };
+    }
+    const result = await client.query(
+      `SELECT id, payment_provider, provider_payment_id, status
+         FROM partner_purchases
+        WHERE id = $1
+        FOR UPDATE`,
+      [purchaseId]
+    );
+    if (result.rows.length !== 1) {
+      throw new PurchaseServiceError("PURCHASE_NOT_FOUND", "Purchase was not found");
+    }
+    const purchase = result.rows[0];
+    if (purchase.payment_provider !== paymentProvider || purchase.provider_payment_id !== providerPaymentId) {
+      throw new PurchaseServiceError("PAYMENT_REFERENCE_MISMATCH", "Payment reference does not match purchase");
+    }
+    let status = purchase.status;
+    if (status === "pending") {
+      await client.query(
+        "UPDATE partner_purchases SET status = 'failed' WHERE id = $1 AND status = 'pending'",
+        [purchaseId]
+      );
+      status = "failed";
+    }
+    await client.query("COMMIT");
+    transactionOpen = false;
+    return { purchaseId, status, duplicateNotification: purchase.status !== "pending" };
+  } catch (error) {
+    if (transactionOpen) {
+      try { await client.query("ROLLBACK"); } catch { /* preserve original error */ }
+    }
+    if (error instanceof PurchaseServiceError) throw error;
+    throw new PurchaseServiceError("PAYMENT_RECORDING_FAILED", "Failed payment could not be recorded");
   } finally {
     client.release();
   }

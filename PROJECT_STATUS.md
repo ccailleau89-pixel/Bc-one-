@@ -4,6 +4,14 @@ Current status
 
 BC ONE is a project in preparation. No production token has been deployed.
 
+## Code review fixes — 19 October 2026
+
+- New migration `202610190001_burger_id_hardening.sql`: welcome credits only after e-mail confirmation, sign-up pseudo stored, signed ledger amounts, self-service account deletion (`delete_my_burger_id`).
+- Supabase migrations are now applied and tested in CI against PostgreSQL 16 with a test-only auth stand-in (`supabase/tests/`): RLS isolation between two accounts, browser write refusals, credits once, deletion cascade.
+- Burger ID page: pinned `@supabase/supabase-js@2.57.4`, password recovery, credits display, account deletion, fixed redirect URL, privacy notice (`confidentialite.html`). New sign-ups stay closed (`signupOpen: false`) until the notice placeholders are filled; CI refuses `signupOpen: true` while any `[À COMPLÉTER]` remains.
+- Backend: API starts from paths with spaces/accents; expired Stripe Checkout sessions are replaced instead of reused; async payment failures mark purchases failed; permanent webhook errors are acknowledged and logged for reconciliation; UUIDs normalised.
+- Security checks (npm audit, secret scan) now also run on pushes to `main`.
+
 ## State — 19 October 2026 (Supabase connected to Burger ID)
 
 - `burger-id-config.js` now points to the Supabase project `kjiqpeccnjwxzwgbixke` with a **publishable** browser key. The public Burger ID page therefore accepts real signups and logins.

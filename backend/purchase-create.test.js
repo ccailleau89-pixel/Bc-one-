@@ -95,3 +95,16 @@ test("refuses a merchant without an active connected Stripe account", async () =
   );
   assert.equal(state.rolledBack, true);
 });
+
+test("an upper-case identifier is not mistaken for a different purchase", async () => {
+  const existing = {
+    id: "00000000-0000-4000-8000-000000000011", merchant_id: merchantId, member_id: memberId,
+    gross_cents: "10000", commission_bps: 200, commission_cents: "200", merchant_net_cents: "9800",
+    status: "pending", provider_payment_id: "pending:00000000-0000-4000-8000-000000000011"
+  };
+  const { pool } = setup({ existing });
+  const result = await createPendingPurchase({
+    pool, merchantId: merchantId.toUpperCase(), memberId: memberId.toUpperCase(), grossCents: 10000, idempotencyKey
+  });
+  assert.equal(result.reused, true);
+});
