@@ -4,8 +4,11 @@ on:
   push:
     branches: [main]
     paths:
-      - "index.html"
-      - "burger-id.html"
+      - "*.html"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "manifest.webmanifest"
+      - "og-image.png"
       - "burger-id-config.js"
       - "burger-id-schema.sql"
       - "supabase/migrations/**"
@@ -13,8 +16,11 @@ on:
       - ".github/workflows/public-site-checks.yml"
   pull_request:
     paths:
-      - "index.html"
-      - "burger-id.html"
+      - "*.html"
+      - "sitemap.xml"
+      - "robots.txt"
+      - "manifest.webmanifest"
+      - "og-image.png"
       - "burger-id-config.js"
       - "supabase/migrations/**"
       - "prototype/check_public_site.py"
