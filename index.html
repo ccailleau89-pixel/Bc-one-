@@ -27,236 +27,265 @@
 <link rel="manifest" href="./manifest.webmanifest">
 <script type="application/ld+json">{"@context": "https://schema.org", "@graph": [{"@type": "Organization", "@id": "https://ccailleau89-pixel.github.io/Bc-one-/#organization", "name": "BC ONE", "alternateName": "The Burger Currency", "url": "https://ccailleau89-pixel.github.io/Bc-one-/", "logo": "https://ccailleau89-pixel.github.io/Bc-one-/icon-512.png", "description": "BC ONE, projet food-tech autour du burger : communauté, commerçants partenaires et futur programme de fidélité. En préparation, sans token ni paiement actif."}, {"@type": "WebSite", "@id": "https://ccailleau89-pixel.github.io/Bc-one-/#website", "name": "BC ONE", "url": "https://ccailleau89-pixel.github.io/Bc-one-/", "inLanguage": "fr-FR", "publisher": {"@id": "https://ccailleau89-pixel.github.io/Bc-one-/#organization"}}]}</script>
 <style>
-:root {
-  --black: #0B0B0C;
-  --gold: #D6A64A;
-  --cream: #F5F1E8;
-  --orange: #FF682E;
-  --muted: #AAA6A0;
+:root{
+  --black:#0B0B0C;--ink:#F5F1E8;--gold:#D6A64A;--gold-hi:#F1C46B;--orange:#FF682E;
+  --muted:#B3AEA5;--line:#2C2A25;--panel:#121211;--glow:rgba(214,166,74,.18);
 }
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  background: var(--black);
-  color: var(--cream);
-  font-family: Arial, Helvetica, sans-serif;
-}
-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 22px 6%;
-  border-bottom: 1px solid #292723;
-}
-.brand { font-size: 23px; font-weight: 800; letter-spacing: 2px; }
-.brand span { color: var(--gold); }
-.site-nav { display:flex; align-items:center; justify-content:flex-end; gap:16px; flex-wrap:wrap; }
-.site-nav a:not(.status) { color:var(--cream); text-decoration:none; font-size:13px; }
-.site-nav a:not(.status):hover, .site-nav a:not(.status):focus-visible { color:var(--gold); }
-.nav-cta { text-decoration:none; white-space:nowrap; }
-.skip-link { position:absolute; top:-100px; left:12px; padding:12px 16px; background:var(--gold); color:var(--black); z-index:10; border-radius:6px; font-weight:700; }
-.skip-link:focus { top:12px; }
-:focus-visible { outline:2px solid var(--gold); outline-offset:4px; }
-.status {
-  color: var(--gold);
-  border: 1px solid #735A2C;
-  border-radius: 30px;
-  padding: 8px 11px;
-  font-size: 11px;
-}
-main { max-width: 1050px; margin: auto; padding: 65px 6% 45px; }
-.eyebrow {
-  color: var(--gold);
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-}
-h1 {
-  font-size: clamp(42px, 10vw, 82px);
-  line-height: .98;
-  letter-spacing: -3px;
-  margin: 25px 0;
-}
-h1 span { color: var(--gold); }
-.intro {
-  color: var(--muted);
-  font-size: 17px;
-  line-height: 1.7;
-  max-width: 580px;
-}
-.hero {
-  border: 1px solid #393126;
-  border-radius: 20px;
-  padding: 28px 20px;
-  margin: 40px 0;
-  background: radial-gradient(ellipse at 50% 0%, #292014 0%, #11100E 48%, #0B0B0C 100%);
-  text-align: center;
-}
-.burger { font-size: 76px; line-height: 1.3; }
-.hero h2 { color: var(--gold); font-size: 24px; margin: 10px 0; }
-.hero p { color: var(--muted); line-height: 1.6; }
-.button {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 14px 22px;
-  border-radius: 7px;
-  background: var(--gold);
-  color: #0B0B0C;
-  text-decoration: none;
-  font-weight: 700;
-}
-section { margin: 55px 0; }
-h2 { font-size: 27px; }
-.cards { display: grid; grid-template-columns: 1fr; gap: 14px; }
-.card {
-  padding: 23px;
-  border: 1px solid #34312B;
-  border-radius: 13px;
-  background: #111110;
-}
-.card .number { color: var(--gold); font-size: 13px; letter-spacing: 2px; }
-.card h3 { font-size: 19px; }
-.card p { color: var(--muted); line-height: 1.7; }
-.notice {
-  border-left: 3px solid var(--orange);
-  padding: 16px 18px;
-  background: #19120F;
-  color: var(--cream);
-  line-height: 1.6;
-}
-.benefits { padding: 28px 0; }
-.benefits-intro { color: var(--muted); line-height: 1.7; max-width: 650px; }
-.benefit-icon { font-size: 30px; margin-bottom: 18px; }
-.benefits-note { margin: 20px 0 8px; padding: 16px 18px; border: 1px solid #393126; border-radius: 10px; color: var(--muted); line-height: 1.65; font-size: 13px; }
-.benefits-note strong { color: var(--gold); }
-footer {
-  padding: 28px 6%;
-  border-top: 1px solid #292723;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.8;
-}
-@media (max-width: 520px) {
-  header { align-items:flex-start; gap:16px; flex-wrap:wrap; }
-  .site-nav { width:100%; justify-content:flex-start; gap:14px; }
-}
-@media (min-width: 700px) {
-  .cards { grid-template-columns: repeat(3, 1fr); }
-  main { padding-top: 95px; }
-  .hero { padding: 45px; }
-}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--black);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+a{color:var(--gold)}
+.skip-link{position:absolute;top:-100px;left:12px;padding:12px 16px;background:var(--gold);color:var(--black);z-index:10;border-radius:8px;font-weight:700}
+.skip-link:focus{top:12px}
+:focus-visible{outline:2px solid var(--gold-hi);outline-offset:4px;border-radius:4px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
 
-  .ecosystem { margin: 55px 0; padding: 26px; border: 1px solid #735A2C; border-radius: 18px; background: linear-gradient(135deg,#1d1a14,#10100f); }
-  .ecosystem .eyebrow { margin-bottom: 14px; }
-  .ecosystem h2 { margin: 0 0 12px; line-height: 1.1; }
-  .ecosystem p { color: var(--muted); line-height: 1.7; max-width: 650px; }
-  .ecosystem-links { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin-top:22px; }
-  .ecosystem-link { display:block; padding:18px; border:1px solid #393126; border-radius:12px; color:var(--cream); text-decoration:none; background:#111110; }
-  .ecosystem-link strong { display:block; color:var(--gold); margin-bottom:7px; }
-  .ecosystem-link span { color:var(--muted); font-size:13px; line-height:1.5; }
-  @media(max-width:600px){.ecosystem-links{grid-template-columns:1fr}.ecosystem{padding:20px}}
+/* Header */
+header.top{position:sticky;top:0;z-index:5;backdrop-filter:blur(10px);background:rgba(11,11,12,.78);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:64px}
+.brand{font-weight:900;letter-spacing:2px;font-size:20px;text-decoration:none;color:var(--ink)}
+.brand span{color:var(--gold)}
+nav.menu{display:flex;align-items:center;gap:18px}
+nav.menu a.link{color:var(--ink);text-decoration:none;font-size:14px;opacity:.85}
+nav.menu a.link:hover{color:var(--gold);opacity:1}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #7a5d25;color:var(--gold-hi);border-radius:999px;padding:9px 14px;font-size:13px;font-weight:700;text-decoration:none;background:var(--glow)}
+.pill:hover{background:rgba(214,166,74,.28)}
+@media(max-width:560px){nav.menu a.link{display:none}}
 
+/* Hero */
+.hero{position:relative;overflow:hidden;padding:72px 0 56px;background:radial-gradient(ellipse 70% 55% at 50% -10%,rgba(255,104,46,.22),transparent 70%),radial-gradient(ellipse 60% 50% at 90% 10%,rgba(214,166,74,.18),transparent 70%)}
+.eyebrow{display:inline-block;color:var(--gold);font-size:12px;font-weight:800;letter-spacing:3px;text-transform:uppercase}
+.hero h1{font-size:clamp(44px,9vw,96px);line-height:.95;letter-spacing:-3px;margin:18px 0 22px;font-weight:900}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold-hi),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{font-size:clamp(17px,2.2vw,20px);color:var(--muted);max-width:620px;margin:0 0 30px}
+.ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:14px 22px;border-radius:12px;font-weight:800;text-decoration:none;border:1px solid transparent}
+.btn-primary{background:linear-gradient(90deg,var(--gold),var(--orange));color:#0B0B0C}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{border-color:#3A372F;color:var(--ink);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.status-row{margin-top:40px;display:flex;flex-wrap:wrap;gap:10px}
+.chip{border:1px solid var(--line);border-radius:999px;padding:7px 13px;font-size:13px;color:var(--muted);background:var(--panel)}
+.chip b{color:var(--ink)}
+.burger-stage{margin-top:48px;border:1px solid #3a3126;border-radius:24px;padding:34px 22px;text-align:center;background:radial-gradient(ellipse at 50% 0%,#2b2014,#111010 60%,#0B0B0C)}
+.burger-stage .burger{font-size:clamp(64px,12vw,104px);line-height:1.1}
+.burger-stage h2{margin:10px 0 6px;font-size:clamp(22px,4vw,30px);letter-spacing:1px;color:var(--gold-hi)}
+.burger-stage p{margin:0 auto;max-width:560px;color:var(--muted)}
+
+/* Sections */
+section.block{padding:72px 0;border-top:1px solid var(--line)}
+h2.title{font-size:clamp(28px,4.5vw,44px);line-height:1.1;letter-spacing:-1.2px;margin:12px 0 14px;font-weight:900}
+.sub{color:var(--muted);max-width:640px;margin:0 0 34px}
+.grid3{display:grid;gap:16px;grid-template-columns:1fr}
+@media(min-width:760px){.grid3{grid-template-columns:repeat(3,1fr)}}
+.card{position:relative;padding:26px;border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,#151513,#0F0F0E);transition:border-color .2s,transform .2s}
+.card:hover{border-color:#5a4621;transform:translateY(-2px)}
+.card .n{color:var(--gold);font-size:12px;font-weight:800;letter-spacing:2px}
+.card .ico{font-size:30px;margin:12px 0 6px}
+.card h3{font-size:20px;margin:6px 0 8px}
+.card p{color:var(--muted);margin:0;font-size:15px}
+
+/* Roadmap */
+.road{list-style:none;padding:0;margin:0;display:grid;gap:14px;counter-reset:step}
+@media(min-width:820px){.road{grid-template-columns:repeat(4,1fr)}}
+.road li{position:relative;padding:22px 20px;border:1px solid var(--line);border-radius:16px;background:var(--panel)}
+.road li::before{counter-increment:step;content:"0" counter(step);display:block;color:var(--gold);font-weight:900;font-size:13px;letter-spacing:2px;margin-bottom:10px}
+.road li strong{display:block;font-size:17px;margin-bottom:6px}
+.road li span{color:var(--muted);font-size:14px}
+.road li.now{border-color:#7a5d25;background:linear-gradient(180deg,rgba(214,166,74,.10),var(--panel))}
+.tag{display:inline-block;margin-top:10px;font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold-hi)}
+.tag.off{color:var(--muted)}
+
+/* Ecosystem */
+.eco{border:1px solid #6e5224;border-radius:24px;padding:34px 26px;background:linear-gradient(135deg,#1E1A12,#0F0F0E 60%)}
+.eco-grid{display:grid;gap:14px;margin-top:24px;grid-template-columns:1fr}
+@media(min-width:720px){.eco-grid{grid-template-columns:1fr 1fr}}
+.eco-link{display:block;padding:22px;border-radius:16px;border:1px solid #3a3126;background:#111110;text-decoration:none;color:var(--ink)}
+.eco-link:hover{border-color:var(--gold)}
+.eco-link strong{display:block;font-size:18px;color:var(--gold-hi);margin-bottom:6px}
+.eco-link span{color:var(--muted);font-size:14px}
+.eco p.lead2{color:var(--muted);max-width:680px;margin:0}
+
+/* Notice */
+.notice{border-left:4px solid var(--orange);padding:20px 22px;border-radius:12px;background:#1A120E;line-height:1.7}
+.notice strong{color:var(--gold-hi)}
+
+footer.site{padding:44px 0 60px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+footer.site .row{display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;align-items:flex-start}
+footer.site a{color:var(--muted)}
+footer.site a:hover{color:var(--gold)}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#contenu">Aller au contenu</a>
-<header>
-  <a class="brand" href="./" aria-label="BC ONE — accueil" style="text-decoration:none;color:var(--cream)">BC <span>ONE</span></a>
-  <nav class="site-nav" aria-label="Navigation principale">
-    <a href="#vision">Le projet</a>
-    <a href="#avantages">Avantages</a>
-    <a class="status nav-cta" href="./burger-id.html">BURGER ID ↗</a>
-  </nav>
-</header>
-<main id="contenu">
-  <div class="eyebrow">Food culture · Digital innovation</div>
-  <h1>Le goût du futur.<br><span>Une nouvelle</span><br>monnaie.</h1>
-  <p class="intro">
-    BC ONE explore une nouvelle façon de rapprocher
-    la culture du burger, les commerçants et les technologies
-    numériques. Un projet en construction, avec une ambition claire.
-  </p>
-  <div class="hero">
-    <div class="burger" aria-hidden="true">🍔</div>
-    <h2>THE BURGER CURRENCY</h2>
-    <p>Une idée audacieuse. Un projet à construire.<br>
-    Une communauté à imaginer.</p>
-    <a class="button" href="#vision">Découvrir le projet</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./" aria-label="BC ONE, accueil">BC <span>ONE</span></a>
+    <nav class="menu" aria-label="Navigation principale">
+      <a class="link" href="#vision">Le projet</a>
+      <a class="link" href="#feuille-de-route">Feuille de route</a>
+      <a class="link" href="./indice.html">Indice</a>
+      <a class="pill" href="./burger-id.html">Burger ID <span aria-hidden="true">↗</span></a>
+    </nav>
   </div>
-  <section id="vision">
-    <div class="eyebrow">Notre vision</div>
-    <h2>Plus qu'un token, un écosystème.</h2>
-    <div class="cards">
-      <article class="card">
-        <div class="number">01 / COMMUNAUTÉ</div>
-        <h3>Créer du lien</h3>
-        <p>Imaginer des usages numériques autour des amateurs de burgers et des commerçants.</p>
-      </article>
-      <article class="card">
-        <div class="number">02 / TECHNOLOGIE</div>
-        <h3>Construire avec rigueur</h3>
-        <p>Étudier une infrastructure blockchain et des règles d'émission transparentes.</p>
-      </article>
-      <article class="card">
-        <div class="number">03 / UTILITÉ</div>
-        <h3>Penser aux usages</h3>
-        <p>Explorer des services utiles avant toute mise en circulation du token.</p>
-      </article>
+</header>
+
+<main id="contenu">
+  <div class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Food culture · Digital innovation</span>
+      <h1>Le goût du futur.<br><em>Une nouvelle</em><br>monnaie.</h1>
+      <p class="lead">BC ONE rapproche la culture du burger, les commerçants indépendants et les outils numériques. Un projet en construction, qui avance étape par étape et publie ce qu'il fait.</p>
+      <div class="ctas">
+        <a class="btn btn-primary" href="#feuille-de-route">Voir la feuille de route</a>
+        <a class="btn btn-ghost" href="./burger-id.html">Découvrir Burger ID</a>
+      </div>
+      <div class="status-row" aria-label="État du projet">
+        <span class="chip"><b>Statut :</b> en préparation</span>
+        <span class="chip"><b>Token :</b> non émis</span>
+        <span class="chip"><b>Paiement :</b> aucun</span>
+      </div>
+      <div class="burger-stage">
+        <div class="burger" aria-hidden="true">🍔</div>
+        <h2>THE BURGER CURRENCY</h2>
+        <p>Une idée ambitieuse. Un projet qui se construit en public, avec des règles claires.</p>
+      </div>
+    </div>
+  </div>
+
+  <section class="block" id="vision">
+    <div class="wrap">
+      <span class="eyebrow">Notre vision</span>
+      <h2 class="title">Plus qu'un token, un écosystème.</h2>
+      <p class="sub">Trois piliers, dans cet ordre : l'utilité d'abord, la technologie ensuite, et une économie qui n'existe que si elle sert la communauté.</p>
+      <div class="grid3">
+        <article class="card">
+          <div class="n">01 · COMMUNAUTÉ</div>
+          <div class="ico" aria-hidden="true">🤝</div>
+          <h3>Créer du lien</h3>
+          <p>Imaginer des usages numériques autour des amateurs de burgers et des commerçants indépendants.</p>
+        </article>
+        <article class="card">
+          <div class="n">02 · TECHNOLOGIE</div>
+          <div class="ico" aria-hidden="true">🛡️</div>
+          <h3>Construire avec rigueur</h3>
+          <p>Authentification sécurisée, données minimales et règles d'émission transparentes, avant toute mise en circulation.</p>
+        </article>
+        <article class="card">
+          <div class="n">03 · UTILITÉ</div>
+          <div class="ico" aria-hidden="true">🍟</div>
+          <h3>Penser aux usages</h3>
+          <p>Tester des avantages concrets avec des commerçants partenaires, avant de parler de tout autre sujet.</p>
+        </article>
+      </div>
     </div>
   </section>
-  <section class="ecosystem" id="compte-unique">
-    <div class="eyebrow">L'écosystème Burger</div>
-    <h2>Un compte. Deux expériences.</h2>
-    <p>Crush Burger pour les rencontres et les affinités. BC ONE pour les avantages et services numériques de la communauté. L'objectif : un identifiant unique, un profil maîtrisé par l'utilisateur et un espace distinct pour les éventuels crédits ou actifs numériques.</p>
-    <p><strong>État actuel :</strong> les deux sites sont reliés par navigation. Le portail Burger ID est créé. La connexion commune ne sera active qu’après configuration du projet Supabase partagé ; aucun solde ni token réel n’est créé.</p>
-    <div style="margin:18px 0 20px"><a class="button" href="./burger-id.html">Ouvrir mon Burger ID ↗</a></div><div class="ecosystem-links">
-      <a class="ecosystem-link" href="https://ccailleau89-pixel.github.io/crush-burger-demo/"><strong>♥ Crush Burger</strong><span>Découverte, profils et affinités — démo interactive</span></a>
-      <a class="ecosystem-link" href="https://ccailleau89-pixel.github.io/Bc-one-/"><strong>₿ BC ONE</strong><span>Projet Burger Currency et futur espace avantages</span></a>
+
+  <section class="block" id="feuille-de-route">
+    <div class="wrap">
+      <span class="eyebrow">Feuille de route</span>
+      <h2 class="title">Quatre étapes, pas de raccourci.</h2>
+      <p class="sub">Chaque étape doit être validée avant la suivante. Si une étape échoue, on ne passe pas à la suivante.</p>
+      <ol class="road">
+        <li class="now">
+          <strong>Burger ID</strong>
+          <span>Portail de compte commun en cours de test. Inscriptions fermées tant que la protection des données n'est pas validée.</span>
+          <div class="tag">En cours</div>
+        </li>
+        <li>
+          <strong>Fidélité test</strong>
+          <span>Un programme simple avec quelques commerçants volontaires. Avantages réels, aucun achat requis.</span>
+          <div class="tag off">À venir</div>
+        </li>
+        <li>
+          <strong>Indice communautaire</strong>
+          <span>Un indicateur de santé du projet, publié avec sa méthode. Il n'a aucune valeur financière.</span>
+          <div class="tag off">À venir</div>
+        </li>
+        <li>
+          <strong>Token</strong>
+          <span>Uniquement après validation technique, juridique et réglementaire. Rien n'est promis avant.</span>
+          <div class="tag off">Conditionné</div>
+        </li>
+      </ol>
     </div>
   </section>
-  <section class="benefits" id="avantages">
-    <div class="eyebrow">La prochaine étape</div>
-    <h2>Des avantages concrets. D'abord.</h2>
-    <p class="benefits-intro">La priorité de BC ONE est de tester un programme de fidélité simple auprès des clients et commerçants. Pas besoin de spéculer : l'utilité doit venir en premier.</p>
-    <div class="cards">
-      <article class="card">
-        <div class="benefit-icon" aria-hidden="true">🍟</div>
-        <div class="number">01 / RÉCOMPENSES</div>
-        <h3>Récompenser la fidélité</h3>
-        <p>Des avantages comme des accompagnements, des offres membres ou des menus pourront être étudiés avec les commerçants participants.</p>
-      </article>
-      <article class="card">
-        <div class="benefit-icon" aria-hidden="true">📱</div>
-        <div class="number">02 / COMPTE</div>
-        <h3>Un espace personnel</h3>
-        <p>Un identifiant commun est en préparation. L'accès réel restera fermé tant que l'authentification et la protection des données ne seront pas testées.</p>
-      </article>
-      <article class="card">
-        <div class="benefit-icon" aria-hidden="true">🤝</div>
-        <div class="number">03 / COMMUNAUTÉ</div>
-        <h3>Des commerçants partenaires</h3>
-        <p>Le programme pourra grandir avec des partenaires locaux, selon les avantages réellement disponibles et des règles claires.</p>
-      </article>
+
+  <section class="block" id="avantages">
+    <div class="wrap">
+      <span class="eyebrow">Les avantages, d'abord</span>
+      <h2 class="title">Des avantages concrets, pas des promesses.</h2>
+      <p class="sub">La priorité est de tester un programme de fidélité simple. Les exemples ci-dessous sont des pistes de travail, pas des récompenses disponibles aujourd'hui.</p>
+      <div class="grid3">
+        <article class="card">
+          <div class="n">01 · RÉCOMPENSES</div>
+          <div class="ico" aria-hidden="true">🍔</div>
+          <h3>Récompenser la fidélité</h3>
+          <p>Accompagnements, offres membres ou menus, à étudier avec les commerçants participants.</p>
+        </article>
+        <article class="card">
+          <div class="n">02 · COMPTE</div>
+          <div class="ico" aria-hidden="true">📱</div>
+          <h3>Un espace personnel</h3>
+          <p>Un identifiant commun en préparation. Vous gardez la main sur votre profil et sur la suppression de votre compte.</p>
+        </article>
+        <article class="card">
+          <div class="n">03 · COMMUNAUTÉ</div>
+          <div class="ico" aria-hidden="true">🏪</div>
+          <h3>Des commerçants partenaires</h3>
+          <p>Le programme grandira avec des partenaires locaux, selon des avantages réellement disponibles et des règles écrites.</p>
+        </article>
+      </div>
     </div>
-    <div class="benefits-note"><strong>Important :</strong> ces exemples sont des pistes de travail, pas des récompenses actuellement disponibles. Aucun achat, paiement, investissement ou achat de token n'est proposé sur cette page.</div>
-    <a class="button" href="./burger-id.html">Voir le portail Burger ID ↗</a>
   </section>
-  <section>
-    <div class="eyebrow">Transparence</div>
-    <h2>Un projet en développement.</h2>
-    <div class="notice">
-      BC ONE est actuellement en préparation. Aucun token n'est annoncé
-      comme émis, aucun prix de marché ni aucune liquidité ne sont revendiqués.
-      Les choix techniques, économiques et réglementaires restent à valider.
+
+  <section class="block" id="compte-unique">
+    <div class="wrap">
+      <div class="eco">
+        <span class="eyebrow">L'écosystème Burger</span>
+        <h2 class="title" style="margin-top:10px">Un compte. Deux expériences.</h2>
+        <p class="lead2">Crush Burger pour les rencontres et les affinités. BC ONE pour les avantages et services de la communauté. Un identifiant unique, un profil maîtrisé par l'utilisateur, et aucun solde ni token réel créé à ce stade.</p>
+        <div class="ctas" style="margin-top:22px">
+          <a class="btn btn-primary" href="./burger-id.html">Ouvrir mon Burger ID ↗</a>
+        </div>
+        <div class="eco-grid">
+          <a class="eco-link" href="https://ccailleau89-pixel.github.io/crush-burger-demo/">
+            <strong>♥ Crush Burger</strong>
+            <span>Découverte, profils et affinités. Démo interactive.</span>
+          </a>
+          <a class="eco-link" href="https://ccailleau89-pixel.github.io/Bc-one-/">
+            <strong>₿ BC ONE</strong>
+            <span>Le projet Burger Currency et le futur espace avantages.</span>
+          </a>
+        </div>
+      </div>
     </div>
-    <a class="button" href="./indice.html">Comprendre l'indice communautaire ↗</a>
+  </section>
+
+  <section class="block" id="transparence">
+    <div class="wrap">
+      <span class="eyebrow">Transparence</span>
+      <h2 class="title">Ce qui est vrai aujourd'hui.</h2>
+      <div class="notice">
+        BC ONE est en préparation. <strong>Aucun token n'est émis</strong>, aucun prix de marché ni aucune liquidité ne sont revendiqués, et aucun achat ou investissement n'est proposé sur ce site. Les choix techniques, économiques et réglementaires restent à valider.
+      </div>
+      <p style="margin-top:22px"><a class="btn btn-ghost" href="./indice.html">Comprendre l'indice communautaire ↗</a></p>
+    </div>
   </section>
 </main>
-<footer>
-  <strong>BC ONE — The Burger Currency</strong><br>
-  Projet en préparation · Informations susceptibles d'évoluer.<br>
-  <a href="./confidentialite.html">Confidentialité</a><br>
-  © BC ONE
+
+<footer class="site">
+  <div class="wrap row">
+    <div>
+      <strong style="color:var(--ink)">BC ONE, The Burger Currency</strong><br>
+      Projet en préparation · Informations susceptibles d'évoluer.
+    </div>
+    <div>
+      <a href="./confidentialite.html">Confidentialité</a> · <a href="./indice.html">Indice</a> · <a href="./burger-id.html">Burger ID</a><br>
+      © BC ONE
+    </div>
+  </div>
 </footer>
 </body>
 </html>
