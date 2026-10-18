@@ -1,0 +1,61 @@
+name: BC ONE Supabase migration tests
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "supabase/**"
+      - ".github/workflows/supabase-migration-tests.yml"
+  pull_request:
+    paths:
+      - "supabase/**"
+      - ".github/workflows/supabase-migration-tests.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  migrations:
+    name: Apply migrations and test RLS on PostgreSQL 16
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: bc_one_test_only
+          POSTGRES_DB: burger_id_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d burger_id_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGHOST: localhost
+      PGPORT: 5432
+      PGUSER: postgres
+      PGPASSWORD: bc_one_test_only
+      PGDATABASE: burger_id_test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
+      - name: Apply the test-only Supabase auth stand-in
+        run: psql -v ON_ERROR_STOP=1 -q -f supabase/tests/00_supabase_auth_shim.sql
+      - name: Apply migrations in order
+        run: |
+          for file in $(ls supabase/migrations/*.sql | sort); do
+            echo "Applying $file"
+            psql -v ON_ERROR_STOP=1 -q -f "$file"
+          done
+      - name: Run Burger ID database tests
+        run: psql -v ON_ERROR_STOP=1 -q -o /dev/null -f supabase/tests/10_burger_id_test.sql

@@ -83,3 +83,54 @@ test("does not mark an unpaid asynchronous Checkout session as paid", async () =
   assert.equal(state.eventInserted, false);
   assert.equal(state.paid, false);
 });
+
+test("expired Checkout sessions are acknowledged without writes", async () => {
+  const { pool, state } = fakePool();
+  const event = { ...paidEvent, type: "checkout.session.expired", data: { object: { ...paidEvent.data.object, payment_status: "unpaid" } } };
+  const result = await processVerifiedStripeEvent({ pool, event });
+  assert.equal(result.reason, "session_expired");
+  assert.equal(state.eventInserted, false);
+});
+
+function failedPool({ status = "pending" } = {}) {
+  const state = { failed: false, committed: false };
+  const client = {
+    async query(sql) {
+      if (sql === "BEGIN" || sql === "ROLLBACK") return { rows: [] };
+      if (sql === "COMMIT") { state.committed = true; return { rows: [] }; }
+      if (sql.includes("INSERT INTO payment_provider_events")) return { rows: [{ id: 1 }] };
+      if (sql.includes("FROM partner_purchases")) return { rows: [{ ...purchase, status }] };
+      if (sql.includes("SET status = 'failed'")) { state.failed = true; return { rows: [], rowCount: 1 }; }
+      throw new Error("Unexpected SQL: " + sql);
+    },
+    release() {}
+  };
+  return { pool: { connect: async () => client }, state };
+}
+
+test("failed asynchronous payments mark a pending purchase as failed", async () => {
+  const { pool, state } = failedPool();
+  const event = { ...paidEvent, id: "evt_failed", type: "checkout.session.async_payment_failed", data: { object: { ...paidEvent.data.object, payment_status: "unpaid" } } };
+  const result = await processVerifiedStripeEvent({ pool, event });
+  assert.equal(result.processed, true);
+  assert.equal(result.result.status, "failed");
+  assert.equal(state.failed, true);
+  assert.equal(state.committed, true);
+});
+
+test("a failed-payment event never downgrades a paid purchase", async () => {
+  const { pool, state } = failedPool({ status: "paid" });
+  const event = { ...paidEvent, id: "evt_failed2", type: "checkout.session.async_payment_failed", data: { object: { ...paidEvent.data.object, payment_status: "unpaid" } } };
+  const result = await processVerifiedStripeEvent({ pool, event });
+  assert.equal(result.processed, false);
+  assert.equal(result.result.status, "paid");
+  assert.equal(state.failed, false);
+});
+
+test("classifies permanent webhook errors separately from transient ones", async () => {
+  const { isPermanentWebhookError } = await import("./stripe-webhook.js");
+  assert.equal(isPermanentWebhookError({ code: "PAYMENT_AMOUNT_MISMATCH" }), true);
+  assert.equal(isPermanentWebhookError({ code: "PURCHASE_NOT_FOUND" }), true);
+  assert.equal(isPermanentWebhookError({ code: "PAYMENT_RECORDING_FAILED" }), false);
+  assert.equal(isPermanentWebhookError(new Error("connection reset")), false);
+});

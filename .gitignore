@@ -1,5 +1,4 @@
-Secrets and environment variables
-
+# Secrets and environment variables
 .env
 .env.*
 !.env.example
@@ -8,17 +7,18 @@ Secrets and environment variables
 secrets/
 credentials/
 
-Dependencies
-
+# Dependencies
 node_modules/
 .venv/
 venv/
-pycache/
+__pycache__/
+lib/
 
-Build and test output
-
+# Build and test output
 dist/
 build/
 coverage/
 .cache/
+out/
+cache/
 .DS_Store

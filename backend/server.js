@@ -1,7 +1,9 @@
 import { createServer } from "node:http";
+import { realpathSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 import pg from "pg";
 import Stripe from "stripe";
-import { processVerifiedStripeEvent } from "./stripe-webhook.js";
+import { processVerifiedStripeEvent, isPermanentWebhookError } from "./stripe-webhook.js";
 
 const { Pool } = pg;
 const PORT = Number.parseInt(process.env.PORT ?? "3000", 10);
@@ -68,7 +70,13 @@ export function createApp({ query, ready = async () => true, stripe, stripeWebho
         const result = await processVerifiedStripeEvent({ pool, event });
         return sendJson(response, 200, result);
       } catch (error) {
-        // Return a generic response. A 5xx lets Stripe retry transient failures.
+        if (isPermanentWebhookError(error)) {
+          // Retrying cannot fix this event: acknowledge it so Stripe stops retrying,
+          // and log it loudly for manual reconciliation against the Stripe dashboard.
+          console.error("RECONCILIATION_REQUIRED Stripe event", event.id, event.type, error.code);
+          return sendJson(response, 200, { received: true, processed: false, error: error.code });
+        }
+        // Transient failure (database, lock, network): a 5xx lets Stripe retry.
         console.error("Stripe webhook processing failed", error.code ?? "UNKNOWN");
         return sendJson(response, 500, { error: "webhook_processing_failed" });
       }
@@ -157,7 +165,18 @@ async function main() {
   process.on("SIGTERM", shutdown);
 }
 
-if (process.argv[1] && new URL(import.meta.url).pathname === process.argv[1]) {
+function isEntryPoint() {
+  // Compare real file paths, not URL-encoded ones: a folder name with a space or
+  // an accent ("Bc one", "Clément") must not prevent the API from starting.
+  if (!process.argv[1]) return false;
+  try {
+    return realpathSync(fileURLToPath(import.meta.url)) === realpathSync(process.argv[1]);
+  } catch {
+    return false;
+  }
+}
+
+if (isEntryPoint()) {
   main().catch((error) => {
     console.error(error.message);
     process.exitCode = 1;
