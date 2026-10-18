@@ -33,8 +33,62 @@ class Inspector(HTMLParser):
         if self.title_open:
             self.title.append(data)
 
+SUPABASE_URL_RE = re.compile(r"^https://[a-z0-9-]+\.supabase\.co/?$", re.I)
+PUBLIC_FILES = ("index.html", "burger-id.html", "fidelite.html", "burger-id-config.js")
+
+
+def _jwt_role(token):
+    """Return the `role` claim of a legacy Supabase JWT key, or None if not a JWT."""
+    parts = token.split(".")
+    if len(parts) != 3:
+        return None
+    payload = parts[1] + "=" * (-len(parts[1]) % 4)
+    try:
+        import base64, json
+        return json.loads(base64.urlsafe_b64decode(payload)).get("role")
+    except Exception:
+        return None
+
+
+def check_supabase_config(config):
+    """Blank config = Burger ID inactive. Filled config = public browser key only."""
+    errors = []
+    values = {}
+    for key in ("supabaseUrl", "supabaseAnonKey"):
+        match = re.search(rf'{key}\s*:\s*"([^"]*)"', config)
+        if not match:
+            errors.append(f"burger-id-config.js: {key} must be declared as a string")
+        else:
+            values[key] = match.group(1).strip()
+    if errors:
+        return errors
+    url, key = values["supabaseUrl"], values["supabaseAnonKey"]
+    if not url and not key:
+        return errors  # not configured: the page keeps signup disabled
+    if not url or not key:
+        errors.append("burger-id-config.js: supabaseUrl and supabaseAnonKey must be set together")
+        return errors
+    if not SUPABASE_URL_RE.match(url):
+        errors.append("burger-id-config.js: supabaseUrl must be https://<project-ref>.supabase.co")
+    if key.startswith("sb_secret_"):
+        errors.append("burger-id-config.js: a secret Supabase key must never be published in the browser")
+    elif key.startswith("sb_publishable_"):
+        pass
+    else:
+        role = _jwt_role(key)
+        if role == "service_role":
+            errors.append("burger-id-config.js: a service_role key must never be published in the browser")
+        elif role != "anon":
+            errors.append("burger-id-config.js: supabaseAnonKey must be a publishable (sb_publishable_...) or anon key")
+    return errors
+
+
 def main():
     errors = []
+    for filename in PUBLIC_FILES:
+        path = ROOT / filename
+        if path.is_file() and "sb_secret_" in path.read_text(encoding="utf-8"):
+            errors.append(f"{filename}: contains a secret Supabase key (sb_secret_...)")
     for filename, spec in PAGES.items():
         path = ROOT / filename
         if not path.is_file():
@@ -69,9 +123,7 @@ def main():
         errors.append("burger-id-config.js: file missing")
     else:
         config = config_path.read_text(encoding="utf-8")
-        for key in ("supabaseUrl", "supabaseAnonKey"):
-            if not re.search(rf'{key}\s*:\s*""', config):
-                errors.append(f"burger-id-config.js: {key} must stay blank until an approved Supabase project is configured")
+        errors.extend(check_supabase_config(config))
 
     burger_page = (ROOT / "burger-id.html").read_text(encoding="utf-8")
     profile_migration = ROOT / "supabase" / "migrations" / "202610160001_burger_id_profiles.sql"
@@ -117,7 +169,7 @@ def main():
         return 1
     print("Public site smoke checks passed")
     print("- homepage and Burger ID HTML titles, required content, IDs and local links checked")
-    print("- browser Supabase config confirmed blank; no server/private key in config")
+    print("- browser Supabase config is blank or uses a public key only; no secret/service_role key in public files")
     print("- Supabase migration filenames and version uniqueness checked")
     return 0
 

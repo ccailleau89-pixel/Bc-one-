@@ -4,6 +4,14 @@ Current status
 
 BC ONE is a project in preparation. No production token has been deployed.
 
+## State — 19 October 2026 (Supabase connected to Burger ID)
+
+- `burger-id-config.js` now points to the Supabase project `kjiqpeccnjwxzwgbixke` with a **publishable** browser key. The public Burger ID page therefore accepts real signups and logins.
+- `prototype/check_public_site.py` previously required a blank config and failed once the project was connected. It now accepts a blank config (inactive) or a public key (`sb_publishable_…` or an `anon` JWT), and blocks `sb_secret_…` / `service_role` keys and half-filled configs. Verified locally against 8 valid and invalid cases.
+- Local run of this archive: 35/36 Node tests pass; the remaining test (`backend/server.test.js`) needs `npm install` (package `stripe`), which could not run in this environment. `community_index` tests: 11/11 pass. Prototype checks pass.
+- **Not verified from here:** whether the two migrations are applied to the Supabase project, email confirmation settings, allowed redirect URLs, and RLS isolation between two accounts. These remain release gates 2–4 below.
+- **Open issue:** signup is publicly reachable before the privacy notice, terms and RLS tests are in place (the page itself says the privacy rules must be published before opening to the public).
+
 ## Verified state — 17 October 2026 (CI and Pages)
 
 - GitHub Actions quality workflow passed on Node.js 20 and 22: dependency installation, JavaScript syntax checks, automated tests, and Vite build all succeeded. Run: https://github.com/ccailleau89-pixel/Bc-one-/actions/runs/38977827080
@@ -22,7 +30,7 @@ BC ONE is a project in preparation. No production token has been deployed.
 
 ## Next release gates
 
-1. Configure one approved Supabase test project for both apps and set only its public URL/key in the browser config.
+1. ~~Configure one approved Supabase test project for both apps and set only its public URL/key in the browser config.~~ Done (19 Oct 2026, publishable key).
 2. Apply the two current migrations to that test project after review.
 3. Test signup, email confirmation, login, logout, recovery, and profile updates.
 4. Use two separate accounts to verify row-level security and that one account cannot read or alter the other's records or credits.
