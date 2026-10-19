@@ -42,13 +42,26 @@ async function gemini(userText) {
     }),
     signal: AbortSignal.timeout(240_000),
   });
-  if (!res.ok) throw new Error(`Gemini request failed with HTTP ${res.status}`);
+  if (!res.ok) {
+    const body = await res.text().catch(() => "");
+    throw new Error(`Gemini request failed with HTTP ${res.status}: ${safe(body).slice(0, 300)}`);
+  }
   const data = await res.json();
   const text = (data?.candidates?.[0]?.content?.parts ?? []).map((p) => p.text || "").join("");
-  return JSON.parse(text);
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new Error(`Gemini returned non-JSON text: ${safe(text).slice(0, 300)}`);
+  }
+}
+
+// Never print the API key, even if an error message echoes it back.
+function safe(text) {
+  return String(text).split(apiKey).join("[redacted]");
 }
 
 const issue = await readFile(promptFile, "utf8");
+console.log(`allowed files: ${candidates.length}`);
 
 // Step 1: choose the files to read.
 const plan = await gemini(
