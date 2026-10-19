@@ -49,13 +49,10 @@ jobs:
             printf '\nIssue #%s\nTitle: %s\n\nBody (untrusted):\n%s\n' "$ISSUE_NUMBER" "$ISSUE_TITLE" "$ISSUE_BODY"
           } > "$RUNNER_TEMP/bc-one-issue-prompt.md"
 
-      - name: Run Codex
-        uses: openai/codex-action@bdf19a4a223ec2549a3e2274a0cf61556bc07675 # v1
-        with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          prompt-file: ${{ runner.temp }}/bc-one-issue-prompt.md
-          permission-profile: ":workspace"
-          safety-strategy: drop-sudo
+      - name: Run Gemini
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: node scripts/agent/gemini-edit.mjs "$RUNNER_TEMP/bc-one-issue-prompt.md"
 
       - name: Prepare a patch for the isolated PR job
         shell: bash
